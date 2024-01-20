@@ -1,0 +1,50 @@
+/*
+Names: Brody Dentinger
+Date: January 20, 2024
+File: style.css
+Description: CSS styling for the HarmonyHub Project.
+*/
+
+@font-face {
+    font-family: 'Greycliffe';
+    src: url('Demo_Fonts/Fontspring-DEMO-greycliffcf-regular.otf') format('opentype');
+}
+
+.carousel-item img {
+    object-fit: cover;
+    width: 80vh;
+    height: 80vh; /* 80% of the viewport height */
+}
+
+.carousel-item {
+    height: 80vh; /* 80% of the viewport height */
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-text-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    color: #FFFFFF; /* Text color */
+    padding: 20px;
+    text-align: center;
+    z-index: 1; /* Ensure the overlay is above the carousel */
+}
+
+.overlay-text-box-heading{
+    font-size: xx-large;
+    font-family: 'Greycliffe', sans-serif;
+}
+
+.overlay-text-box-subheading1{
+    font-size: xxx-large;
+    font-family: 'Greycliffe', sans-serif;
+}
+
+
+
