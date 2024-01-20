@@ -18,9 +18,6 @@ Description: CSS styling for the HarmonyHub Project.
 
 .carousel-item {
     height: 80vh; /* 80% of the viewport height */
-    text-align: center;
-    justify-content: center;
-    align-items: center;
 }
 
 .overlay-text-box {
