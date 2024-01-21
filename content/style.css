@@ -37,7 +37,7 @@ Description: CSS styling for the HarmonyHub Project.
     opacity: 0;
 }
 
-@keyframes fadeInAndOut {
+/*@keyframes fadeInAndOut {
     0% {
         opacity: 0;
     }
@@ -97,6 +97,18 @@ Description: CSS styling for the HarmonyHub Project.
     }
     95% {
         opacity: 0.15;
+    }
+    100% {
+        opacity: 0;
+    }
+}*/
+
+@keyframes fadeInAndOut {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
     }
     100% {
         opacity: 0;
