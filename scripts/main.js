@@ -66,29 +66,45 @@ Description:
         console.log("Called DisplayHomepage...");
 
         console.log("DOMContextLoaded event called...");
-        // Array of words to cycle through
-        const words = ["Energetic Community Experience", "Vibrant Community Experience"];
 
+        // CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
+
+        // Array of words to cycle through
+        const words = ["Energetic", "Vibrant"];
+
+        // index to control the array of strings
         let index = 0;
+
+        // fetching the animatedText target span tag from our HTML.
         const textElement = document.getElementById("animatedText");
-        console.log(textElement);
 
         // Function to update the text
         function updateText() {
-            textElement.textContent = words[index];
 
-            if (index === 0) {
-                index++;
-            } else {
-                index--;
-            }
+            textElement.classList.add("animate-text-fade-in-and-out");
+
+            // Wait for the animation to finish before updating and removing the class
+            setTimeout(() => {
+                textElement.textContent = words[index];
+
+                textElement.classList.remove("animate-text-fade-in-and-out");
+
+                // Switch to the next word
+                if (index === 0) {
+                    index++;
+                } else {
+                    index--;
+                }
+
+                // Call the next update after a very short delay (10 milliseconds)
+                setTimeout(updateText, 10);
+            }, 6000); // Adjust the timeout to match the animation duration
         }
 
         // Initial update
         updateText();
-        // Set interval to update text every 4 seconds
-        setInterval(updateText, 4000);
     }
+        // END CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
 
     function DisplayPortfolioPage() {
         console.log("Called DisplayPortfolioPage...");
