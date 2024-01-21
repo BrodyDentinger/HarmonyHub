@@ -97,7 +97,7 @@ Description:
                 }
 
                 // Call the next update after a very short delay (10 milliseconds)
-                setTimeout(updateText, 10);
+                setTimeout(updateText, 0);
             }, 6000); // Adjust the timeout to match the animation duration
         }
 
