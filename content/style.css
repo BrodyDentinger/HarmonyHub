@@ -5,9 +5,14 @@ File: style.css
 Description: CSS styling for the HarmonyHub Project.
 */
 
+.custom-image {
+    max-width: 100%; /* Adjust this value based on your desired maximum width */
+    height: auto;
+}
+
 @font-face {
     font-family: 'Greycliffe';
-    src: url('Demo_Fonts/Fontspring-DEMO-greycliffcf-regular.otf') format('opentype');
+    src: url('../Demo_Fonts/Fontspring-DEMO-greycliffcf-regular.otf') format('opentype');
 }
 
 .carousel-item img {
@@ -36,72 +41,6 @@ Description: CSS styling for the HarmonyHub Project.
 #animatedText{
     opacity: 0;
 }
-
-/*@keyframes fadeInAndOut {
-    0% {
-        opacity: 0;
-    }
-    5% {
-        opacity: 0.15;
-    }
-    10% {
-        opacity: 0.25;
-    }
-    15% {
-        opacity: 0.35;
-    }
-    20% {
-        opacity: 0.45;
-    }
-    25% {
-        opacity: 0.55;
-    }
-    30% {
-        opacity: 0.65;
-    }
-    35% {
-        opacity: 0.75;
-    }
-    40% {
-        opacity: 0.85;
-    }
-    45% {
-        opacity: 0.95;
-    }
-    50% {
-        opacity: 1;
-    }
-    55% {
-        opacity: 0.95;
-    }
-    60% {
-        opacity: 0.85;
-    }
-    65% {
-        opacity: 0.75;
-    }
-    70% {
-        opacity: 0.65;
-    }
-    75% {
-        opacity: 0.55;
-    }
-    80% {
-        opacity: 0.45;
-    }
-    85% {
-        opacity: 0.35;
-    }
-    90% {
-        opacity: 0.25;
-    }
-    95% {
-        opacity: 0.15;
-    }
-    100% {
-        opacity: 0;
-    }
-}*/
 
 @keyframes fadeInAndOut {
     0% {

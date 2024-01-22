@@ -1,28 +1,54 @@
 <!--
-Names:
+Name:
 Date:
-File:
+File: header.html
 Description:
+Student Numbers:
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Portfolio</title>
+    <title id = "title">Harmony Hub</title>
 
     <!-- CSS SECTION -->
-    <link rel="stylesheet" href="content/style.css">
+    <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel = "stylesheet" href = "./node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="./content/style.css">
 
 </head>
-
 <body>
+<!-- Import the header.html here.-->
+<div id="header-container" data-page-title="Portfolio"></div>
 
-<h1>Our Portfolio</h1>
+<div id = "content" class = "mx-5">
 
+    <h1 class="col-12 text-center">Our Portfolio of Projects</h1>
+    <h4 class="col-12 text-center">Here is a list of what we have going. Whatever you choose, you have an adventure waiting for you.</h4>
+
+    <div id = "project-list-container"></div>
+    <div id = "load-more-btn-container" class = "text-center"></div>
+
+    <!--
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                1 of 2
+            </div>
+            <div class="col">
+                2 of 2
+            </div>
+        </div>
+    </div>
+    -->
+</div>
+
+<footer id="footer-nav"></footer>
 
 <!-- SCRIPTING SECTION -->
-<script src="scripts/main.js"></script>
+<script src="./scripts/main.js"></script>
+<!-- Include Bootstrap JS -->
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
