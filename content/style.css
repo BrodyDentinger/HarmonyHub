@@ -5,6 +5,11 @@ File: style.css
 Description: CSS styling for the HarmonyHub Project.
 */
 
+body {
+    margin-bottom: 5vh;
+    padding-bottom: 5vh;
+}
+
 .custom-image {
     max-width: 100%; /* Adjust this value based on your desired maximum width */
     height: auto;
@@ -99,6 +104,7 @@ Description: CSS styling for the HarmonyHub Project.
     margin-right: 1%;
 
 }
+
 
 
 
