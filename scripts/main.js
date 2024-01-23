@@ -312,6 +312,8 @@ class NewsArticle {
 
     function DisplayServicesPage() {
         console.log("Called DisplayServicesPage...");
+
+
     }
 
     function DisplayTeamPage() {

@@ -73,27 +73,38 @@ body {
     font-family: 'Greycliffe', sans-serif;
 }
 
-.sidebar-header {
-    text-align: center;
+/* Accordion css for service page
+*/
+.accordion {
+
+    background-color: #eee;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
 }
 
-.sidebar-header img {
-    max-width: 100%; /* Ensure the image does not exceed its container's width */
-    height: auto; /* Maintain the image's aspect ratio */
+.activeAccordion, .accordion:hover {
+    background-color: #ccc;
 }
 
-.fa-regular.fa-calendar {
-    font-size: 26px;
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+.icon {
+    width: 3%;
+    height: auto;
+    vertical-align: middle;
+    margin-right: 1%;
+
 }
 
-/*News Page - News Image */
-.news-image-dimensions {
-    width: 32px;
-    height: 32px;
-}
 
-/*News Page - Calendar Date Icon*/
-.d-flex.align-items-center.ms-3 i.fa-calendar {
-    order: -1;
-    margin-right: 0.5rem;
-}
+
+
