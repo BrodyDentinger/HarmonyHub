@@ -106,5 +106,25 @@ body {
 }
 
 
+.sidebar-header img {
+    max-width: 100%; /* Ensure the image does not exceed its container's width */
+    height: auto; /* Maintain the image's aspect ratio */
+}
+
+.fa-regular.fa-calendar {
+    font-size: 26px;
+}
+
+/*News Page - News Image */
+.news-image-dimensions {
+    width: 32px;
+    height: 32px;
+}
+
+/*News Page - Calendar Date Icon*/
+.d-flex.align-items-center.ms-3 i.fa-calendar {
+    order: -1;
+    margin-right: 0.5rem;
+}
 
 
