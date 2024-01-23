@@ -56,18 +56,14 @@ class Project {
 
         // Nav tag -----
         // Create a variable to hold the parent/anchor footer tag in our index.html. Will append to this.
-        let Footer = document.getElementById("footer-nav")
-
-        // Styling the footer <div> in the html to stick to the bottom of the view port.
-        Footer.style.position = 'sticky';
-        Footer.style.bottom = '0';
+        //let Footer = document.getElementById("footer-nav")
 
         // Create a new nav element for the footer, and set its class to a Bootstrap navbar class
         let FooterNavTag = document.createElement("nav");
-        FooterNavTag.setAttribute("class", "navbar navbar-expand-lg bg-body-tertiary");
+        FooterNavTag.setAttribute("class", "navbar fixed-bottom navbar-expand bg-body-tertiary");
 
-        // Anchor the nav element to the footer container
-        Footer.appendChild(FooterNavTag);
+        // Anchor the nav element to the body
+        document.body.appendChild(FooterNavTag);
 
         // Create a new div element for the navbar content
         let FooterDivTag = document.createElement("div");
@@ -78,7 +74,7 @@ class Project {
 
         // Create a new unordered list element for the navbar items
         let FooterNavList = document.createElement("ul");
-        FooterNavList.setAttribute("class", "navbar-nav mx-auto mb-2 mb-lg-0");
+        FooterNavList.setAttribute("class", "navbar-nav mx-auto mb-2 mb-lg-0"); // Add 'navbar-nav' class here
 
         // Anchor the list to the div element
         FooterDivTag.appendChild(FooterNavList);
@@ -126,7 +122,7 @@ class Project {
     // Functions that provide actions when a page is loaded. Will be implemented in our switch.
     function DisplayHomepage() {
         console.log("Called DisplayHomepage...");
-
+        
         // CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
 
         // Array of words to cycle through
@@ -166,6 +162,7 @@ class Project {
 
     function DisplayPortfolioPage() {
         console.log("Called DisplayPortfolioPage...");
+
 
         // START DYNAMIC PORTFOLIO.HTML, PROJECT CARD POPULATION SECTION ------------------------------------
 
@@ -238,13 +235,14 @@ class Project {
 
                 // Create HTML Content and append to column
                 colDiv.innerHTML = `
-            <div class="card">
-                <img src="${ProjectCardsArray[i].image}" class="card-img-top custom-image" alt="${ProjectCardsArray[i].title}Image">
-                <div class="card-body">
-                    <h5 class="card-title">${ProjectCardsArray[i].title}</h5>
-                    <p class="card-text">${ProjectCardsArray[i].description}</p>
-                </div>
-            </div>`;
+                    <div class="card">
+                        <img src="${ProjectCardsArray[i].image}" class="card-img-top custom-image" 
+                             alt="${ProjectCardsArray[i].title}Image">
+                        <div class="card-body">
+                            <h5 class="card-title">${ProjectCardsArray[i].title}</h5>
+                            <p class="card-text">${ProjectCardsArray[i].description}</p>
+                        </div>
+                    </div>`;
 
                 // Append the column to the row
                 rowDiv.appendChild(colDiv);
