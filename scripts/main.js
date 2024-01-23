@@ -19,6 +19,17 @@ class Project {
     }
 }
 
+class NewsArticle {
+    constructor(title, image, author, date, summary, description) {
+        this.title = title;
+        this.image = image;
+        this.author = author;
+        this.date = date;
+        this.summary = summary;
+        this.description = description;
+    }
+}
+
 // IIFE
 (function() {
 
@@ -151,7 +162,7 @@ class Project {
                 // Call the next update after 0 delay
                 setTimeout(updateText, 0);
 
-                // Timeout below should match the animation duration in the css file.
+                // Timeout below should match the animation duration in style.css file.
             }, 6000);
         }
 
@@ -234,15 +245,34 @@ class Project {
                 colDiv.className = "col-md-6 mb-4";
 
                 // Create HTML Content and append to column
-                colDiv.innerHTML = `
-                    <div class="card">
-                        <img src="${ProjectCardsArray[i].image}" class="card-img-top custom-image" 
-                             alt="${ProjectCardsArray[i].title}Image">
-                        <div class="card-body">
-                            <h5 class="card-title">${ProjectCardsArray[i].title}</h5>
-                            <p class="card-text">${ProjectCardsArray[i].description}</p>
-                        </div>
-                    </div>`;
+                colDiv.innerHTML = '';
+                const cardDiv = document.createElement("div");
+                cardDiv.className = "card";
+
+                const image = document.createElement("img");
+                image.src = ProjectCardsArray[i].image;
+                image.className = "card-img-top custom-image";
+                image.alt = `${ProjectCardsArray[i].title}Image`;
+
+                const cardBody = document.createElement("div");
+                cardBody.className = "card-body";
+
+                const title = document.createElement("h5");
+                title.className = "card-title";
+                title.textContent = ProjectCardsArray[i].title;
+
+                const description = document.createElement("p");
+                description.className = "card-text";
+                description.textContent = ProjectCardsArray[i].description;
+
+                // Append elements to their respective parents
+                cardBody.appendChild(title);
+                cardBody.appendChild(description);
+
+                cardDiv.appendChild(image);
+                cardDiv.appendChild(cardBody);
+
+                colDiv.appendChild(cardDiv);
 
                 // Append the column to the row
                 rowDiv.appendChild(colDiv);
@@ -288,8 +318,136 @@ class Project {
         console.log("Called DisplayTeamPage...");
     }
 
+    /**
+     * @function DisplayNewsPage()
+     * @description This function fires when the title of the page is "News". It serves to create an array of
+     *              news article objects, then loop through said array to create an html/css news article for each
+     *              object.
+     * @additional In the future, the variable NewsArticlesToRender can be used to limit the number of articles
+     *              that render by default. A Load More button can be implemented to increment the default render
+     *              value.
+     *
+     */
     function DisplayNewsPage() {
         console.log("Called DisplayNewsPage...");
+
+        // Create an array to hold our news articles.
+        const NewsArticlesArray = []
+
+        // Create 2 dummy objects of our news article class.
+        const newsArticle1 = new NewsArticle(
+            "Introduction to Harmony Hub!",
+            "./images/news1image.png",
+            "Jane Doe",
+            "January 15, 2024",
+            "Learn about the exciting classes, services, and clubs we offer here." +
+                        "We offer a wide array of community driven adventures and experiences!",
+            "More.");
+
+        const newsArticle2 = new NewsArticle(
+            "Harmony Hub Community Event",
+            "./images/news2image.jpg",
+            "John Smith",
+            "February 20, 2024",
+            "Join us for a day of community bonding and fun activities at Harmony Hub! We'll have workshops, games, and delicious food. Don't miss out on this exciting event.",
+            "https://example.com/news2"
+        );
+
+        // Append them to the array.
+        NewsArticlesArray.push(newsArticle1);
+        NewsArticlesArray.push(newsArticle2);
+
+        //let NewsArticlesToRender = 10;
+
+
+        /* STRUCTURE WE ARE RECREATING IN THE FOR LOOP EXAMPLE ----------------------------------------------------
+            @Credit Bootstrap 5.3
+          <div id = "single-article-container" class="post row g-0 p-4 border rounded overflow-hidden
+                                                      flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <h1 id = "news-title" class="fw-semibold">Introduction to Bootstrap 5.3.0</h1>
+            <div id = "image-author-date-container" class="d-flex align-items-center mb-4 text-muted">
+                <img class="mb-0 me-2 rounded-2 news-image-dimensions" src="https://via.placeholder.com/32" alt="">
+                    <span>@john_doe</span>
+                    <span id = "news-date-container" class="d-flex align-items-center ms-3">
+                        <span id = "news-date-icon>
+                              <i class="fa-regular fa-calendar"></i>
+                        </span>
+                            January 15, 2024
+                            </span>
+            </div>
+            <p id = "news-summary">Learn about the exciting....
+            <a href="#" class="text-body-emphasis fw-bold">Continue reading...</a>
+        </div>
+
+         ------------------------------------------------------------------------------------------------------------
+        */
+        // Loop through the array and add the items to our HTML structure in news.html.
+        for(let i = 0; i < NewsArticlesArray.length; i ++){
+
+            // Create the HTML structure (divs, classes, id's, etc) and store the current news article object data in
+            // variables. Fill the structure with the object data. Append it to HTML parent.
+
+            // Parent Div creation
+            let singleArticleDiv = document.createElement("div");
+            singleArticleDiv.setAttribute("class", "post row g-0 p-4 border rounded overflow-hidden " +
+                                                                "flex-md-row mb-4 shadow-sm h-md-250 position-relative");
+            // News Container Div
+            let newsContainer = document.getElementById("news-container");
+            newsContainer.appendChild(singleArticleDiv);
+
+            // News Title Section
+            let newsPostTitle = document.createElement("h1");
+            newsPostTitle.setAttribute("class", "fw-semibold");
+            newsPostTitle.textContent = NewsArticlesArray[i].title;
+
+            // Creating the div to hold image, author, and date
+            let imageAuthorAndDateDiv = document.createElement("div");
+            imageAuthorAndDateDiv.setAttribute("class", "d-flex align-items-center mb-4 text-muted");
+
+            singleArticleDiv.appendChild(newsPostTitle);
+            singleArticleDiv.appendChild(imageAuthorAndDateDiv);
+
+
+            // News Image
+            let newsImageTag = document.createElement("img");
+            newsImageTag.setAttribute("class", "mb-0 me-2 rounded-2 news-image-dimensions");
+            newsImageTag.setAttribute("src", NewsArticlesArray[i].image);
+            newsImageTag.setAttribute("alt", `${NewsArticlesArray[i].title} Image`);
+
+            imageAuthorAndDateDiv.appendChild(newsImageTag);
+
+            // News Author
+            let newsAuthorSpanTag = document.createElement("span");
+            newsAuthorSpanTag.textContent = NewsArticlesArray[i].author;
+
+            imageAuthorAndDateDiv.appendChild(newsAuthorSpanTag);
+
+            // News Date
+            let newsDateSpanTag = document.createElement("span");
+            newsDateSpanTag.setAttribute("class", "d-flex align-items-center ms-3");
+            newsDateSpanTag.textContent = NewsArticlesArray[i].date;
+
+            imageAuthorAndDateDiv.appendChild(newsDateSpanTag);
+
+            // Calendar Icon
+            let calendarIcon = document.createElement("i");
+            calendarIcon.setAttribute("class", "fa-regular fa-calendar");
+            newsDateSpanTag.appendChild(calendarIcon);
+
+
+            // News Summary Section
+            let newsSummaryP = document.createElement("p");
+            newsSummaryP.textContent = NewsArticlesArray[i].summary;
+
+            // Read More Link Section
+            let readMoreLink = document.createElement("a");
+            readMoreLink.setAttribute("class", "text-body-emphasis fw-bold");
+            readMoreLink.setAttribute("href", "#");
+            readMoreLink.textContent = "Read More..."
+
+            singleArticleDiv.appendChild(newsSummaryP);
+            singleArticleDiv.appendChild(readMoreLink);
+        }
     }
 
     function DisplayContactUsPage() {
