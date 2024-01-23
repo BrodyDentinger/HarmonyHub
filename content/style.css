@@ -68,5 +68,37 @@ Description: CSS styling for the HarmonyHub Project.
     font-family: 'Greycliffe', sans-serif;
 }
 
+/* Accordion css for service page
+*/
+.accordion {
+
+    background-color: #eee;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    transition: 0.4s;
+}
+
+.activeAccordion, .accordion:hover {
+    background-color: #ccc;
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+.icon {
+    width: 3%;
+    height: auto;
+    vertical-align: middle;
+    margin-right: 1%;
+
+}
+
 
 

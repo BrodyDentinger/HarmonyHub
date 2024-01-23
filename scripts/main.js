@@ -284,6 +284,8 @@ class Project {
 
     function DisplayServicesPage() {
         console.log("Called DisplayServicesPage...");
+
+
     }
 
     function DisplayTeamPage() {
