@@ -10,7 +10,10 @@ Description: Javascript functionality for harmony hub.
 
 "use strict";
 
+
+
 // Defining a class to create the projects for the portfolio page. Refer to DisplayPortfolioPage().
+
 class Project {
     constructor(title, description, image) {
         this.title = title;
@@ -32,6 +35,7 @@ class NewsArticle {
 
 // IIFE
 (function() {
+
 
     // Using JavaScript, add a dynamic header nav bar, and a footer nav bar
     document.addEventListener("DOMContentLoaded", function() {
@@ -452,9 +456,86 @@ class NewsArticle {
         }
     }
 
+    /**
+     *
+     * @constructor
+     */
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
+
+        // Form constant
+        const contactForm = document.getElementById("contactForm");
+        // Constant for the first modal popup body which is the one that shows the form inputs
+        const modalBody = document.getElementById("modal-body");
+        // First modal pop up confirm button
+        const looksGoodButton = document.getElementById("contactUsModalButton")
+        //the actual modal, yes the whole thing
+        const contactModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
+            keyboard: false
+        });
+        //thank you message modal
+        const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'), {
+            keyboard: false,
+            backdrop: 'static'
+        });
+        // event listener when the submit on the forms clicked
+        contactForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Check if the form inputs are valid
+            if (!contactForm.checkValidity()) {
+                // If the form is not valid, add was-validated class to show Bootstrap's validation feedback
+                contactForm.classList.add('was-validated');
+            } else {
+                // If the form is valid, process the form data
+                console.log("Form is valid. Submitting...");
+                const userName = document.getElementById("userName").value;
+                const email = document.getElementById("email").value;
+                const subject = document.getElementById("subject").value;
+                const message = document.getElementById("message").value;
+
+                // Insert form data into modal
+                modalBody.innerHTML = `
+                <p><strong>User Name:</strong> ${userName}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Subject:</strong> ${subject}</p>
+                <p><strong>Message:</strong> ${message}</p>
+            `;
+
+                // Show the modal
+                contactModal.show();
+
+                // Reset the form fields
+                contactForm.reset();
+                // Remove was-validated class after the reset to clear validation feedback
+                contactForm.classList.remove('was-validated');
+            }
+        });
+        looksGoodButton.addEventListener('click', function () {
+
+            contactModal.hide();
+            // Show the thank you modal
+            thankYouModal.show();
+
+            // Start the countdown
+            let countdownNumber = 5;
+            const countdownElement = document.getElementById('countdown');
+            countdownElement.textContent = countdownNumber;
+
+            const intervalId = setInterval(function () {
+                countdownNumber--;
+                countdownElement.textContent = countdownNumber;
+
+                if (countdownNumber === 0) {
+                    clearInterval(intervalId);
+                    thankYouModal.hide();
+                    // Redirect to Home page
+                    window.location.href = './index.html';
+                }
+            }, 1000);
+        });
     }
+
 
     function Start() {
         console.log("App Started...");

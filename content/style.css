@@ -43,6 +43,8 @@ body {
     z-index: 1; /* Ensure the overlay is above the carousel */
 }
 
+
+
 #animatedText{
     opacity: 0;
 }
@@ -90,6 +92,40 @@ body {
 .activeAccordion, .accordion:hover {
     background-color: #ccc;
 }
+
+.contact-info {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+#modal-body p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.custom-image1 {
+    background: url('../images/contactUs.jpg') no-repeat center center;
+    background-size: cover;
+    color: #fff;
+    padding: 50px 0;
+    margin: -15px;
+}
+.sunset{
+    border-color: #eeaf79;
+    background-color: #eeaf79;
+}
+.sunset:hover{
+    background-color:  #f49827 ;
+    border-color: #f49827;
+}
+
+.custom-image1 h2,
+.custom-image1 p {
+    color: white;
+}
+
 
 .panel {
     padding: 0 18px;

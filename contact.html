@@ -1,27 +1,134 @@
 <!--
-Names:
+Name:
 Date:
-File:
+File: header.html
 Description:
+Student Numbers:
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Contact</title>
+    <title id = "title">Contact</title>
 
     <!-- CSS SECTION -->
-    <link rel="stylesheet" href="content/style.css">
+    <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel = "stylesheet" href = "./node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="./content/style.css">
 
 </head>
-
 <body>
+<!-- Import the header.html here.-->
+<div id="header-container" data-page-title="Contact"></div>
 
-<h1>Contact Us</h1>
+<!-- Full screen image container -->
+<div class="custom-image1 d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Contact us</h2>
+                <p>Send us your queries or questions and we will be in touch within 3-5 business day.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form and Contact Info Section -->
+<div class="container my-5">
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-md-8">
+            <!-- form goes here -->
+            <form class="contact-info" id="contactForm" novalidate>
+                <!-- Name Field -->
+                <div class="mb-3">
+                    <label for="userName" class="form-label">User Name</label>
+                    <input type="text" class="form-control" id="userName" name="userName" placeholder="User name" required>
+                    <div class="invalid-feedback">Please enter a user name.</div>
+                </div>
+                <!-- Email Field -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                    <div class="invalid-feedback">Please enter an email address.</div>
+                </div>
+                <!-- Subject Field -->
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Your Subject" required>
+                    <div class="invalid-feedback">Please enter a subject.</div>
+                </div>
+                <!-- Message Field -->
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                    <div class="invalid-feedback">Please enter a message.</div>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary sunset">Submit</button>
+            </form>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="col-md-4 d-flex align-items-start">
+            <div class="contact-info">
+                <h5>Contact Info</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fa-solid fa-envelope"></i> Email: contactus@example.com</li>
+                    <li><i class="fa-solid fa-phone"></i> Phone: 123-456-7890</li>
+                    <li><i class="fa-brands fa-square-x-twitter"></i> X (Twitter)</li>
+                    <li><i class="fa-brands fa-square-instagram"></i> Instagram</li>
+                    <li><i class="fa-brands fa-linkedin"></i> Linkedin</li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="footer-nav"></footer>
 
 <!-- SCRIPTING SECTION -->
-<script src="scripts/main.js"></script>
+<script src="./scripts/main.js"></script>
+<!-- Include Bootstrap JS -->
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Your Form</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+            <div class="modal-footer">
+<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+                <button type="button" class="btn btn-primary" ID="contactUsModalButton" >Look's good</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Thank You Modal -->
+<div class="modal fade" id="thankYouModal" tabindex="-1" aria-labelledby="thankYouModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="thankYouModalLabel">Thank You!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for your submission. You will be redirected in <span id="countdown">5</span> seconds.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
