@@ -296,7 +296,7 @@ class NewsArticle {
 
                 let LoadMoreBtn = document.createElement("button");
                 LoadMoreBtn.setAttribute("id", "load-more-btn");
-                LoadMoreBtn.setAttribute("class", "btn btn-primary mx-auto");
+                LoadMoreBtn.setAttribute("class", "btn btn-primary mx-auto sunset");
                 LoadMoreBtn.textContent = "Load More";
 
                 LoadMoreBtnParent.appendChild(LoadMoreBtn);
