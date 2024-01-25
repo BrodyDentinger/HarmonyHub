@@ -89,9 +89,9 @@ body {
     transition: 0.4s;
 }
 
-.activeAccordion, .accordion:hover {
-    background-color: #ccc;
-}
+/* .accordion:hover,.accordion-button:hover {*/
+/*    background: linear-gradient(to right, #f49827 0%, #eeaf79 99%, #fad0c4  100%);*/
+/*}*/
 
 .contact-info {
     background-color: #f8f9fa;

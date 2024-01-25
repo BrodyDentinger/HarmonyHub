@@ -14,6 +14,8 @@ Description: Javascript functionality for harmony hub.
 
 // Defining a class to create the projects for the portfolio page. Refer to DisplayPortfolioPage().
 
+
+
 class Project {
     constructor(title, description, image) {
         this.title = title;
