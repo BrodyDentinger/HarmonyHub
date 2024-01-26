@@ -1,8 +1,9 @@
 /*
-Names: Brody Dentinger
-Date: January 20, 2024
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
 File: style.css
-Description: CSS styling for the HarmonyHub Project.
+Description: CSS for Harmony Hub.
 */
 
 body {
@@ -116,15 +117,14 @@ body {
 .sunset {
     border-color: var(--sunset-color-1); /* Pinkish-red start color */
     background: linear-gradient(to right, var(--sunset-color-1), var(--sunset-color-2), var(--sunset-color-3), var(--sunset-color-4)); /* Gradient background */
-    color: white; /* White text color for content */
 }
 
 /* Hover state */
-.sunset:hover {
-    border-color: var(--sunset-color-2); /* Slightly darker orange color for hover state */
-    background: linear-gradient(to right, var(--sunset-color-2), var(--sunset-color-3), var(--sunset-color-4), var(--sunset-color-1)); /* Slightly altered gradient for hover */
-    color: white; /* White text color for content */
-}
+/*.sunset:hover {
+    border-color: var(--sunset-color-2); !* Slightly darker orange color for hover state *!
+    background: linear-gradient(to right, var(--sunset-color-2), var(--sunset-color-3), var(--sunset-color-4), var(--sunset-color-1)); !* Slightly altered gradient for hover *!
+    color: white; !* White text color for content *!
+}*/
 
 
 .custom-image1 h2,

@@ -1,43 +1,15 @@
 /*
-Name 1: Brody Dentinger
-Student Number 1: 100561604
-Name 2:
-Student Number 2:
-Date of Completion:
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
 File: main.js
-Description: Javascript functionality for harmony hub.
+Description: Main javascript file for Harmony Hub.
 */
 
 "use strict";
 
-
-
-// Defining a class to create the projects for the portfolio page. Refer to DisplayPortfolioPage().
-
-
-
-class Project {
-    constructor(title, description, image) {
-        this.title = title;
-        this.description = description;
-        this.image = image;
-    }
-}
-
-class NewsArticle {
-    constructor(title, image, author, date, summary, description) {
-        this.title = title;
-        this.image = image;
-        this.author = author;
-        this.date = date;
-        this.summary = summary;
-        this.description = description;
-    }
-}
-
 // IIFE
 (function() {
-
 
     // Using JavaScript, add a dynamic header nav bar, and a footer nav bar
     document.addEventListener("DOMContentLoaded", function() {
@@ -46,14 +18,11 @@ class NewsArticle {
         // Include header and attach to header-container. Header contains doctype, html, head, meta, title, css section,
         // end head, starting body tag, and header nav bar.
 
-        // Fetch the content of the 'header.html' file
-        fetch("./header.html")
-            // Convert the response to text
-            .then(response => response.text())
-            // Handle the HTML content
-            .then(html => {
+        // Using the axios library, we can get the header via a http request (get), and use it to import our header file.
+        axios.get("./header.html")
+            .then(response => {
                 // Insert the fetched HTML into the element with id 'header-container'
-                document.getElementById("header-container").innerHTML = html;
+                document.getElementById("header-container").innerHTML = response.data;
 
                 // Access the 'data-page-title' attribute from 'header-container'
                 const pageTitle = document.getElementById("header-container").dataset.pageTitle;
@@ -64,6 +33,17 @@ class NewsArticle {
                 // Change the "Blog" word in our navbar to "News"
                 let BlogText = document.getElementById("BlogText");
                 BlogText.textContent = "News";
+
+                // Add a Careers Link to header
+                let CareerDiv = document.getElementById("career-link-div");
+                let CareerAnchorTag = document.createElement("a");
+                CareerAnchorTag.setAttribute("class", "nav-link");
+                CareerAnchorTag.setAttribute("href", "#");
+                CareerAnchorTag.innerHTML = "Careers";
+                CareerDiv.appendChild(CareerAnchorTag);
+            })
+            .catch(error => {
+                console.error("Error fetching header:", error);
             });
 
         // END HEADER NAV BAR SECTION --------------------------------------------------------
@@ -132,11 +112,10 @@ class NewsArticle {
 
     // END DYNAMIC JAVASCRIPT FOOTER NAV BAR SECTION ----------------------------------------------------
 
-    // Change the "Blog" word in our navbar to "News"
-    /*let BlogText = document.getElementById("BlogText");
-    BlogText.textContent = "News";*/
-
-    // Functions that provide actions when a page is loaded. Will be implemented in our switch.
+    /**
+     * A function that calls when the title is "Harmony Hub". Will handle all relevant logic to the index page.
+     * @return none
+     */
     function DisplayHomepage() {
         console.log("Called DisplayHomepage...");
         
@@ -177,37 +156,47 @@ class NewsArticle {
     }
         // END CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
 
+    /**
+     * A function that calls when the title is "Portfolio". Will handle all relevant logic to the portfolio page.
+     * @return none
+     */
     function DisplayPortfolioPage() {
         console.log("Called DisplayPortfolioPage...");
 
-
         // START DYNAMIC PORTFOLIO.HTML, PROJECT CARD POPULATION SECTION ------------------------------------
 
-        // Define an array to hold our project card objects.
-        const ProjectCardsArray = [];
-
         // Initialize the project card objects to be stored in the array.
-        const project1 = new Project("Day Drop In", "General community drop-in, all ages", "./images/project1image.png");
-        const project2 = new Project("Kids Sports Day", "Youth drop in for all sports.", "./images/project2image.png");
-        const project3 = new Project("Hiking Adventure", "Community hike of the trails.", "./images/project3image.png");
-        const project4 = new Project("Community Social", "Social with music, drinks, and snacks.", "./images/project4image.jpg");
-        const project5 = new Project("Tennis Club", "Bi-Weekly tennis club.", "./images/project5image.jpg");
-        const project6 = new Project("Pilates in the Park", "Workout and push each other!", "./images/project6image.jpg");
-        const project7 = new Project("Basketball Tournament", "Above 16 Basketball.", "./images/project7image.jpg");
-        const project8 = new Project("Sunset Mediation", "Led by a talented practitioner.", "./images/project8image.jpg");
-        const project9 = new Project("Yoga", "Led by a talented practitioner.", "./images/project9image.jpg");
-        const project10 = new Project("Soccer Drop-In", "Under 16 youth soccer drop-in.", "./images/project10image.jpg");
+        const project1 = new Project
+        ("Day Drop In", "General community drop-in, all ages", "./images/project1image.png");
+        const project2 = new Project
+        ("Kids Sports Day", "Youth drop in for all sports.", "./images/project2image.png");
+        const project3 = new Project
+        ("Hiking Adventure", "Community hike of the trails.", "./images/project3image.png");
+        const project4 = new Project
+        ("Community Social", "Social with music, drinks, and snacks.", "./images/project4image.jpg");
+        const project5 = new Project
+        ("Tennis Club", "Bi-Weekly tennis club.", "./images/project5image.jpg");
+        const project6 = new Project
+        ("Pilates in the Park", "Workout and push each other!", "./images/project6image.jpg");
+        const project7 = new Project
+        ("Basketball Tournament", "Above 16 Basketball.", "./images/project7image.jpg");
+        const project8 = new Project
+        ("Sunset Mediation", "Led by a talented practitioner.", "./images/project8image.jpg");
+        const project9 = new Project
+        ("Yoga", "Led by a talented practitioner.", "./images/project9image.jpg");
+        const project10 = new Project
+        ("Soccer Drop-In", "Under 16 youth soccer drop-in.", "./images/project10image.jpg");
 
-        ProjectCardsArray.push(project1);
-        ProjectCardsArray.push(project2);
-        ProjectCardsArray.push(project3);
-        ProjectCardsArray.push(project4);
-        ProjectCardsArray.push(project5);
-        ProjectCardsArray.push(project6);
-        ProjectCardsArray.push(project7);
-        ProjectCardsArray.push(project8);
-        ProjectCardsArray.push(project9);
-        ProjectCardsArray.push(project10);
+        project1.pushObjectToArray();
+        project2.pushObjectToArray();
+        project3.pushObjectToArray();
+        project4.pushObjectToArray();
+        project5.pushObjectToArray();
+        project6.pushObjectToArray();
+        project7.pushObjectToArray();
+        project8.pushObjectToArray();
+        project9.pushObjectToArray();
+        project10.pushObjectToArray();
 
         // Variable to hold the parent container to attach the list objects.
         let projectListContainer = document.getElementById("project-list-container");
@@ -221,7 +210,7 @@ class NewsArticle {
          *        will be rendered. This is increased when the user clicks the "load more" button.
          * @Additional Info: loadMoreIncrement: A number that represents how many elements will be added to the initial
          *        2 every time the "load more" button is clicked.
-         *
+         * @return none
          */
         let projectsToRender = 2;
         let loadMoreIncrement = 2;
@@ -246,53 +235,18 @@ class NewsArticle {
 
             // Loop through and create HTML project cards for every element up to the number specified by projectsToRender
             for (let i = 0; i < projectsToRender; i++) {
-                // Create a column div for each project
-                const colDiv = document.createElement("div");
-                colDiv.className = "col-md-6 mb-4";
 
-                // Create HTML Content and append to column
-                colDiv.innerHTML = '';
-                const cardDiv = document.createElement("div");
-                cardDiv.className = "card";
-
-                const image = document.createElement("img");
-                image.src = ProjectCardsArray[i].image;
-                image.className = "card-img-top custom-image";
-                image.alt = `${ProjectCardsArray[i].title}Image`;
-
-                const cardBody = document.createElement("div");
-                cardBody.className = "card-body";
-
-                const title = document.createElement("h5");
-                title.className = "card-title";
-                title.textContent = ProjectCardsArray[i].title;
-
-                const description = document.createElement("p");
-                description.className = "card-text";
-                description.textContent = ProjectCardsArray[i].description;
-
-                // Append elements to their respective parents
-                cardBody.appendChild(title);
-                cardBody.appendChild(description);
-
-                cardDiv.appendChild(image);
-                cardDiv.appendChild(cardBody);
-
-                colDiv.appendChild(cardDiv);
-
-                // Append the column to the row
-                rowDiv.appendChild(colDiv);
+                Project.renderProjectCard(i, rowDiv);
             }
 
             // Append the row to the container
             projectListContainer.appendChild(rowDiv);
-            // Add a load more button if number of projects is > projectsToRender
 
             // Fetch the html parent for the button
             let LoadMoreBtnParent = document.getElementById("load-more-btn-container");
 
             // If projectsToRender is less than the total projects, create and render the load more button.
-            if(projectsToRender < ProjectCardsArray.length){
+            if(projectsToRender < Project.ProjectCardsArray.length){
 
                 let LoadMoreBtn = document.createElement("button");
                 LoadMoreBtn.setAttribute("id", "load-more-btn");
@@ -316,31 +270,29 @@ class NewsArticle {
         // END DYNAMIC PORTFOLIO.HTML, PROJECT CARD POPULATION SECTION ------------------------------------
     }
 
+    /**
+     * A function that calls when the title is "Services". Will handle all relevant logic to the service page.
+     * @return none
+     */
     function DisplayServicesPage() {
         console.log("Called DisplayServicesPage...");
 
-
     }
 
+    /**
+     * A function that calls when the title is "Team". Will handle all relevant logic to the team page.
+     * @return none
+     */
     function DisplayTeamPage() {
         console.log("Called DisplayTeamPage...");
     }
 
     /**
-     * @function DisplayNewsPage()
-     * @description This function fires when the title of the page is "News". It serves to create an array of
-     *              news article objects, then loop through said array to create an html/css news article for each
-     *              object.
-     * @additional In the future, the variable NewsArticlesToRender can be used to limit the number of articles
-     *              that render by default. A Load More button can be implemented to increment the default render
-     *              value.
-     *
+     * A function that calls when the title is "News". Will handle all relevant logic to the news page.
+     * @return none
      */
     function DisplayNewsPage() {
         console.log("Called DisplayNewsPage...");
-
-        // Create an array to hold our news articles.
-        const NewsArticlesArray = []
 
         // Create 2 dummy objects of our news article class.
         const newsArticle1 = new NewsArticle(
@@ -357,110 +309,28 @@ class NewsArticle {
             "./images/news2image.jpg",
             "John Smith",
             "February 20, 2024",
-            "Join us for a day of community bonding and fun activities at Harmony Hub! We'll have workshops, games, and delicious food. Don't miss out on this exciting event.",
+            "Join us for a day of community bonding and fun activities at Harmony Hub! We'll have " +
+                     "workshops, games, and delicious food. Don't miss out on this exciting event.",
             "https://example.com/news2"
         );
 
         // Append them to the array.
-        NewsArticlesArray.push(newsArticle1);
-        NewsArticlesArray.push(newsArticle2);
+        newsArticle1.pushObjectToArray();
+        newsArticle2.pushObjectToArray();
 
         //let NewsArticlesToRender = 10;
 
-
-        /* STRUCTURE WE ARE RECREATING IN THE FOR LOOP EXAMPLE ----------------------------------------------------
-            @Credit Bootstrap 5.3
-          <div id = "single-article-container" class="post row g-0 p-4 border rounded overflow-hidden
-                                                      flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <h1 id = "news-title" class="fw-semibold">Introduction to Bootstrap 5.3.0</h1>
-            <div id = "image-author-date-container" class="d-flex align-items-center mb-4 text-muted">
-                <img class="mb-0 me-2 rounded-2 news-image-dimensions" src="https://via.placeholder.com/32" alt="">
-                    <span>@john_doe</span>
-                    <span id = "news-date-container" class="d-flex align-items-center ms-3">
-                        <span id = "news-date-icon>
-                              <i class="fa-regular fa-calendar"></i>
-                        </span>
-                            January 15, 2024
-                            </span>
-            </div>
-            <p id = "news-summary">Learn about the exciting....
-            <a href="#" class="text-body-emphasis fw-bold">Continue reading...</a>
-        </div>
-
-         ------------------------------------------------------------------------------------------------------------
-        */
         // Loop through the array and add the items to our HTML structure in news.html.
-        for(let i = 0; i < NewsArticlesArray.length; i ++){
+        for(let i = 0; i < NewsArticle.NewsArticlesArray.length; i ++){
 
-            // Create the HTML structure (divs, classes, id's, etc) and store the current news article object data in
-            // variables. Fill the structure with the object data. Append it to HTML parent.
-
-            // Parent Div creation
-            let singleArticleDiv = document.createElement("div");
-            singleArticleDiv.setAttribute("class", "post row g-0 p-4 border rounded overflow-hidden " +
-                                                                "flex-md-row mb-4 shadow-sm h-md-250 position-relative");
-            // News Container Div
-            let newsContainer = document.getElementById("news-container");
-            newsContainer.appendChild(singleArticleDiv);
-
-            // News Title Section
-            let newsPostTitle = document.createElement("h1");
-            newsPostTitle.setAttribute("class", "fw-semibold");
-            newsPostTitle.textContent = NewsArticlesArray[i].title;
-
-            // Creating the div to hold image, author, and date
-            let imageAuthorAndDateDiv = document.createElement("div");
-            imageAuthorAndDateDiv.setAttribute("class", "d-flex align-items-center mb-4 text-muted");
-
-            singleArticleDiv.appendChild(newsPostTitle);
-            singleArticleDiv.appendChild(imageAuthorAndDateDiv);
-
-
-            // News Image
-            let newsImageTag = document.createElement("img");
-            newsImageTag.setAttribute("class", "mb-0 me-2 rounded-2 news-image-dimensions");
-            newsImageTag.setAttribute("src", NewsArticlesArray[i].image);
-            newsImageTag.setAttribute("alt", `${NewsArticlesArray[i].title} Image`);
-
-            imageAuthorAndDateDiv.appendChild(newsImageTag);
-
-            // News Author
-            let newsAuthorSpanTag = document.createElement("span");
-            newsAuthorSpanTag.textContent = NewsArticlesArray[i].author;
-
-            imageAuthorAndDateDiv.appendChild(newsAuthorSpanTag);
-
-            // News Date
-            let newsDateSpanTag = document.createElement("span");
-            newsDateSpanTag.setAttribute("class", "d-flex align-items-center ms-3");
-            newsDateSpanTag.textContent = NewsArticlesArray[i].date;
-
-            imageAuthorAndDateDiv.appendChild(newsDateSpanTag);
-
-            // Calendar Icon
-            let calendarIcon = document.createElement("i");
-            calendarIcon.setAttribute("class", "fa-regular fa-calendar");
-            newsDateSpanTag.appendChild(calendarIcon);
-
-
-            // News Summary Section
-            let newsSummaryP = document.createElement("p");
-            newsSummaryP.textContent = NewsArticlesArray[i].summary;
-
-            // Read More Link Section
-            let readMoreLink = document.createElement("a");
-            readMoreLink.setAttribute("class", "text-body-emphasis fw-bold");
-            readMoreLink.setAttribute("href", "#");
-            readMoreLink.textContent = "Read More..."
-
-            singleArticleDiv.appendChild(newsSummaryP);
-            singleArticleDiv.appendChild(readMoreLink);
+            // Calling our class method to render each article.
+            NewsArticle.renderNewsArticle(i);
         }
     }
 
     /**
-     *
-     * @constructor
+     * A function that calls when the title is "Contact Us". Will handle all relevant logic to the contact page.
+     * @return none
      */
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
@@ -538,7 +408,11 @@ class NewsArticle {
         });
     }
 
-
+    /**
+     * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
+     * given page's title, and call it's relevant DisplayFunction().
+     * @return none
+     */
     function Start() {
         console.log("App Started...");
 
