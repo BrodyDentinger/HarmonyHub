@@ -41,6 +41,9 @@ Description: Main javascript file for Harmony Hub.
                 CareerAnchorTag.setAttribute("href", "#");
                 CareerAnchorTag.innerHTML = "Careers";
                 CareerDiv.appendChild(CareerAnchorTag);
+
+                CheckLogin();
+
             })
             .catch(error => {
                 console.error("Error fetching header:", error);
@@ -111,6 +114,23 @@ Description: Main javascript file for Harmony Hub.
     });
 
     // END DYNAMIC JAVASCRIPT FOOTER NAV BAR SECTION ----------------------------------------------------
+    /**
+     *
+     *
+     */
+    function CheckLogin(){
+
+        if(sessionStorage.getItem("user")){
+
+            $('#login').attr('id', 'logout').attr('href', '#').text('Logout');
+
+        }
+
+        $("#logout").on("click", function(){
+            sessionStorage.clear();
+            location.href = "./login.html";
+        });
+    }
 
     /**
      * A function that calls when the title is "Harmony Hub". Will handle all relevant logic to the index page.
@@ -118,6 +138,26 @@ Description: Main javascript file for Harmony Hub.
      */
     function DisplayHomepage() {
         console.log("Called DisplayHomepage...");
+
+        // If the url has loginSuccess in it, then add the welcome message to our div.
+        if(window.location.href.includes("loginSuccess")){
+
+            // create a user object container
+            let user = new User;
+            // Fetch the session storage with the key User (as we've stored it from the login page function)
+            let userKey = sessionStorage.getItem("user");
+
+            // Deserialize that string and pass its values into our user object.
+            user.deserialize(userKey);
+
+            // Query the login message div and add our welcome data.
+            $("#loginMessage").addClass("alert alert-light").text("Welcome " + user["firstName"] + "!");
+
+            // Use setTimeout to clear the message after 3 seconds
+            setTimeout(function() {
+                $("#loginMessage").text("").removeClass();
+            }, 3000);
+        }
 
         // Array of words to cycle through
         const words = ["Energetic", "Vibrant"];
@@ -403,6 +443,64 @@ Description: Main javascript file for Harmony Hub.
     }
 
     /**
+     *
+     *
+     */
+    function DisplayLoginPage(){
+
+        console.log("DisplayLoginPage() called...");
+
+        // Define the message area div for validation messages.
+        let messageArea = $("#messageArea");
+
+        // Fetch button with jquery
+        $("#login-button").on("click", function (){
+
+            let success = false;
+
+            let newUser = new User();
+
+            // Reset message area.
+            messageArea.removeClass("").text("");
+
+            // JQuery version of an HTTP request
+            // function(data) = data already represents the returnText
+            // JQuery also already checks for 4 readystatechange, and 200 ok
+            $.get("./data/users.json", function(data) {
+
+                // loop through each user of the response json file
+                for (const user of data.users) {
+
+                    console.log(user);
+
+                    // check if the username and password text fields from the form match the user and password from
+                    // the JSON user.
+                    if (username.value === user.Username && password.value === user.Password) {
+
+                        // store the data from the matching user in the JSON file in this User Object
+                        newUser.fromJSON(user);
+                        success = true;
+                        break;
+                    }
+                }
+                    //
+                    if(success){
+
+                        // create a user object to serialize it into local storage.
+                        sessionStorage.setItem("user", newUser.serialize());
+
+                        // Redirect with appended success message to url
+                        location.href = "index.html#loginSuccess";
+                    }
+                    else{
+                            messageArea.addClass("alert alert-danger").text("Error: Invalid Credentials");
+                        }
+
+            })
+        });
+    }
+
+    /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
      * given page's title, and call it's relevant DisplayFunction().
      * @return none
@@ -433,6 +531,9 @@ Description: Main javascript file for Harmony Hub.
                 break;
             case "Contact":
                 DisplayContactUsPage();
+                break;
+            case "Login":
+                DisplayLoginPage();
                 break;
         }
     }

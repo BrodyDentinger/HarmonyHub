@@ -286,11 +286,11 @@ body {
 
 /*teams page modal css ends*/
 
-/* Smaller card class */
-/*
-.small-project-card {
-    width: 80%; !* 50% of the original width *!
-    height: 90%; !* 50% of the original height *!
-
-    !* Adjust other properties as needed *!
-}*/
+.messageBox {
+    position: absolute;
+    top: 20px; /* Adjust as needed */
+    left: 20px; /* Adjust as needed */
+    padding: 10px; /* Adjust as needed */
+    border-radius: 5px; /* Optional: adds rounded corners */
+    z-index: 9999; /* Ensure it appears above everything */
+}
