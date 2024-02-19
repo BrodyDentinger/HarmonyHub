@@ -17,9 +17,14 @@ Description: Header nav bar for import into all other pages.
 
             <div class="collapse navbar-collapse" id="navbarNav">
 
+                <!-- Search Button -->
                 <form class="d-flex my-2 my-lg-0">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                    <div class="position-relative"> <!-- Add position-relative class -->
+                        <input class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search">
+                        <!-- Dropdown will be appended here -->
+                        <ul class="dropdown-menu search-dropdown"></ul> <!-- Dropdown menu -->
+                    </div>
+                    <button class="btn btn-outline-primary search-button" type="submit">Search</button>
                 </form>
 
 

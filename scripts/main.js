@@ -111,6 +111,7 @@ Description: Main javascript file for Harmony Hub.
         FooterNavItem3.appendChild(FooterNavLink3);
         FooterNavList.appendChild(FooterNavItem3);
 
+
     });
 
     // END DYNAMIC JAVASCRIPT FOOTER NAV BAR SECTION ----------------------------------------------------
