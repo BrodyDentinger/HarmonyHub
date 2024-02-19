@@ -136,13 +136,22 @@ Description: Main javascript file for Harmony Hub.
     // ----------------------
 
     function displayResults(results) {
-        console.log("DisplayResults called...")
-        const resultsContainer = $(".search-dropdown");
+        console.log("DisplayResults called...");
+        const resultsContainer = $("#search-dropdown");
         resultsContainer.empty(); // Clear previous results
-        results.forEach(result => {
-            $('<div>').html(`<li href="${result.url}">${result.title}</li>`).appendTo(resultsContainer);
-        });
+
+        if (results.length > 0) {
+            // There are results, construct the list items and make the dropdown visible
+            results.forEach(result => {
+                $('<li>').html(`<a href="${result.url}">${result.title}</a></li>`).appendTo(resultsContainer);
+            });
+            resultsContainer.css('display', 'block'); // Make the dropdown visible
+        } else {
+            // No results, ensure the dropdown is not visible
+            resultsContainer.css('display', 'none');
+        }
     }
+
 
     /**
      * A function that calls when the title is "Harmony Hub". Will handle all relevant logic to the index page.
@@ -523,17 +532,22 @@ Description: Main javascript file for Harmony Hub.
         // COMPARE WHAT PROF HAS ...
         // ALSO NEED TO APPEND EACH RESULT TO THE DROP DOWN MENU
         $("#search-input").on("input", function() {
-
             console.log("Search input event firing...");
-
             const query = $(this).val().toLowerCase();
             $.ajax({
-                url: './contentIndex.json',
+                url: './data/contentIndex.json',
                 type: 'GET',
                 dataType: 'json',
-                success: function(data) {
-                    const results = data.filter(page => page.content.toLowerCase().includes(query));
-                    displayResults(results);
+                success: function(response) {
+                    // Access the 'content' array from the response
+                    const data = response.content;
+                    // Check if 'data' is an array before filtering
+                    if (Array.isArray(data)) {
+                        const results = data.filter(page => page.content.toLowerCase().includes(query));
+                        displayResults(results);
+                    } else {
+                        console.error('Invalid data format: expected an array');
+                    }
                 },
                 error: function(xhr, status, error) {
                     console.error('Failed to fetch content index:', error);
