@@ -62,7 +62,7 @@ class Project {
 
         // Create a column div for each project
         const colDiv = document.createElement("div");
-        colDiv.className = "col-md-6 mb-4";
+        colDiv.className = "col-md-4 mb-4";
 
         // Create HTML Content and append to column
         colDiv.innerHTML = '';

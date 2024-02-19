@@ -16,10 +16,10 @@ body {
     height: auto;
 }
 
-@font-face {
+/*@font-face {
     font-family: 'Greycliffe';
     src: url('../Demo_Fonts/Fontspring-DEMO-greycliffcf-regular.otf') format('opentype');
-}
+}*/
 
 .carousel-item img {
     object-fit: cover;
@@ -43,7 +43,6 @@ body {
     text-align: center;
     z-index: 1; /* Ensure the overlay is above the carousel */
 }
-
 
 
 #animatedText{
@@ -146,7 +145,6 @@ body {
     margin-right: 1%;
 
 }
-
 
 .sidebar-header img {
     max-width: 100%; /* Ensure the image does not exceed its container's width */
@@ -287,3 +285,12 @@ body {
 }
 
 /*teams page modal css ends*/
+
+/* Smaller card class */
+/*
+.small-project-card {
+    width: 80%; !* 50% of the original width *!
+    height: 90%; !* 50% of the original height *!
+
+    !* Adjust other properties as needed *!
+}*/

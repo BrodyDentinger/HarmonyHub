@@ -118,43 +118,41 @@ Description: Main javascript file for Harmony Hub.
      */
     function DisplayHomepage() {
         console.log("Called DisplayHomepage...");
-        
-        // CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
 
         // Array of words to cycle through
         const words = ["Energetic", "Vibrant"];
 
-        // index to control the array of strings
+        // Index to control the array of strings
         let index = 0;
 
-        // fetching the animatedText target span tag from our HTML.
+        // Fetching the animatedText target span tag from our HTML.
         const textElement = document.getElementById("animatedText");
 
         // Function to update the text
         function updateText() {
-
             textElement.classList.add("animate-text-fade-in-and-out");
 
-            // Wait for the animation to finish before updating text and removing the class.
+            // Wait for the animation to halfway finish before updating text.
+            // This might need adjustment based on the actual animation effect you desire.
+            setTimeout(() => {
+                // Remove the class halfway through the animation to ensure the text fades out smoothly
+                textElement.classList.remove("animate-text-fade-in-and-out");
+            }, 5500); // Adjust this based on when you want the fade-out to start.
+
+            // Change the text and restart the animation at the end of the animation cycle.
             setTimeout(() => {
                 textElement.textContent = words[index];
-
-                textElement.classList.remove("animate-text-fade-in-and-out");
-
-                // Increment or decrement index to control the array of words.
-                index === 0 ? index++: index--;
-
-                // Call the next update after 0 delay
-                setTimeout(updateText, 0);
-
-                // Timeout below should match the animation duration in style.css file.
-            }, 6000);
+                // Cycle through the words array
+                index = (index + 1) % words.length; // This ensures a loop through the array
+                updateText(); // Call the next update after the full animation duration.
+            }, 6000); // This should match the total animation duration.
         }
 
         // Initial update
         updateText();
     }
-        // END CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
+
+    // END CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
 
     /**
      * A function that calls when the title is "Portfolio". Will handle all relevant logic to the portfolio page.
@@ -184,8 +182,6 @@ Description: Main javascript file for Harmony Hub.
         ("Sunset Mediation", "Led by a talented practitioner.", "./images/project8image.jpg");
         const project9 = new Project
         ("Yoga", "Led by a talented practitioner.", "./images/project9image.jpg");
-        const project10 = new Project
-        ("Soccer Drop-In", "Under 16 youth soccer drop-in.", "./images/project10image.jpg");
 
         project1.pushObjectToArray();
         project2.pushObjectToArray();
@@ -196,11 +192,9 @@ Description: Main javascript file for Harmony Hub.
         project7.pushObjectToArray();
         project8.pushObjectToArray();
         project9.pushObjectToArray();
-        project10.pushObjectToArray();
 
         // Variable to hold the parent container to attach the list objects.
         let projectListContainer = document.getElementById("project-list-container");
-
 
         /** @function PopulateProjects()
          *  @description This function serves to loop through the project card array, and dynamically create HTML
@@ -212,8 +206,8 @@ Description: Main javascript file for Harmony Hub.
          *        2 every time the "load more" button is clicked.
          * @return none
          */
-        let projectsToRender = 2;
-        let loadMoreIncrement = 2;
+        let projectsToRender = 3;
+        let loadMoreIncrement = 3;
         function PopulateProjects(projectsToRender) {
 
             // Empty the project list container. Exists to avoid duplication of rendered project array objects after
@@ -250,7 +244,7 @@ Description: Main javascript file for Harmony Hub.
 
                 let LoadMoreBtn = document.createElement("button");
                 LoadMoreBtn.setAttribute("id", "load-more-btn");
-                LoadMoreBtn.setAttribute("class", "btn btn-primary mx-auto sunset");
+                LoadMoreBtn.setAttribute("class", "btn btn-primary mx-auto");
                 LoadMoreBtn.textContent = "Load More";
 
                 LoadMoreBtnParent.appendChild(LoadMoreBtn);
