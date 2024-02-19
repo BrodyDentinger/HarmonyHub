@@ -223,15 +223,15 @@ Description: Main javascript file for Harmony Hub.
         const project9 = new Project
         ("Yoga", "Led by a talented practitioner.", "./images/project9image.jpg");
 
+        project9.pushObjectToArray();
+        project4.pushObjectToArray();
+        project7.pushObjectToArray();
+        project3.pushObjectToArray();
+        project5.pushObjectToArray();
         project1.pushObjectToArray();
         project2.pushObjectToArray();
-        project3.pushObjectToArray();
-        project4.pushObjectToArray();
-        project5.pushObjectToArray();
         project6.pushObjectToArray();
-        project7.pushObjectToArray();
         project8.pushObjectToArray();
-        project9.pushObjectToArray();
 
         // Variable to hold the parent container to attach the list objects.
         let projectListContainer = document.getElementById("project-list-container");
