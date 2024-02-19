@@ -133,6 +133,17 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
+    // ----------------------
+
+    function displayResults(results) {
+        console.log("DisplayResults called...")
+        const resultsContainer = $(".search-dropdown");
+        resultsContainer.empty(); // Clear previous results
+        results.forEach(result => {
+            $('<div>').html(`<li href="${result.url}">${result.title}</li>`).appendTo(resultsContainer);
+        });
+    }
+
     /**
      * A function that calls when the title is "Harmony Hub". Will handle all relevant logic to the index page.
      * @return none
@@ -508,6 +519,27 @@ Description: Main javascript file for Harmony Hub.
      */
     function Start() {
         console.log("App Started...");
+
+        // COMPARE WHAT PROF HAS ...
+        // ALSO NEED TO APPEND EACH RESULT TO THE DROP DOWN MENU
+        $("#search-input").on("input", function() {
+
+            console.log("Search input event firing...");
+
+            const query = $(this).val().toLowerCase();
+            $.ajax({
+                url: './contentIndex.json',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    const results = data.filter(page => page.content.toLowerCase().includes(query));
+                    displayResults(results);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to fetch content index:', error);
+                }
+            });
+        });
 
         // Creating a switch that checks the title for the current page.
         switch (document.title) {
