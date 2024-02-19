@@ -23,14 +23,15 @@ Description: Login page for Harmony Hub.
     <!-- Import the header.html here.-->
     <div id="header-container" data-page-title="Login"></div>
 
-    <div class="container mt-5">
+    <h1 class ="text-center mb-3">Login</h1>
+
+    <div class="container mt-3">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                <div class="card">
-                    <h5 class="card-header">Login</h5>
+                <div>
                     <div id = "messageArea" class = "px-3 mb-0"></div>
-                    <div class="card-body">
-                        <form>
+                    <div>
+                        <form class = "contact-info">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <div class="input-group">
@@ -45,15 +46,14 @@ Description: Login page for Harmony Hub.
                                     <input type="password" class="form-control" id="password" name ="password" placeholder="Password">
                                 </div>
                             </div>
-                            <div>
-                                <button id = "login-button" type="button" class="btn btn-primary">Login</button>
-                            </div>
+                                <!-- Login button on the left -->
+                            <button id="login-button" type="button" class="btn btn-primary">Login</button>
+                                <!-- Register link centered -->
+                            <span>Don't have an account? </span><a href="./register.html">Register</a>
                         </form>
 
                     </div>
-                    <div class="card-footer text-center">
-                        Don't have an account? <a href="./register.html">Register</a>
-                    </div>
+
                 </div>
             </div>
         </div>
