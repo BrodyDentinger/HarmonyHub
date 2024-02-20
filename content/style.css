@@ -337,3 +337,7 @@ body {
     transform-origin: right;
 }
 
+.sidebar {
+    background-color: #f0f0f0; /* Light grey background color */
+}
+
