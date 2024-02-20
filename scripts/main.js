@@ -133,12 +133,19 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
-    // ----------------------
-
+    /**
+     * displayResults() will loop through the results of the user's search bar input and append them to a drop down
+     * menu underneath the search bar.
+     * @param results the results of the search bar input from user
+     */
     function displayResults(results) {
         console.log("DisplayResults called...");
         const resultsContainer = $("#search-dropdown");
         resultsContainer.empty(); // Clear previous results
+
+        if($("#search-input").val() == ""){
+            resultsContainer.children().empty();
+        }
 
         if (results.length > 0) {
             // There are results, construct the list items and make the dropdown visible
@@ -540,11 +547,19 @@ Description: Main javascript file for Harmony Hub.
         $("#search-input").on("input", function() {
             console.log("Search input event firing...");
             const query = $(this).val().toLowerCase();
+
+            const resultsContainer = $("#search-dropdown");
+
+            // If the query is empty, reset the child <li> elements and hide the <ul> parent because it's empty.
+            if (query === '') {
+                resultsContainer.empty().hide();
+                return;
+            }
             $.ajax({
                 url: './data/contentIndex.json',
                 type: 'GET',
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     // Access the 'content' array from the response
                     const data = response.content;
                     // Check if 'data' is an array before filtering
@@ -555,7 +570,7 @@ Description: Main javascript file for Harmony Hub.
                         console.error('Invalid data format: expected an array');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Failed to fetch content index:', error);
                 }
             });

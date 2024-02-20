@@ -302,9 +302,31 @@ body {
     z-index: 1000;
     background-color: #fff;
     border: 1px solid #ccc;
+    border-radius: 5px;
     border-top: none; /* Ensure dropdown doesn't cover search input */
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+#search-dropdown li {
+    list-style-type: none;
+    margin: 5px 0;
+}
+
+#search-dropdown li:last-child {
+    border-bottom: none;
+}
+
+#search-dropdown li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+#search-dropdown li a:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
+}
+
 
 /*css for user feedback form start*/
 .feedback-button {
