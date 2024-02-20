@@ -534,6 +534,54 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
+    function DisplayRegisterPage(){
+        console.log("DisplayRegisterPage() called...")
+
+        // Event handler for submit of register form
+
+        // Validation function needs to be created and called
+
+        // if valid:
+            // Create user with form info
+
+            // Serialize that user
+
+            // Append user serialized to users.json
+
+        // Test to see if appending even works.
+
+        $("#register-button").on("click", function(){
+
+            // Create a user with "valid" dummy data
+            let newUser = new User("Testpush", "Portnoy",
+                                         "testNewUser", "test@portnoy.ca",
+                                         "000-000-0000", "password");
+
+            // Get object in JSON format (toJSON?)
+            let newUserJSON = newUser.toJSON();
+
+            // push to json
+            // Use jQuery AJAX to append JSON data to your JSON file
+            $.ajax({
+                type: "POST",
+                url: "./data/users.json",
+                contentType: "application/json",
+                data: JSON.stringify(newUserJSON),
+                success: function(response) {
+                    console.log("Data appended successfully:", response);
+                    // Handle success
+
+
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred:", error);
+                    // Handle error
+                }
+            });
+        });
+
+    }
+
     /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
      * given page's title, and call it's relevant DisplayFunction().
@@ -602,6 +650,9 @@ Description: Main javascript file for Harmony Hub.
                 break;
             case "Login":
                 DisplayLoginPage();
+                break;
+            case "Register":
+                DisplayRegisterPage();
                 break;
         }
     }
