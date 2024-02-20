@@ -408,3 +408,30 @@ body {
     background: linear-gradient(to right, #188ef4 0%, #316ce8 100%);
 }
 
+.rating {
+    direction: rtl; /* Reverse the order of the stars */
+    display: inline-flex; /* Align stars horizontally */
+}
+
+.rating > .star {
+    font-size: 2em;
+    color: grey; /* Default color of stars */
+    cursor: pointer;
+    margin: 0 5px; /* Adjust spacing between stars */
+}
+
+.rating > .visually-hidden {
+    display: none;
+}
+
+.rating > input:checked ~ .star,
+.rating > input:hover ~ .star {
+    color: gold;
+}
+
+.modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: start; /* Align buttons to the left */
+}

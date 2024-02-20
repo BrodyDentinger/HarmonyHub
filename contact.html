@@ -29,6 +29,7 @@ Description: Contact page.
 
 <!-- Form and Contact Info Section -->
 <div class="container">
+    <div id = "feedbackReasonMessage" class="messageBox"></div>
     <div class="row">
         <!-- Form Section -->
         <div class="col-md-8">
@@ -77,9 +78,11 @@ Description: Contact page.
 
 
                 </ul>
+                <div id="map" style="height: 235px;"></div>
             </div>
+
         </div>
-        <div id="map" style="height: 400px;"></div>
+
 
     </div>
 </div>
@@ -132,32 +135,41 @@ Description: Contact page.
     <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="feedbackModalLabel">Feedback</h5>
+                <h5 class="modal-title" id="feedbackModalLabel">Rate your experience</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 <form id="feedbackForm">
-                    <div class="mb-3">
-                        <label for="feedbackName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="feedbackName" required>
+                    <p>Rate our service</p>
+                    <div class="mb-3 rating d-flex justify-content-center">
+                        <!-- Star icons for rating; use radio buttons for an accessible form -->
+                        <input type="radio" id="star5" name="rating" value="5" class="visually-hidden"/>
+                        <label for="star5" class="star">&#9733;</label>
+                        <input type="radio" id="star4" name="rating" value="4" class="visually-hidden"/>
+                        <label for="star4" class="star">&#9733;</label>
+                        <input type="radio" id="star3" name="rating" value="3" class="visually-hidden"/>
+                        <label for="star3" class="star">&#9733;</label>
+                        <input type="radio" id="star2" name="rating" value="2" class="visually-hidden"/>
+                        <label for="star2" class="star">&#9733;</label>
+                        <input type="radio" id="star1" name="rating" value="1" class="visually-hidden"/>
+                        <label for="star1" class="star">&#9733;</label>
                     </div>
                     <div class="mb-3">
-                        <label for="feedbackEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="feedbackEmail" aria-describedby="emailHelp" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="feedbackMessage" class="form-label">Message</label>
-                        <textarea class="form-control" id="feedbackMessage" rows="3" required></textarea>
+                        <label for="feedbackReason" class="form-label">What is the main reason for the rating?</label>
+                        <textarea class="form-control" id="feedbackReason" rows="3" required></textarea>
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer justify-content-start">
+                <button type="submit" class="btn btn-primary" form="feedbackForm">Submit</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="feedbackForm">Send Feedback</button>
+
             </div>
         </div>
     </div>
 </div>
+
+
 
 <footer id="footer-nav"></footer>
 
