@@ -390,6 +390,12 @@ Description: Main javascript file for Harmony Hub.
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
 
+        let map = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
         // Form constant
         const contactForm = document.getElementById("contactForm");
         // Constant for the first modal popup body which is the one that shows the form inputs

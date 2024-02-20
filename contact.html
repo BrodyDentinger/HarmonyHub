@@ -15,6 +15,8 @@ Description: Contact page.
     <link rel = "stylesheet" href = "./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel = "stylesheet" href = "./node_modules/@fortawesome/fontawesome-free/css/all.css">
     <link rel="stylesheet" href="./content/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
 
 </head>
 <body>
@@ -77,17 +79,12 @@ Description: Contact page.
                 </ul>
             </div>
         </div>
+        <div id="map" style="height: 400px;"></div>
+
     </div>
 </div>
 
-<footer id="footer-nav"></footer>
 
-<!-- SCRIPTING SECTION -->
-<script src="./scripts/main.js"></script>
-<!-- Include Bootstrap JS -->
-<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./node_modules/axios/dist/axios.min.js"></script>
-<script src = "./node_modules/jquery/dist/jquery.min.js"></script>
 
 
 
@@ -124,6 +121,54 @@ Description: Contact page.
         </div>
     </div>
 </div>
+
+<!-- Feedback Button -->
+<button type="button" class="btn btn-primary feedback-button" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+    Feedback
+</button>
+
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm">
+                    <div class="mb-3">
+                        <label for="feedbackName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="feedbackName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackEmail" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="feedbackEmail" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="feedbackMessage" class="form-label">Message</label>
+                        <textarea class="form-control" id="feedbackMessage" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="feedbackForm">Send Feedback</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="footer-nav"></footer>
+
+<!-- SCRIPTING SECTION -->
+<script src="./scripts/main.js"></script>
+<!-- Include Bootstrap JS -->
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./node_modules/axios/dist/axios.min.js"></script>
+<script src = "./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 
 </body>
 </html>
