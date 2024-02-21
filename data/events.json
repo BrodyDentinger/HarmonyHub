@@ -1,0 +1,30 @@
+{
+  "events":
+
+  [
+    {
+      "image": "./images/event1.jpg",
+      "day": "15",
+      "month": "Jun",
+      "title": "You should have eagle’s eye on new trends and technologies",
+      "subtitle": "Business Park, Opp. Corns Sam Restaurant, New York, US",
+      "learnMoreLink": "#"
+    },
+    {
+      "image": "./images/event2.jpg",
+      "day": "27",
+      "month": "July",
+      "title": "New Seminar on Newest Food Recipe from World’s Best",
+      "subtitle": "Business Park, Opp. Corns Sam Restaurant, New York, US",
+      "learnMoreLink": "#"
+    },
+    {
+      "image": "./images/event3.jpg",
+      "day": "05",
+      "month": "Aug",
+      "title": "Learn from small things to create something bigger.",
+      "subtitle": "Business Park, Opp. Corns Sam Restaurant, New York, US",
+      "learnMoreLink": "#"
+    }
+  ]
+}

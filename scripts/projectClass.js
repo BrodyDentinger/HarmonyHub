@@ -67,7 +67,7 @@ class Project {
         // Create HTML Content and append to column
         colDiv.innerHTML = '';
         const cardDiv = document.createElement("div");
-        cardDiv.className = "card";
+        cardDiv.className = "card on-hover";
 
         const image = document.createElement("img");
         image.src = Project.ProjectCardsArray[i].image;

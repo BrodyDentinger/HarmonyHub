@@ -277,39 +277,25 @@ Description: Main javascript file for Harmony Hub.
         let projectsToRender = 3;
         let loadMoreIncrement = 3;
         function PopulateProjects(projectsToRender) {
+            projectListContainer.innerHTML = ''; // Empty the container
 
-            // Empty the project list container. Exists to avoid duplication of rendered project array objects after
-            // "load more" is clicked.
-            projectListContainer.innerHTML = '';
-
-            // Delete the existing "Load More" button if it exists. Exists to avoid button duplication as "load more"
-            // is clicked.
             const existingLoadMoreBtn = document.getElementById("load-more-btn");
             if (existingLoadMoreBtn) {
-                existingLoadMoreBtn.remove();
+                existingLoadMoreBtn.remove(); // Remove the existing "Load More" button
             }
 
-            // Loop through and create HTML project cards for every element up to the number specified by
-            // projectsToRender. (Variable exists at top of function)
-            // Create a row div to contain the columns
             const rowDiv = document.createElement("div");
             rowDiv.className = "row";
 
-            // Loop through and create HTML project cards for every element up to the number specified by projectsToRender
             for (let i = 0; i < projectsToRender; i++) {
-
                 Project.renderProjectCard(i, rowDiv);
             }
 
-            // Append the row to the container
             projectListContainer.appendChild(rowDiv);
 
-            // Fetch the html parent for the button
             let LoadMoreBtnParent = document.getElementById("load-more-btn-container");
 
-            // If projectsToRender is less than the total projects, create and render the load more button.
-            if(projectsToRender < Project.ProjectCardsArray.length){
-
+            if (projectsToRender < Project.ProjectCardsArray.length) {
                 let LoadMoreBtn = document.createElement("button");
                 LoadMoreBtn.setAttribute("id", "load-more-btn");
                 LoadMoreBtn.setAttribute("class", "btn btn-primary mx-auto");
@@ -317,16 +303,13 @@ Description: Main javascript file for Harmony Hub.
 
                 LoadMoreBtnParent.appendChild(LoadMoreBtn);
 
-                // A click event for the button that calls our populate projects function, and increments the
-                // projectsToRender by loadMoreIncrement. (Variable located at top of this function.)
-                LoadMoreBtn.addEventListener("click", function (){
-
+                LoadMoreBtn.addEventListener("click", function () {
                     PopulateProjects(projectsToRender + loadMoreIncrement);
-                })
+                });
             }
         }
 
-        // Call the initial function to populate the projects on portfolio.html.
+// Initial call
         PopulateProjects(projectsToRender);
 
         // END DYNAMIC PORTFOLIO.HTML, PROJECT CARD POPULATION SECTION ------------------------------------
@@ -582,6 +565,35 @@ Description: Main javascript file for Harmony Hub.
 
     }
 
+    function DisplayEventsPage() {
+        console.log("DisplayEventsPage() called...");
+
+        fetch('./data/events.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.querySelector('.row');
+                // Access the 'events' array within the JSON
+                const events = data.events;
+
+                events.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'col-md-4 on-hover';
+
+                    card.innerHTML = `
+                    <div class="card border-1 mb-4">
+                        <a href="#"><img class="card-img-top" src="${item.image}" alt="Event Image"></a>
+                        <div class="date-pos bg-info-gradiant p-2 d-inline-block text-center rounded text-white position-absolute">${item.month}<span class="d-block">${item.day}</span></div>
+                        <h5 class="font-weight-medium mt-3"><a href="#" class="text-decoration-none link">${item.title}</a></h5>
+                        <p class="mt-3">${item.subtitle}</p>
+                        <a href="${item.learnMoreLink}" class="text-decoration-none linking text-themecolor mt-2">Learn More</a>
+                    </div>
+                `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
     /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
      * given page's title, and call it's relevant DisplayFunction().
@@ -653,6 +665,9 @@ Description: Main javascript file for Harmony Hub.
                 break;
             case "Register":
                 DisplayRegisterPage();
+                break;
+            case "Events":
+                DisplayEventsPage();
                 break;
         }
     }

@@ -408,3 +408,11 @@ body {
     background: linear-gradient(to right, #188ef4 0%, #316ce8 100%);
 }
 
+.on-hover {
+    transition: transform 0.2s ease-in;
+}
+
+.on-hover:hover {
+    transform: translateY(-5px);
+}
+
