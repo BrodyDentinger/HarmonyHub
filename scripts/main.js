@@ -553,14 +553,9 @@ Description: Main javascript file for Harmony Hub.
 
     //(firstName, lastName, userName, email, phoneNumber, password)
     function validateRegisterForm() {
-        // Email regex pattern
         let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        // Phone number regex pattern
         let phonePattern = /^\d{3}[- ]?\d{3}[- ]?\d{4}$/;
-
         let usernamePattern = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
-
 
         // Validate first name
         if($("#firstName").val().trim() === ""){
