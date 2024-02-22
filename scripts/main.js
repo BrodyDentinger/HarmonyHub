@@ -557,34 +557,47 @@ Description: Main javascript file for Harmony Hub.
         let phonePattern = /^\d{3}[- ]?\d{3}[- ]?\d{4}$/;
         let usernamePattern = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
 
+        let username = $("#username").val().trim();
+        let email = $("#email").val().trim();
+        let phone = $("#phone").val().trim();
+
+        let registerForm = $("#register-form");
+
         // Validate first name
         if($("#firstName").val().trim() === ""){
+            console.log("INVALID first ....");
+            registerForm.addClass('was-validated');
             return false;
         }
         // Validate last name
-        if ($("#lastName").val().trim() === ""){
-            return false;
-        }
-        // Username character limit
-        let username = $("#username").val().trim();
-        if (!usernamePattern.test(username)) {
+        else if ($("#lastName").val().trim() === ""){
+            console.log("INVALID last ....");
+            registerForm.addClass('was-validated');
             return false;
         }
 
-        // Validate email
-        let email = $("#email").val().trim();
-        if (!emailPattern.test(email)) {
+        else if (!usernamePattern.test(username)) {
+            console.log("INVALID user ....");
+            registerForm.addClass('was-validated');
             return false;
         }
 
-        // Validate phone number
-        let phone = $("#phone").val().trim();
-        if (!phonePattern.test(phone)) {
+        else if (!emailPattern.test(email)) {
+            console.log("INVALID email ....");
+            registerForm.addClass('was-validated');
+            return false;
+        }
+
+        else if (!phonePattern.test(phone)) {
+            console.log("INVALID PHONE ....");
+            registerForm.addClass('was-validated');
             return false;
         }
 
         // All validations passed, return true
-        return true;
+        else {
+            return true;
+        }
     }
 
     function DisplayRegisterPage(){
@@ -593,8 +606,6 @@ Description: Main javascript file for Harmony Hub.
         let registerForm = $("#register-form");
 
         $("#register-button").on("click", function(event){
-
-
             console.log($("#phone").val());
             console.log($("#username").val());
 

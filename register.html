@@ -64,7 +64,8 @@ Description: Register page for Harmony Hub.
                                 <label for="username" class="form-label">Username</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" id="username" name = "username"
+                                    <input type="text" class="form-control" pattern = "^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$"
+                                           id="username" name = "username"
                                            placeholder="Username" required>
                                     <div class="invalid-feedback">Please enter a username.</div>
                                 </div>
@@ -82,7 +83,8 @@ Description: Register page for Harmony Hub.
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                    <input type="tel" class="form-control" id="phone" name = "phone"
+                                    <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control"
+                                           id="phone" name = "phone"
                                            placeholder="+1 234 567 8900" required>
                                     <div class="invalid-feedback">Please enter a phone number.</div>
                                 </div>
