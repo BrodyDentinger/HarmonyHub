@@ -551,52 +551,71 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
+    //(firstName, lastName, userName, email, phoneNumber, password)
+    function validateRegisterForm() {
+        // Email regex pattern
+        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Phone number regex pattern
+        let phonePattern = /^\d{3}[- ]?\d{3}[- ]?\d{4}$/;
+
+        let usernamePattern = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
+
+
+        // Validate first name
+        if($("#firstName").val().trim() === ""){
+            return false;
+        }
+        // Validate last name
+        if ($("#lastName").val().trim() === ""){
+            return false;
+        }
+        // Username character limit
+        let username = $("#username").val().trim();
+        if (!usernamePattern.test(username)) {
+            return false;
+        }
+
+        // Validate email
+        let email = $("#email").val().trim();
+        if (!emailPattern.test(email)) {
+            return false;
+        }
+
+        // Validate phone number
+        let phone = $("#phone").val().trim();
+        if (!phonePattern.test(phone)) {
+            return false;
+        }
+
+        // All validations passed, return true
+        return true;
+    }
+
     function DisplayRegisterPage(){
         console.log("DisplayRegisterPage() called...")
 
-        // Event handler for submit of register form
+        let registerForm = $("#register-form");
 
-        // Validation function needs to be created and called
-
-        // if valid:
-            // Create user with form info
-
-            // Serialize that user
-
-            // Append user serialized to users.json
-
-        // Test to see if appending even works.
-
-        $("#register-button").on("click", function(){
-
-            // Create a user with "valid" dummy data
-            let newUser = new User("Testpush", "Portnoy",
-                                         "testNewUser", "test@portnoy.ca",
-                                         "000-000-0000", "password");
-
-            // Get object in JSON format (toJSON?)
-            let newUserJSON = newUser.toJSON();
-
-            // push to json
-            // Use jQuery AJAX to append JSON data to your JSON file
-            $.ajax({
-                type: "POST",
-                url: "./data/users.json",
-                contentType: "application/json",
-                data: JSON.stringify(newUserJSON),
-                success: function(response) {
-                    console.log("Data appended successfully:", response);
-                    // Handle success
+        $("#register-button").on("click", function(event){
 
 
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error occurred:", error);
-                    // Handle error
-                }
-            });
+            console.log($("#phone").val());
+            console.log($("#username").val());
+
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            if(!validateRegisterForm()) { // Check if the form is valid
+
+                registerForm.addClass('was-validated');
+                console.log("Form is invalid.");
+
+            } else {
+                // Form is not valid, display error messages or take appropriate action
+                console.log("Form is valid.");
+            }
+
         });
-
     }
 
     function DisplayEventsPage() {

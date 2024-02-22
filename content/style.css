@@ -78,7 +78,6 @@ body {
 /* Accordion css for service page
 */
 .accordion {
-
     background-color: #eee;
     cursor: pointer;
     padding: 18px;
@@ -446,19 +445,17 @@ body {
 
 /*css for gallery page*/
 /* General page styling */
-body {
+/*body {
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
-}
+}*/
 
 /* Gallery grid styling */
 :root {
     --lightbox: rgb(0 0 0 / 0.75);
     --carousel-text: #fff;
 }
-
-
 
 @keyframes zoomin {
     0% {

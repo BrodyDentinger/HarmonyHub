@@ -41,51 +41,62 @@ Description: Register page for Harmony Hub.
                 <div>
                     <h5 class="card-header"></h5>
                     <div>
-                        <form class="contact-info">
+                        <form class="contact-info needs-validation" id = "register-form" novalidate>
                             <div class="mb-3">
                                 <label for="firstName" class="form-label">First Name</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-signature"></i></span>
-                                    <input type="text" class="form-control" id="firstName" placeholder="John">
+                                    <input type="text" class="form-control" id="firstName" name = "firstName"
+                                           placeholder="John" required>
+                                    <div class="invalid-feedback">Please enter a first name.</div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="lastName" class="form-label">Last Name</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa-solid fa-signature"></i></span>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Doe">
+                                    <input type="text" class="form-control" id="lastName" name = "lastName"
+                                           placeholder="Doe" required>
+                                    <div class="invalid-feedback">Please enter a last name.</div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                    <input type="text" class="form-control" id="username" placeholder="Username">
+                                    <input type="text" class="form-control" id="username" name = "username"
+                                           placeholder="Username" required>
+                                    <div class="invalid-feedback">Please enter a username.</div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email Address</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" id="email" placeholder="email@example.com">
+                                    <input type="email" class="form-control" id="email" name = "email"
+                                           placeholder="email@example.com" required>
+                                    <div class="invalid-feedback">Please enter an email.</div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-phone"></i></span>
-                                    <input type="tel" class="form-control" id="phone" placeholder="+1 234 567 8900">
+                                    <input type="tel" class="form-control" id="phone" name = "phone"
+                                           placeholder="+1 234 567 8900" required>
+                                    <div class="invalid-feedback">Please enter a phone number.</div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="password" placeholder="Password">
+                                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                                    <div class="invalid-feedback">Please enter a password.</div>
                                 </div>
                             </div>
                             <div>
-                                <button id = "register-button" type="button" class="btn btn-primary">Register</button>
+                                <button id = "register-button" type="submit" class="btn btn-primary">Register</button>
                                 <span>Have an account? </span><a href="./login.html">Login</a>
                             </div>
                         </form>
