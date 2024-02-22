@@ -628,6 +628,64 @@ Description: Main javascript file for Harmony Hub.
             .catch(error => console.error('Error fetching data:', error));
     }
 
+    function DisplayGalleryPage() {
+        fetch('./data/gallery.json')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.querySelector('#dynamic-gallery-container');
+
+                // Change 'events' to 'gallery' to match your JSON structure
+                const events = data.gallery;
+
+                events.forEach(item => {
+                    const col = document.createElement('div');
+                    col.className = 'col';
+                    col.innerHTML = `
+                <a class="gallery-item" href="${item.image}" data-bs-toggle="modal" data-bs-target="#lightbox-modal">
+                    <img src="${item.image}" class="img-fluid" alt="${item.title}">
+                </a>
+                `;
+                    container.appendChild(col);
+                });
+
+                // Setup modal for lightbox
+                setupLightboxModal();
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+
+    function setupLightboxModal() {
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const modalBody = document.querySelector('.lightbox-content');
+        const bsModal = new bootstrap.Modal(document.getElementById('lightbox-modal'));
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                const imgSrc = this.getAttribute('href');
+                modalBody.innerHTML = `<img src="${imgSrc}" class="img-fluid" alt="Event Image">`;
+                bsModal.show();
+            });
+        });
+        const fsEnlargeBtn = document.querySelector('.btn-fullscreen-enlarge');
+        const fsExitBtn = document.querySelector('.btn-fullscreen-exit');
+
+        fsEnlargeBtn.addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                document.getElementById('lightbox-modal').requestFullscreen();
+            }
+        });
+
+        fsExitBtn.addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+        });
+    }
+
     /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
      * given page's title, and call it's relevant DisplayFunction().
@@ -702,6 +760,9 @@ Description: Main javascript file for Harmony Hub.
                 break;
             case "Events":
                 DisplayEventsPage();
+                break;
+            case "Gallery":
+                DisplayGalleryPage();
                 break;
         }
     }
