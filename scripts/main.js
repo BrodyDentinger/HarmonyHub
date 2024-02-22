@@ -16,19 +16,18 @@ Description: Main javascript file for Harmony Hub.
         // Define the message area div for validation messages.
         let messageArea = $("#feedbackReasonMessage");
 
-
-
         if(window.location.href.includes("rating=5")){
-            messageArea.addClass("alert alert-light").text("We are really glad you had a 5 star experience");
+            messageArea.addClass("alert alert-info").text("We are really glad you had a 5 star experience");
 
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
                 messageArea.text("").removeClass();
+
             }, 3000);
 
         }
-        else{
-            messageArea.addClass("alert alert-light").text("We are really sorry you did not have a 5 star experience. We appreciate your feedback.");
+        if(!window.location.href.endsWith("rating=5") && !window.location.href.endsWith("html")){
+            messageArea.addClass("alert alert-info").text("We are really sorry you did not have a 5 star experience. We appreciate your feedback.");
 
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
@@ -38,28 +37,7 @@ Description: Main javascript file for Harmony Hub.
 
     }
 
-    function AjaxRequest(method, url, callback){
-        //step 1 initialize the xhr object
-        let xhr = new XMLHttpRequest();
 
-        //step 2 Open a connection to the server
-        xhr.open(method,url);
-
-        //step 4 add the event listener to monitor the readystatechange
-        xhr.addEventListener("readystatechange",() =>{
-            if(xhr.readyState === 4  && xhr.status === 200){
-                if(typeof callback == "function"){
-                    callback(xhr.responseText);
-                }else{
-                    console.error("ERROR: callback not a function")
-                }
-            }
-        });
-
-        //step 3 send the request
-        xhr.send();
-
-    }
 
 
     // Using JavaScript, add a dynamic header nav bar, and a footer nav bar
@@ -430,7 +408,12 @@ Description: Main javascript file for Harmony Hub.
      */
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
-        AjaxRequest("POST", "./contact.html",CheckRating());
+        // Load the modal content
+        $.get("./feedback_form.html", function (html_data) {
+            // Insert the loaded content into the modal
+            $("#feedbackModal").html(html_data);
+        });
+        CheckRating();
         let map = L.map('map').setView([51.505, -0.09], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
