@@ -540,3 +540,9 @@ body {
     transition: transform 0.6s ease;
 
 }
+
+.custom-dropdown-menu .dropdown-item:hover {
+    color: #007bff; /* Change to your desired hover color */
+}
+
+

@@ -59,6 +59,8 @@ Description: Main javascript file for Harmony Hub.
                 // Set the document title dynamically based on the page title attribute
                 document.title = `${pageTitle}`;
 
+                $(`li>a:contains(${document.title})`).addClass("active").attr("aria-current", "page");
+
                 // Change the "Blog" word in our navbar to "News"
                 let BlogText = document.getElementById("BlogText");
                 BlogText.textContent = "News";
@@ -152,7 +154,31 @@ Description: Main javascript file for Harmony Hub.
 
         if(sessionStorage.getItem("user")){
 
-            $('#login').attr('id', 'logout').attr('href', '#').text('Logout');
+            //$('#login').attr('id', 'logout').attr('href', '#').text('Logout');
+
+
+            // create a user object container
+            let user = new User;
+            // Fetch the session storage with the key User (as we've stored it from the login page function)
+            let userKey = sessionStorage.getItem("user");
+
+            // Deserialize that string and pass its values into our user object.
+            user.deserialize(userKey);
+
+            // User's first name
+            let username = user["firstName"]
+
+            // Modify the login button to show the user's name and add a dropdown for logout
+            $('#login').replaceWith(`
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
+                    data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i> ${username}
+                </a>
+                <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="#" id="logout">Logout</a></li>
+                </ul>
+            </li>
+        `);
 
         }
 
@@ -213,7 +239,7 @@ Description: Main javascript file for Harmony Hub.
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
                 $("#loginMessage").text("").removeClass();
-            }, 3000);
+            }, 5000);
         }
 
         // Array of words to cycle through
@@ -540,6 +566,9 @@ Description: Main javascript file for Harmony Hub.
                         // create a user object to serialize it into local storage.
                         sessionStorage.setItem("user", newUser.serialize());
 
+                        // Change the
+
+
                         // Redirect with appended success message to url
                         location.href = "index.html#loginSuccess";
                     }
@@ -800,7 +829,7 @@ Description: Main javascript file for Harmony Hub.
 
         // Creating a switch that checks the title for the current page.
         switch (document.title) {
-            case "Harmony Hub":
+            case "Home":
                 DisplayHomepage();
                 break;
 
