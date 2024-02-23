@@ -1,0 +1,85 @@
+<!--
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
+File: events.html
+Description: Events page for Harmony Hub.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <!-- CSS SECTION -->
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="./content/style.css">
+</head>
+<body>
+<!-- Import the header.html here.-->
+<div id="header-container" data-page-title="Gallery"></div>
+
+<div class="blog-home2 mx-5">
+    <div class="container-fluid">
+        <!-- Row  -->
+        <div class="row justify-content-center">
+            <!-- Column -->
+            <div class="col-md-8 text-center">
+                <h3 class="my-3">Some of our past events</h3>
+                Check out some of the work we have done below.
+            </div>
+            <!-- Gallery Container -->
+            <div class="blog-home2 mx-5">
+                <div class="container mx-5">
+                    <div class="row mt-4" id="dynamic-gallery-container">
+                        <!-- Dynamic cards will be inserted here by JavaScript -->
+                    </div>
+                    <div id="load-more-btn-container" class="text-center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SVG Icons for Fullscreen Controls -->
+<svg class="d-none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="enlarge" viewBox="0 0 16 16">
+        <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+    </symbol>
+    <symbol id="exit" viewBox="0 0 16 16">
+        <path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5zM0 10.5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 6 11.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zm10 1a1.5 1.5 0 0 1 1.5-1.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4z"/>
+    </symbol>
+</svg>
+
+<!-- Bootstrap Modal for Lightbox -->
+<div class="modal fade lightbox-modal" id="lightbox-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+        <div class="modal-content">
+            <button type="button" class="btn-fullscreen-enlarge" aria-label="Enlarge fullscreen">
+                <svg class="bi"><use href="#enlarge"></use></svg>
+            </button>
+            <button type="button" class="btn-fullscreen-exit d-none" aria-label="Exit fullscreen">
+                <svg class="bi"><use href="#exit"></use></svg>
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-body">
+                <div class="lightbox-content">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer id="footer-nav"></footer>
+
+<!-- SCRIPTING SECTION -->
+<script src="./scripts/main.js"></script>
+<script src="./scripts/user.js"></script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="./node_modules/axios/dist/axios.min.js"></script>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+
+</body>
+</html>
