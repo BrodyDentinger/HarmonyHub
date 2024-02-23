@@ -708,7 +708,7 @@ Description: Main javascript file for Harmony Hub.
             console.log(activeClass)
             slidesMarkup += `
             <div class="carousel-item ${activeClass}">
-                <img class="d-block img-fluid w-100" src="${imgSrc}" alt="${imgAlt}">
+                <img class="d-block img-fluid vw-100" src="${imgSrc}" alt="${imgAlt}">
                 <div class="carousel-caption d-none d-md-block">
                     <p>${caption}</p>
                 </div>

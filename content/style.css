@@ -29,9 +29,12 @@ body {
 }
 
 .carousel-item {
+
     height: 80vh; /* 80% of the viewport height */
 }
-
+.w-125{
+    width: 125%;
+}
 .overlay-text-box {
     position: absolute;
     top: 50%;
@@ -530,4 +533,9 @@ body {
     height: 1em;
     vertical-align: -0.035em;
     fill: currentcolor;
+}
+
+.carousel-inner .carousel-item-start.active {
+    transition: transform 0.6s ease; /* Smooth transition for the sliding effect */
+
 }
