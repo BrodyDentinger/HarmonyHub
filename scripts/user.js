@@ -1,8 +1,9 @@
 /*
-Name: Brody Dentinger
-Date: February 17 , 2024
-Description: This is the user class.
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: February 23, 2024
 File: user.js
+Description: CLass file representing the user that will be logging into the system.
 */
 
 "use strict";

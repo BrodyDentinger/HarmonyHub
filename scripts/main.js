@@ -11,34 +11,6 @@ Description: Main javascript file for Harmony Hub.
 // IIFE
 (function() {
 
-    function CheckRating(){
-
-        // Define the message area div for validation messages.
-        let messageArea = $("#feedbackReasonMessage");
-
-        if(window.location.href.includes("rating=5")){
-            messageArea.addClass("alert alert-info").text("We are really glad you had a 5 star experience");
-
-            // Use setTimeout to clear the message after 3 seconds
-            setTimeout(function() {
-                messageArea.text("").removeClass();
-
-            }, 3000);
-
-        }
-        if(!window.location.href.endsWith("rating=5") && !window.location.href.endsWith("html")){
-            messageArea.addClass("alert alert-info").text("We are really sorry you did not have a 5 star experience. We appreciate your feedback.");
-
-            // Use setTimeout to clear the message after 3 seconds
-            setTimeout(function() {
-                messageArea.text("").removeClass();
-            }, 3000);
-        }
-
-    }
-
-
-
 
     // Using JavaScript, add a dynamic header nav bar, and a footer nav bar
     document.addEventListener("DOMContentLoaded", function() {
@@ -146,8 +118,41 @@ Description: Main javascript file for Harmony Hub.
     });
 
     // END DYNAMIC JAVASCRIPT FOOTER NAV BAR SECTION ----------------------------------------------------
+
     /**
+     * This function will check the rating given by the user, and based on that rating, provide a
      *
+     */
+    function CheckRating(){
+
+        // Define the message area div for validation messages.
+        let messageArea = $("#feedbackReasonMessage");
+
+        if(window.location.href.includes("rating=5")){
+            messageArea.addClass("alert alert-info").text("We are really glad you had a 5 star experience");
+
+            // Use setTimeout to clear the message after 3 seconds
+            setTimeout(function() {
+                messageArea.text("").removeClass();
+
+            }, 3000);
+
+        }
+        if(!window.location.href.endsWith("rating=5") && !window.location.href.endsWith("html")){
+            messageArea.addClass("alert alert-info").text("We are really sorry you did not have a 5 star experience. " +
+                "We appreciate your feedback.");
+
+            // Use setTimeout to clear the message after 3 seconds
+            setTimeout(function() {
+                messageArea.text("").removeClass();
+            }, 3000);
+        }
+
+    }
+
+    /**
+     * This function will check if there is a user stored in local storage, and if so, dynamically alter the
+     * navbar to include the username of the logged in user. Also assigns a click event to the logout button.
      *
      */
     function CheckLogin(){
@@ -155,7 +160,6 @@ Description: Main javascript file for Harmony Hub.
         if(sessionStorage.getItem("user")){
 
             //$('#login').attr('id', 'logout').attr('href', '#').text('Logout');
-
 
             // create a user object container
             let user = new User;
@@ -364,7 +368,7 @@ Description: Main javascript file for Harmony Hub.
             }
         }
 
-// Initial call
+        // Initial call
         PopulateProjects(projectsToRender);
 
         // END DYNAMIC PORTFOLIO.HTML, PROJECT CARD POPULATION SECTION ------------------------------------
@@ -520,7 +524,7 @@ Description: Main javascript file for Harmony Hub.
     }
 
     /**
-     *
+     * This function will be called when the title matches the login page.
      *
      */
     function DisplayLoginPage(){
@@ -530,129 +534,151 @@ Description: Main javascript file for Harmony Hub.
         // Define the message area div for validation messages.
         let messageArea = $("#messageArea");
 
-        // Fetch button with jquery
-        $("#login-button").on("click", function (){
+        window.location.href.includes("loginSuccess")
+        if(window.location.href.includes("registerSuccess")){
+            messageArea.addClass("alert alert-success").text("Successful Registration");
+        }
 
-            let success = false;
+            // Fetch button with jquery
+            $("#login-button").on("click", function () {
 
-            let newUser = new User();
+                // If fields are empty, don't waste compute power.
+                if($("#username").val() !== "" && $("#password").val() !== "") {
 
-            // Reset message area.
-            messageArea.removeClass("").text("");
+                    let success = false;
+                    let newUser = new User();
+                    // Reset message area.
+                    messageArea.removeClass("").text("");
 
-            // JQuery version of an HTTP request
-            // function(data) = data already represents the returnText
-            // JQuery also already checks for 4 readystatechange, and 200 ok
-            $.get("./data/users.json", function(data) {
+                    // JQuery version of an HTTP request
+                    // function(data) = data already represents the returnText
+                    // JQuery also already checks for 4 readystatechange, and 200 ok
+                    $.get("./data/users.json", function (data) {
 
-                // loop through each user of the response json file
-                for (const user of data.users) {
+                        // loop through each user of the response json file
+                        for (const user of data.users) {
 
-                    console.log(user);
+                            // check if the username and password text fields from the form match the user and password from
+                            // the JSON user.
+                            if (username.value === user.Username && password.value === user.Password) {
 
-                    // check if the username and password text fields from the form match the user and password from
-                    // the JSON user.
-                    if (username.value === user.Username && password.value === user.Password) {
-
-                        // store the data from the matching user in the JSON file in this User Object
-                        newUser.fromJSON(user);
-                        success = true;
-                        break;
-                    }
-                }
-                    //
-                    if(success){
-
-                        // create a user object to serialize it into local storage.
-                        sessionStorage.setItem("user", newUser.serialize());
-
-                        // Change the
-
-
-                        // Redirect with appended success message to url
-                        location.href = "index.html#loginSuccess";
-                    }
-                    else{
+                                // store the data from the matching user in the JSON file in this User Object
+                                newUser.fromJSON(user);
+                                success = true;
+                                break;
+                            }
+                        }
+                        if (success) {
+                            // create a user object to serialize it into local storage.
+                            sessionStorage.setItem("user", newUser.serialize());
+                            // Redirect with appended success message to url
+                            location.href = "index.html#loginSuccess";
+                        } else {
                             messageArea.addClass("alert alert-danger").text("Error: Invalid Credentials");
                         }
 
-            })
-        });
+                    })
+                }
+                // No credentials provided
+                else{
+                    messageArea.addClass("alert alert-danger").text("Error: Please provide credentials.");
+                }
+        })
     }
 
-    //(firstName, lastName, userName, email, phoneNumber, password)
+    /**
+     *  This function validates the registration form using regex patterns that match the patterns stipulated
+     *  by the html registration page. Returns true if all fields are valid, false otherwise.
+     * @return {boolean}
+     */
     function validateRegisterForm() {
-        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        let phonePattern = /^\d{3}[- ]?\d{3}[- ]?\d{4}$/;
+        // Defining regex patterns to match the ones in HTML input fields
         let usernamePattern = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
+        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
+        let phonePattern = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+        let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}$/;
 
         let username = $("#username").val().trim();
         let email = $("#email").val().trim();
         let phone = $("#phone").val().trim();
+        let password = $("#password").val().trim();
 
         let registerForm = $("#register-form");
 
-        // Validate first name
-        if($("#firstName").val().trim() === ""){
-            console.log("INVALID first ....");
+        if ($("#firstName").val().trim() === "") {
             registerForm.addClass('was-validated');
             return false;
         }
-        // Validate last name
-        else if ($("#lastName").val().trim() === ""){
-            console.log("INVALID last ....");
+        else if ($("#lastName").val().trim() === "") {
             registerForm.addClass('was-validated');
             return false;
         }
-
         else if (!usernamePattern.test(username)) {
-            console.log("INVALID user ....");
             registerForm.addClass('was-validated');
             return false;
         }
-
         else if (!emailPattern.test(email)) {
-            console.log("INVALID email ....");
             registerForm.addClass('was-validated');
             return false;
         }
-
         else if (!phonePattern.test(phone)) {
-            console.log("INVALID PHONE ....");
             registerForm.addClass('was-validated');
             return false;
         }
-
+        else if (!passwordPattern.test(password)) {
+            registerForm.addClass('was-validated');
+            return false;
+        }
         // All validations passed, return true
         else {
             return true;
         }
     }
 
+    /**
+     * This function will be called when the title matches the register page.
+     *
+     */
     function DisplayRegisterPage(){
         console.log("DisplayRegisterPage() called...")
 
         let registerForm = $("#register-form");
 
         $("#register-button").on("click", function(event){
-            console.log($("#phone").val());
-            console.log($("#username").val());
 
             event.preventDefault(); // Prevent the default form submission behavior
 
-            if(!validateRegisterForm()) { // Check if the form is valid
-
+            // Invalid form
+            if(!validateRegisterForm()) {
                 registerForm.addClass('was-validated');
-                console.log("Form is invalid.");
 
+            // Valid
             } else {
-                // Form is not valid, display error messages or take appropriate action
-                console.log("Form is valid.");
-            }
 
+                // Fetch the valid data from form
+                let firstname = $("#firstName").val().trim();
+                let lastname = $("#lastName").val().trim();
+                let username = $("#username").val().trim();
+                let email = $("#email").val().trim();
+                let phone = $("#phone").val().trim();
+                let password = $("#password").val().trim();
+
+                // Create a user object with it for future storage into users.JSON.
+                let newlyRegisteredUser = new User(firstname, lastname, username, email, phone, password);
+
+                // Add to session storage to test functionality.
+                //sessionStorage.setItem("user", newlyRegisteredUser.serialize());
+
+                // Redirect login page with register in url
+                location.href = "login.html#registerSuccess";
+            }
         });
     }
 
+    /**
+     * This function will be called when the title matches the events page.
+     *
+     */
     function DisplayEventsPage() {
         console.log("DisplayEventsPage() called...");
 
@@ -682,7 +708,10 @@ Description: Main javascript file for Harmony Hub.
             .catch(error => console.error('Error fetching data:', error));
     }
 
-    // Fetch and display gallery items
+    /**
+     * This function will be called when the title matches the gallery page.
+     *
+     */
     function DisplayGalleryPage() {
         fetch('./data/gallery.json')
             .then(response => response.json())
@@ -710,7 +739,6 @@ Description: Main javascript file for Harmony Hub.
      * This function sets up the lightbox modal for the gallery page
      * @param galleryItems
      */
-
     function setupLightboxModal(galleryItems) {
         document.querySelectorAll('.gallery-item').forEach(item => {
             item.addEventListener('click', function (e) {
@@ -779,10 +807,6 @@ Description: Main javascript file for Harmony Hub.
         `;
         });
     }
-
-
-
-
 
 
     /**

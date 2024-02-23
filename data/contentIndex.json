@@ -45,6 +45,11 @@
       "title" : "Events",
       "url" : "./events.html",
       "content" : "Events Description Events page for Harmony Hub. Events Check out what we have coming up below! Or click the gallery link below to look at moments from past events"
+    },
+    {
+      "title" : "Gallery",
+      "url" : "./gallery.html",
+      "content" : "Gallery events.html Gallery page for Harmony Hub. Gallery Here are some photos from past events!"
     }
   ]
 }
