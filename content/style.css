@@ -485,8 +485,6 @@ body {
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.35);
 }
 
-
-
 .lightbox-modal .btn-close {
     position: absolute;
     top: 1.25rem;
@@ -495,6 +493,7 @@ body {
     z-index: 10;
     filter: invert(1) grayscale(100);
 }
+
 .lightbox-modal .modal-content {
     background-color: var(--lightbox);
     display: flex;
@@ -504,11 +503,12 @@ body {
 }
 
 .lightbox-modal .modal-dialog {
-    margin: 0;
+    margin: auto;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+
 }
 
 .lightbox-modal .modal-body {
@@ -523,7 +523,6 @@ body {
     max-height: 90vh;
     margin: auto;
 }
-
 
 .btn-fullscreen-enlarge,
 .btn-fullscreen-exit {
