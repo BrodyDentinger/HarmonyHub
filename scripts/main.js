@@ -129,13 +129,20 @@ Description: Main javascript file for Harmony Hub.
         let messageArea = $("#feedbackReasonMessage");
 
         if(window.location.href.includes("rating=5")){
-            messageArea.addClass("alert alert-info").text("We are really glad you had a 5 star experience");
+
+            $.get("./five_star.html", function (html_data) {
+                // Insert the loaded content into the modal
+                //$("#feedbackModal").html(html_data);
+                messageArea.addClass("alert alert-info").text(html_data);
+            });
+
+            //messageArea.addClass("alert alert-info").text("We are really glad you had a 5 star experience");
 
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
                 messageArea.text("").removeClass();
 
-            }, 3000);
+            }, 5000);
 
         }
         if(!window.location.href.endsWith("rating=5") && !window.location.href.endsWith("html")){
@@ -145,9 +152,9 @@ Description: Main javascript file for Harmony Hub.
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
                 messageArea.text("").removeClass();
+
             }, 3000);
         }
-
     }
 
     /**
@@ -439,6 +446,8 @@ Description: Main javascript file for Harmony Hub.
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
         // Load the modal content
+
+
         $.get("./feedback_form.html", function (html_data) {
             // Insert the loaded content into the modal
             $("#feedbackModal").html(html_data);
