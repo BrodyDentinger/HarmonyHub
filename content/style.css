@@ -488,30 +488,31 @@ body {
 }
 .lightbox-modal .modal-content {
     background-color: var(--lightbox);
-    display: flex; /* Use flexbox to align children */
-    justify-content: center; /* Center children horizontally */
-    align-items: center; /* Center children vertically */
-    height: 100%; /* Take full height of the parent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
 .lightbox-modal .modal-dialog {
-    margin: 0; /* Remove automatic margins */
-    min-height: 100vh; /* Ensure it takes at least the full height of the viewport */
-    display: flex; /* Use flexbox to align children */
-    align-items: center; /* Center children vertically */
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .lightbox-modal .modal-body {
-    display: flex; /* Use flexbox to align children */
-    justify-content: center; /* Center children horizontally */
-    align-items: center; /* Center children vertically */
-    padding: 0; /* Reset padding if necessary */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
 }
 
 .lightbox-modal .lightbox-content {
-    max-width: 50%; /* Limit the width to not touch the edges of the screen */
-    max-height: 90vh; /* Limit the height to not touch the top/bottom of the screen */
-    margin: auto; /* Auto margins will help in centering */
+    max-width: 50%;
+    max-height: 90vh;
+    margin: auto;
 }
 
 
@@ -536,6 +537,6 @@ body {
 }
 
 .carousel-inner .carousel-item-start.active {
-    transition: transform 0.6s ease; /* Smooth transition for the sliding effect */
+    transition: transform 0.6s ease;
 
 }

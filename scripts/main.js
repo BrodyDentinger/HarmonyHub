@@ -653,89 +653,97 @@ Description: Main javascript file for Harmony Hub.
             .catch(error => console.error('Error fetching data:', error));
     }
 
+    // Fetch and display gallery items
     function DisplayGalleryPage() {
         fetch('./data/gallery.json')
             .then(response => response.json())
             .then(data => {
                 const container = document.querySelector('#dynamic-gallery-container');
-                const events = data.gallery;
-
-                events.forEach(item => {
+                data.gallery.forEach((item, index) => {
+                    // Use Bootstrap's grid system to allocate 4 columns per item for medium devices and up
                     const col = document.createElement('div');
-                    col.className = 'col';
+                    col.className = 'col-12 col-md-4 mb-4';
                     col.innerHTML = `
-                    <a class="gallery-item" href="${item.image}" data-caption="${item.title}" data-bs-toggle="modal" data-bs-target="#lightbox-modal">
-                        <img src="${item.image}" class="img-fluid" alt="${item.title}">
-                    </a>
-                `;
+                <a class="gallery-item"
+                 data-index="${index}" data-image="${item.image}" data-caption="${item.title}">
+                    <img src="${item.image}" class="img-fluid" alt="${item.title}">
+                </a>
+            `;
                     container.appendChild(col);
                 });
 
-                setupLightboxModal();
+                setupLightboxModal(data.gallery);
             })
             .catch(error => console.error('Error fetching data:', error));
     }
 
-    function setupLightboxModal() {
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        const modalBody = document.querySelector('.lightbox-content');
-        const bsModal = new bootstrap.Modal(document.getElementById('lightbox-modal'));
-
-        galleryItems.forEach(item => {
+// Setup Lightbox Modal
+    function setupLightboxModal(galleryItems) {
+        document.querySelectorAll('.gallery-item').forEach(item => {
             item.addEventListener('click', function (e) {
                 e.preventDefault();
-                const imgSrc = this.getAttribute('href');
-                const caption = this.getAttribute('data-caption');
-                modalBody.innerHTML = createSlides(this);
-                bsModal.show();
+                const index = parseInt(this.getAttribute('data-index'));
+                updateCarousel(index, galleryItems);
+                $('#lightbox-modal').modal('show');
             });
+        });
+
+        // Fullscreen toggle buttons
+        const enlargeBtn = document.querySelector('.btn-fullscreen-enlarge');
+        const exitBtn = document.querySelector('.btn-fullscreen-exit');
+        const modalDialog = document.querySelector('#lightbox-modal .modal-dialog');
+
+        enlargeBtn.addEventListener('click', function() {
+            modalDialog.classList.add('modal-fullscreen');
+            enlargeBtn.classList.add('d-none');
+            exitBtn.classList.remove('d-none');
+        });
+
+        exitBtn.addEventListener('click', function() {
+            modalDialog.classList.remove('modal-fullscreen');
+            enlargeBtn.classList.remove('d-none');
+            exitBtn.classList.add('d-none');
+        });
+
+        // Ensure the carousel is reset when the modal is closed
+        $('#lightbox-modal').on('hidden.bs.modal', function () {
+            modalDialog.classList.remove('modal-fullscreen');
+            enlargeBtn.classList.remove('d-none');
+            exitBtn.classList.add('d-none');
         });
     }
 
-    function createSlides(selectedImg) {
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        let slidesMarkup = '';
-        let indicatorsMarkup = '';
-        let activeClass = '';
+    // Update the carousel with selected image
+    function updateCarousel(selectedIndex, galleryItems) {
+        const indicatorsContainer = document.querySelector('#lightboxCarousel .carousel-indicators');
+        const innerContainer = document.querySelector('#lightboxCarousel .carousel-inner');
 
-        galleryItems.forEach((img, index) => {
-            const imgSrc = img.getAttribute('href');
-            const imgAlt = img.querySelector('img').getAttribute('alt');
-            const caption = img.getAttribute('data-caption') || imgAlt;
+        // Reset carousel content
+        indicatorsContainer.innerHTML = '';
+        innerContainer.innerHTML = '';
 
-            // Set the active class if the selected image matches the current one
-            activeClass = selectedImg.getAttribute('href') === imgSrc ? ' active' : '';
-            console.log(activeClass)
-            slidesMarkup += `
+        // Generate new carousel content
+        galleryItems.forEach((item, index) => {
+            const activeClass = index === selectedIndex ? 'active' : '';
+
+            // Indicators
+            indicatorsContainer.innerHTML += `
+            <button type="button" data-bs-target="#lightboxCarousel" data-bs-slide-to="${index}" class="${activeClass}" aria-current="${activeClass ? 'true' : 'false'}" aria-label="Slide ${index + 1}"></button>
+        `;
+
+            // Slides
+            innerContainer.innerHTML += `
             <div class="carousel-item ${activeClass}">
-                <img class="d-block img-fluid vw-100" src="${imgSrc}" alt="${imgAlt}">
+                <img src="${item.image}" class="d-block img-fluid vw-100" alt="${item.title}">
                 <div class="carousel-caption d-none d-md-block">
-                    <p>${caption}</p>
+                    <p>${item.title}</p>
                 </div>
             </div>
         `;
-
-            indicatorsMarkup += `
-            <button type="button" data-bs-target="#lightboxCarousel" data-bs-slide-to="${index}" class="${activeClass}" aria-label="Slide ${index + 1}"></button>
-        `;
         });
-
-        // Return the complete carousel markup with indicators and slides
-        return `
-        <div id="lightboxCarousel" class="carousel slide mx-5 mt-3" data-bs-ride="carousel">
-            <div class="carousel-indicators">${indicatorsMarkup}</div>
-            <div class="carousel-inner">${slidesMarkup}</div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    `;
     }
+
+
 
 
 

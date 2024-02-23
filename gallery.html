@@ -20,7 +20,7 @@ Description: Events page for Harmony Hub.
 <!-- Import the header.html here.-->
 <div id="header-container" data-page-title="Gallery"></div>
 
-<div class="blog-home2 mx-5">
+<div class="blog-home2 mx-5 ">
     <div class="container-fluid">
         <!-- Row  -->
         <div class="row justify-content-center">
@@ -30,19 +30,51 @@ Description: Events page for Harmony Hub.
                 Check out some of the work we have done below.
             </div>
             <!-- Gallery Container -->
-            <div class="blog-home2 mx-5">
-                <div class="container mx-5">
-                    <div class="row mt-4" id="dynamic-gallery-container">
-                        <!-- Dynamic cards will be inserted here by JavaScript -->
-                    </div>
-                    <div id="load-more-btn-container" class="text-center"></div>
+            <div class="container mx-5">
+                <div class="row mt-4" id="dynamic-gallery-container">
+                    <!-- Dynamic cards will be inserted here by JavaScript -->
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<!-- SVG Icons for Fullscreen Controls -->
+            <!-- Bootstrap Modal for Lightbox, now with predefined carousel structure -->
+            <div class="modal fade lightbox-modal" id="lightbox-modal" tabindex="-1">
+                <div class="lightbox-modal modal-dialog modal-dialog-centered  ">
+                    <div class="modal-content ">
+                        <!-- Inside the modal-content of the lightbox-modal -->
+                        <button type="button" class="btn-fullscreen-enlarge btn-close-white" data-bs-toggle="fullscreen" aria-label="Enlarge fullscreen">
+                            <svg class="bi"><use href="#enlarge"></use></svg>
+                        </button>
+                        <button type="button" class="btn-fullscreen-exit d-none" data-bs-toggle="exit-fullscreen" aria-label="Exit fullscreen">
+                            <svg class="bi"><use href="#exit"></use></svg>
+                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        <div class="modal-body ">
+
+                            <div id="lightboxCarousel" class="carousel slide " data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    <!-- Indicators will be inserted here -->
+                                </div>
+                                <div class="carousel-inner ">
+                                    <!-- Slides will be inserted here -->
+                                </div>
+
+                                <button class="carousel-control-prev" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- SVG Icons for Fullscreen Controls -->
 <svg class="d-none" xmlns="http://www.w3.org/2000/svg">
     <symbol id="enlarge" viewBox="0 0 16 16">
         <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
@@ -52,25 +84,6 @@ Description: Events page for Harmony Hub.
     </symbol>
 </svg>
 
-<!-- Bootstrap Modal for Lightbox -->
-<div class="modal fade lightbox-modal" id="lightbox-modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
-        <div class="modal-content">
-            <button type="button" class="btn-fullscreen-enlarge btn-close-white" aria-label="Enlarge fullscreen">
-                <svg class="bi"><use href="#enlarge"></use></svg>
-            </button>
-            <button type="button" class="btn-fullscreen-exit d-none" aria-label="Exit fullscreen">
-                <svg class="bi"><use href="#exit"></use></svg>
-            </button>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            <div class="modal-body">
-                <div class="lightbox-content">
-                    <!-- Dynamic content will be loaded here -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <footer id="footer-nav"></footer>
 
