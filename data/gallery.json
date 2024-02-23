@@ -1,7 +1,7 @@
 {
   "gallery": [
     {
-      "image": "./images/event3.jpg",
+      "image": "./images/gallery1.jpg",
       "title": "Event Title 1",
       "subtitle": "Short description of Event 1",
       "day": "15",
@@ -9,7 +9,7 @@
       "learnMoreLink": "http://example.com/event1"
     },
     {
-      "image": "./images/event3.jpg",
+      "image": "./images/gallery2.jpg",
       "title": "Event Title 2",
       "subtitle": "Short description of Event 2",
       "day": "23",
@@ -17,7 +17,7 @@
       "learnMoreLink": "http://example.com/event2"
     },
     {
-      "image": "./images/event3.jpg",
+      "image": "./images/gallery3.jpg",
       "title": "Event Title 3",
       "subtitle": "Short description of Event 3",
       "day": "30",
@@ -25,25 +25,25 @@
       "learnMoreLink": "http://example.com/event3"
     },
     {
-      "image": "./images/event3.jpg",
-      "title": "Event Title 3",
-      "subtitle": "Short description of Event 3",
+      "image": "./images/gallery4.jpg",
+      "title": "Event Title 4",
+      "subtitle": "Short description of Event 4",
       "day": "30",
       "month": "March",
       "learnMoreLink": "http://example.com/event3"
     },
     {
-      "image": "./images/event3.jpg",
-      "title": "Event Title 3",
-      "subtitle": "Short description of Event 3",
+      "image": "./images/gallery5.jpg",
+      "title": "Event Title 5",
+      "subtitle": "Short description of Event 5",
       "day": "30",
       "month": "March",
       "learnMoreLink": "http://example.com/event3"
     },
     {
-      "image": "./images/event3.jpg",
-      "title": "Event Title 3",
-      "subtitle": "Short description of Event 3",
+      "image": "./images/gallery6.jpg",
+      "title": "Event Title 6",
+      "subtitle": "Short description of Event 6",
       "day": "30",
       "month": "March",
       "learnMoreLink": "http://example.com/event3"
