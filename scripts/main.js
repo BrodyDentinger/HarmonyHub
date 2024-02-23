@@ -677,7 +677,11 @@ Description: Main javascript file for Harmony Hub.
             .catch(error => console.error('Error fetching data:', error));
     }
 
-// Setup Lightbox Modal
+    /**
+     * This function sets up the lightbox modal for the gallery page
+     * @param galleryItems
+     */
+
     function setupLightboxModal(galleryItems) {
         document.querySelectorAll('.gallery-item').forEach(item => {
             item.addEventListener('click', function (e) {
@@ -713,7 +717,11 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
-    // Update the carousel with selected image
+    /**
+     * Updates the image in the carousel
+     * @param selectedIndex
+     * @param galleryItems
+     */
     function updateCarousel(selectedIndex, galleryItems) {
         const indicatorsContainer = document.querySelector('#lightboxCarousel .carousel-indicators');
         const innerContainer = document.querySelector('#lightboxCarousel .carousel-inner');
