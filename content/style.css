@@ -29,7 +29,6 @@ body {
 }
 
 .carousel-item {
-
     height: 80vh; /* 80% of the viewport height */
 }
 
@@ -507,7 +506,7 @@ body {
 }
 
 .lightbox-modal .lightbox-content {
-    max-width: 90%; /* Limit the width to not touch the edges of the screen */
+    max-width: 50%; /* Limit the width to not touch the edges of the screen */
     max-height: 90vh; /* Limit the height to not touch the top/bottom of the screen */
     margin: auto; /* Auto margins will help in centering */
 }
