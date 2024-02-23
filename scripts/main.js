@@ -128,30 +128,30 @@ Description: Main javascript file for Harmony Hub.
         // Define the message area div for validation messages.
         let messageArea = $("#feedbackReasonMessage");
 
-        if(window.location.href.includes("rating=5")){
+        // This gets the value of the checked radio button, which corresponds to the number of stars
+        let ratingValue = $('input[type="radio"][name="rating"]:checked').val();
 
+        // If it's 5
+        if(ratingValue === "5"){
             $.get("./five_star.html", function (html_data) {
                 // Insert the loaded content into the modal
-                //$("#feedbackModal").html(html_data);
                 messageArea.addClass("alert alert-info").text(html_data);
             });
 
-            //messageArea.addClass("alert alert-info").text("We are really glad you had a 5 star experience");
-
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
-                messageArea.text("").removeClass();
+                messageArea.text("").removeClass("alert alert-info");
 
-            }, 5000);
+            }, 3000);
 
         }
-        if(!window.location.href.endsWith("rating=5") && !window.location.href.endsWith("html")){
+        if(ratingValue !== "5"){
             messageArea.addClass("alert alert-info").text("We are really sorry you did not have a 5 star experience. " +
                 "We appreciate your feedback.");
 
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
-                messageArea.text("").removeClass();
+                messageArea.text("").removeClass("alert alert-info");
 
             }, 3000);
         }
@@ -445,14 +445,34 @@ Description: Main javascript file for Harmony Hub.
      */
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
-        // Load the modal content
-
 
         $.get("./feedback_form.html", function (html_data) {
             // Insert the loaded content into the modal
             $("#feedbackModal").html(html_data);
+
+            // Submit button
+            $(document).on("click", "#feedbackFormBtn", function(event){
+                event.preventDefault();
+
+                // change the test to "Rate our Service" --> thank you
+                $("#feedbackModelQuestion1").text("Thank you");
+
+                // change What is the main reason --> we look forward to implementing your feedback.
+                $("#feedbackModelQuestion2").text("We look forward to implementing your feedback.");
+            });
+
+            // close button
+            $(document).on("click", "#feedbackFormCloseBtn", function(){
+
+                CheckRating();
+                // Reset the form's contents to default... Request from original file.
+                $.get("./feedback_form.html", function (html_data) {
+                    $("#feedbackModal").html(html_data)
+                });
+            });
         });
-        CheckRating();
+
+
         let map = L.map('map').setView([51.505, -0.09], 13);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

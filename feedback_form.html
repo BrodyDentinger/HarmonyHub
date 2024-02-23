@@ -14,7 +14,7 @@ Description: Feedback form to be fetched for Harmony Hub.
         </div>
         <div class="modal-body text-center">
             <form id="feedbackForm">
-                <p>Rate our service</p>
+                <p id = "feedbackModelQuestion1">Rate our service</p>
                 <div class="mb-3 rating d-flex justify-content-center">
                     <!-- Star icons for rating; use radio buttons for an accessible form -->
                     <input type="radio" id="star5" name="rating" value="5" class="visually-hidden"/>
@@ -29,14 +29,16 @@ Description: Feedback form to be fetched for Harmony Hub.
                     <label for="star1" class="star">&#9733;</label>
                 </div>
                 <div class="mb-3">
-                    <label for="feedbackReason" class="form-label">What is the main reason for the rating?</label>
+                    <label for="feedbackReason" class="form-label" id = "feedbackModelQuestion2">
+                        What is the main reason for the rating?
+                    </label>
                     <textarea class="form-control" id="feedbackReason" rows="3" required></textarea>
                 </div>
             </form>
         </div>
         <div class="modal-footer justify-content-start">
             <button type="submit" id="feedbackFormBtn" class="btn btn-primary" form="feedbackForm">Submit</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" id = "feedbackFormCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
         </div>
     </div>
