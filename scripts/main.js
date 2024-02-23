@@ -460,7 +460,18 @@ Description: Main javascript file for Harmony Hub.
                 });
 
                 // change What is the main reason --> we look forward to implementing your feedback.
-                $("#feedbackModelQuestion2").text("We look forward to implementing your feedback.");
+                $("#feedbackModelQuestion2").text("We look forward to implementing your feedback. " +
+                                                    "You can close this window when ready");
+
+                // Disable the stars
+                $("#star_div input[type='radio']").prop('disabled', true);
+
+                // Disable the message area
+                $("#feedbackReason").prop('disabled', true);
+
+                // Disable the submit button
+                $("#feedbackFormBtn").prop('disabled', true);
+
             });
 
             // close button
