@@ -454,8 +454,10 @@ Description: Main javascript file for Harmony Hub.
             $(document).on("click", "#feedbackFormBtn", function(event){
                 event.preventDefault();
 
-                // change the test to "Rate our Service" --> thank you
-                $("#feedbackModelQuestion1").text("Thank you");
+                // Keep the "Thank You" html data, and change the text asynchronously.
+                $.get("./feedback_form1.html", function (html_data) {
+                    $("#feedbackModelQuestion1").html(html_data);
+                });
 
                 // change What is the main reason --> we look forward to implementing your feedback.
                 $("#feedbackModelQuestion2").text("We look forward to implementing your feedback.");
