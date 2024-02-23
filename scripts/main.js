@@ -658,27 +658,23 @@ Description: Main javascript file for Harmony Hub.
             .then(response => response.json())
             .then(data => {
                 const container = document.querySelector('#dynamic-gallery-container');
-
-                // Change 'events' to 'gallery' to match your JSON structure
                 const events = data.gallery;
 
                 events.forEach(item => {
                     const col = document.createElement('div');
                     col.className = 'col';
                     col.innerHTML = `
-                <a class="gallery-item" href="${item.image}" data-bs-toggle="modal" data-bs-target="#lightbox-modal">
-                    <img src="${item.image}" class="img-fluid" alt="${item.title}">
-                </a>
+                    <a class="gallery-item" href="${item.image}" data-caption="${item.title}" data-bs-toggle="modal" data-bs-target="#lightbox-modal">
+                        <img src="${item.image}" class="img-fluid" alt="${item.title}">
+                    </a>
                 `;
                     container.appendChild(col);
                 });
 
-                // Setup modal for lightbox
                 setupLightboxModal();
             })
             .catch(error => console.error('Error fetching data:', error));
     }
-
 
     function setupLightboxModal() {
         const galleryItems = document.querySelectorAll('.gallery-item');
@@ -689,27 +685,60 @@ Description: Main javascript file for Harmony Hub.
             item.addEventListener('click', function (e) {
                 e.preventDefault();
                 const imgSrc = this.getAttribute('href');
-                modalBody.innerHTML = `<img src="${imgSrc}" class="img-fluid" alt="Event Image">`;
+                const caption = this.getAttribute('data-caption');
+                modalBody.innerHTML = createSlides(this);
                 bsModal.show();
             });
         });
-        const fsEnlargeBtn = document.querySelector('.btn-fullscreen-enlarge');
-        const fsExitBtn = document.querySelector('.btn-fullscreen-exit');
-
-        fsEnlargeBtn.addEventListener('click', function() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            } else {
-                document.getElementById('lightbox-modal').requestFullscreen();
-            }
-        });
-
-        fsExitBtn.addEventListener('click', function() {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            }
-        });
     }
+
+    function createSlides(selectedImg) {
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        let slidesMarkup = '';
+        let indicatorsMarkup = '';
+        let activeClass = '';
+
+        galleryItems.forEach((img, index) => {
+            const imgSrc = img.getAttribute('href');
+            const imgAlt = img.querySelector('img').getAttribute('alt');
+            const caption = img.getAttribute('data-caption') || imgAlt;
+
+            // Set the active class if the selected image matches the current one
+            activeClass = selectedImg.getAttribute('href') === imgSrc ? ' active' : '';
+            console.log(activeClass)
+            slidesMarkup += `
+            <div class="carousel-item ${activeClass}">
+                <img class="d-block img-fluid w-100" src="${imgSrc}" alt="${imgAlt}">
+                <div class="carousel-caption d-none d-md-block">
+                    <p>${caption}</p>
+                </div>
+            </div>
+        `;
+
+            indicatorsMarkup += `
+            <button type="button" data-bs-target="#lightboxCarousel" data-bs-slide-to="${index}" class="${activeClass}" aria-label="Slide ${index + 1}"></button>
+        `;
+        });
+
+        // Return the complete carousel markup with indicators and slides
+        return `
+        <div id="lightboxCarousel" class="carousel slide mx-5 mt-3" data-bs-ride="carousel">
+            <div class="carousel-indicators">${indicatorsMarkup}</div>
+            <div class="carousel-inner">${slidesMarkup}</div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    `;
+    }
+
+
+
 
     /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the

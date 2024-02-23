@@ -22,12 +22,14 @@ body {
 }*/
 
 .carousel-item img {
+
     object-fit: cover;
     width: 80vh;
     height: 80vh; /* 80% of the viewport height */
 }
 
 .carousel-item {
+
     height: 80vh; /* 80% of the viewport height */
 }
 
@@ -454,20 +456,10 @@ body {
 /* Gallery grid styling */
 :root {
     --lightbox: rgb(0 0 0 / 0.75);
-    --carousel-text: #fff;
+
 }
 
-@keyframes zoomin {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.05);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
+
 
 .gallery-item {
     display: block;
@@ -482,9 +474,7 @@ body {
     box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.35);
 }
 
-.lightbox-modal .modal-content {
-    background-color: var(--lightbox);
-}
+
 
 .lightbox-modal .btn-close {
     position: absolute;
@@ -494,16 +484,34 @@ body {
     z-index: 10;
     filter: invert(1) grayscale(100);
 }
+.lightbox-modal .modal-content {
+    background-color: var(--lightbox);
+    display: flex; /* Use flexbox to align children */
+    justify-content: center; /* Center children horizontally */
+    align-items: center; /* Center children vertically */
+    height: 100%; /* Take full height of the parent */
+}
+
+.lightbox-modal .modal-dialog {
+    margin: 0; /* Remove automatic margins */
+    min-height: 100vh; /* Ensure it takes at least the full height of the viewport */
+    display: flex; /* Use flexbox to align children */
+    align-items: center; /* Center children vertically */
+}
 
 .lightbox-modal .modal-body {
-    display: flex;
-    align-items: center;
-    padding: 0;
+    display: flex; /* Use flexbox to align children */
+    justify-content: center; /* Center children horizontally */
+    align-items: center; /* Center children vertically */
+    padding: 0; /* Reset padding if necessary */
 }
 
 .lightbox-modal .lightbox-content {
-    width: 100%;
+    max-width: 90%; /* Limit the width to not touch the edges of the screen */
+    max-height: 90vh; /* Limit the height to not touch the top/bottom of the screen */
+    margin: auto; /* Auto margins will help in centering */
 }
+
 
 .btn-fullscreen-enlarge,
 .btn-fullscreen-exit {
@@ -524,4 +532,3 @@ body {
     vertical-align: -0.035em;
     fill: currentcolor;
 }
-
