@@ -9,6 +9,7 @@ Description: Main javascript file for Harmony Hub.
 "use strict";
 
 // IIFE
+
 (function() {
 
 
@@ -26,7 +27,7 @@ Description: Main javascript file for Harmony Hub.
                 document.getElementById("header-container").innerHTML = response.data;
 
                 // Access the 'data-page-title' attribute from 'header-container'
-                const pageTitle = document.getElementById("header-container").dataset.pageTitle;
+                let pageTitle = document.getElementById("header-container").dataset.pageTitle;
 
                 // Set the document title dynamically based on the page title attribute
                 document.title = `${pageTitle}`;
@@ -576,7 +577,7 @@ Description: Main javascript file for Harmony Hub.
         // Define the message area div for validation messages.
         let messageArea = $("#messageArea");
 
-        window.location.href.includes("loginSuccess")
+        // Handle if a successful registration occured
         if(window.location.href.includes("registerSuccess")){
             messageArea.addClass("alert alert-success").text("Successful Registration");
         }
@@ -731,6 +732,7 @@ Description: Main javascript file for Harmony Hub.
                 // Access the 'events' array within the JSON
                 const events = data.events;
 
+                // For each event item in the json create an event card with the data
                 events.forEach(item => {
                     const card = document.createElement('div');
                     card.className = 'col-md-4 on-hover';
@@ -859,12 +861,14 @@ Description: Main javascript file for Harmony Hub.
     function Start() {
         console.log("App Started...");
 
-        // COMPARE WHAT PROF HAS ...
-        // ALSO NEED TO APPEND EACH RESULT TO THE DROP DOWN MENU
+        /**
+         * This is the section for the search function. This fires whenever an input is entered in the search bar.
+         * It will loop through the content element of the contentIndex.Json for matching words and populate the
+         * search drop down with the pages that have matching words.
+         */
         $("#search-input").on("input", function() {
-            console.log("Search input event firing...");
-            const query = $(this).val().toLowerCase();
 
+            const query = $(this).val().toLowerCase();
             const resultsContainer = $("#search-dropdown");
 
             // If the query is empty, reset the child <li> elements and hide the <ul> parent because it's empty.
@@ -872,6 +876,7 @@ Description: Main javascript file for Harmony Hub.
                 resultsContainer.empty().hide();
                 return;
             }
+            // Use an ajax request to fetch the contentIndex.json
             $.ajax({
                 url: './data/contentIndex.json',
                 type: 'GET',
@@ -881,6 +886,7 @@ Description: Main javascript file for Harmony Hub.
                     const data = response.content;
                     // Check if 'data' is an array before filtering
                     if (Array.isArray(data)) {
+                        // Filter the content element to finding matching "queries"
                         const results = data.filter(page => page.content.toLowerCase().includes(query));
                         displayResults(results);
                     } else {
