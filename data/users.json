@@ -2,7 +2,7 @@
   "users" :
           [
             {
-              "FirstName" : "Bilbo",
+              "firstName" : "Bilbo",
               "LastName" : "Baggins",
               "Username" : "bbaggins",
               "EmailAddress" : "bilbobaggins@example.com",
@@ -10,7 +10,7 @@
               "Password" : "12345"
             },
             {
-              "FirstName" : "Gandalf",
+              "firstName" : "Gandalf",
               "LastName" : "Grey",
               "Username" : "ggrey",
               "EmailAddress" : "ggrey@example.com",
@@ -18,7 +18,7 @@
               "Password" : "00000"
             },
             {
-              "FirstName" : "Admin",
+              "firstName" : "Admin",
               "LastName" : "Admin",
               "Username" : "admin",
               "EmailAddress" : "admin@example.com",

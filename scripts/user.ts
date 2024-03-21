@@ -10,6 +10,13 @@ Description: CLass file representing the user that will be logging into the syst
 
 class User {
 
+    private _firstName : string;
+    private _lastName : string;
+    private _userName : string;
+    private _emailAddress : string;
+    private _phoneNumber :string;
+    private _password : string;
+
     constructor(firstName = "", lastName = "",
                 userName = "", emailAddress = "",
                 phoneNumber = "", password = "") {
@@ -26,7 +33,7 @@ class User {
         return this._firstName;
     }
 
-    set firstName(value) {
+    set firstName(value:string) {
         this._firstName = value;
     }
 
@@ -34,7 +41,7 @@ class User {
         return this._lastName;
     }
 
-    set lastName(value) {
+    set lastName(value:string) {
         this._lastName = value;
     }
 
@@ -42,7 +49,7 @@ class User {
         return this._userName;
     }
 
-    set userName(value) {
+    set userName(value:string) {
         this._userName = value;
     }
 
@@ -50,7 +57,7 @@ class User {
         return this._emailAddress;
     }
 
-    set emailAddress(value) {
+    set emailAddress(value:string) {
         this._emailAddress = value;
     }
 
@@ -58,7 +65,7 @@ class User {
         return this._phoneNumber;
     }
 
-    set phoneNumber(value) {
+    set phoneNumber(value:string) {
         this._phoneNumber = value;
     }
 
@@ -66,11 +73,11 @@ class User {
         return this._password;
     }
 
-    set password(value) {
+    set password(value:string) {
         this._password = value;
     }
 
-    toString() {
+    toString():string {
         return `FirstName: ${this._firstName}\n
             LastName: ${this._lastName}\n
             userName: ${this._userName}\n
@@ -82,7 +89,7 @@ class User {
      * Serialize for writing to localStorage.
      * @returns {null|string}
      */
-    serialize() {
+    serialize() :string | null {
         if (this._firstName !== "" && this._lastName !== "" && this._userName !== "" && this._emailAddress !== "" && this._phoneNumber !== "") {
             return `${this._firstName}, ${this._lastName}, ${this._userName}, ${this._emailAddress}, ${this._phoneNumber}`;
         }
@@ -94,7 +101,7 @@ class User {
      * Deserialize is used to read data from the localStorage.
      * @param data
      */
-    deserialize(data) {
+    deserialize(data : string) {
         let propertyArray = data.split(",");
 
         this._firstName = propertyArray[0];
@@ -111,16 +118,16 @@ class User {
             Username : this._userName,
             EmailAddress : this._emailAddress,
             PhoneNumber : this._phoneNumber,
-            Password : this.Password
+            Password : this._password
         }
     }
 
-    fromJSON(data){
-        this._firstName = data.FirstName;
-        this._lastName = data.LastName;
-        this._userName = data.Username;
-        this._emailAddress = data.EmailAddress;
-        this._phoneNumber = data.PhoneNumber;
-        this._password = data.Password;
+    fromJSON(data : User){
+        this._firstName = data.firstName;
+        this._lastName = data.lastName;
+        this._userName = data.userName;
+        this._emailAddress = data.emailAddress;
+        this._phoneNumber = data.phoneNumber;
+        this._password = data.password;
     }
 }

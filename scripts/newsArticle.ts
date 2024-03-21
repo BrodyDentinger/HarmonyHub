@@ -57,10 +57,19 @@ class NewsArticle {
         this._description = value;
     }
 
-    // Create an array to hold our news articles.
-    static NewsArticlesArray = []
 
-    constructor(title, image, author, date, summary, description) {
+
+    // Create an array to hold our news articles.
+    static NewsArticlesArray : NewsArticle[] = []
+
+    private _title : string;
+    private _image : string;
+    private _author : string;
+    private _date : string;
+    private _summary : string;
+    private _description : string;
+
+    constructor(title : string, image : string, author : string, date : string, summary : string, description : string) {
         this._title = title;
         this._image = image;
         this._author = author;
@@ -85,7 +94,7 @@ class NewsArticle {
      * @param i represents a given object of this class.
      * @return none
      */
-    static renderNewsArticle(i) {
+    static renderNewsArticle(i : number) {
 
         // Create the HTML structure (divs, classes, id's, etc) and store the current news article object data in
         // variables. Fill the structure with the object data. Append it to HTML parent.
@@ -95,8 +104,11 @@ class NewsArticle {
         singleArticleDiv.setAttribute("class", "post row g-0 p-4 border rounded overflow-hidden " +
             "flex-md-row mb-4 shadow-sm h-md-250 position-relative");
         // News Container Div
-        let newsContainer = document.getElementById("news-container");
-        newsContainer.appendChild(singleArticleDiv);
+        let newsContainer :HTMLElement | null = document.getElementById("news-container");
+
+        if (newsContainer != null){
+            newsContainer.appendChild(singleArticleDiv);
+        }
 
         // News Title Section
         let newsPostTitle = document.createElement("h1");

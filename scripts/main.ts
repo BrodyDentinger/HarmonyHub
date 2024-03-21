@@ -10,7 +10,9 @@ Description: Main javascript file for Harmony Hub.
 
 // IIFE
 
-(function() {
+declare const axios: any; // Declares `axios` as any type, bypassing type checks.
+
+(function():void {
 
 
     // Using JavaScript, add a dynamic header nav bar, and a footer nav bar
@@ -21,13 +23,16 @@ Description: Main javascript file for Harmony Hub.
         // end head, starting body tag, and header nav bar.
 
         // Using the axios library, we can get the header via a http request (get), and use it to import our header file.
+
         axios.get("./header.html")
-            .then(response => {
+            .then((response: { data: string }) => {
+
                 // Insert the fetched HTML into the element with id 'header-container'
-                document.getElementById("header-container").innerHTML = response.data;
+                const headerContainer = document.getElementById("header-container")!;
+                headerContainer.innerHTML = response.data;
 
                 // Access the 'data-page-title' attribute from 'header-container'
-                let pageTitle = document.getElementById("header-container").dataset.pageTitle;
+                let pageTitle :string |undefined = headerContainer.dataset.pageTitle;
 
                 // Set the document title dynamically based on the page title attribute
                 document.title = `${pageTitle}`;
@@ -35,21 +40,27 @@ Description: Main javascript file for Harmony Hub.
                 $(`li>a:contains(${document.title})`).addClass("active").attr("aria-current", "page");
 
                 // Change the "Blog" word in our navbar to "News"
-                let BlogText = document.getElementById("BlogText");
-                BlogText.textContent = "News";
+                let BlogText :HTMLElement | null = document.getElementById("BlogText");
+
+                if(BlogText != null){
+                    BlogText.textContent = "News";
+                }
 
                 // Add a Careers Link to header
-                let CareerDiv = document.getElementById("career-link-div");
+                let CareerDiv :HTMLElement | null = document.getElementById("career-link-div");
                 let CareerAnchorTag = document.createElement("a");
                 CareerAnchorTag.setAttribute("class", "nav-link");
                 CareerAnchorTag.setAttribute("href", "#");
                 CareerAnchorTag.innerHTML = "Careers";
-                CareerDiv.appendChild(CareerAnchorTag);
+
+                if(CareerDiv != null) {
+                    CareerDiv.appendChild(CareerAnchorTag);
+                }
 
                 CheckLogin();
 
             })
-            .catch(error => {
+            .catch((error: unknown) => {
                 console.error("Error fetching header:", error);
             });
 
@@ -70,14 +81,14 @@ Description: Main javascript file for Harmony Hub.
         document.body.appendChild(FooterNavTag);
 
         // Create a new div element for the navbar content
-        let FooterDivTag = document.createElement("div");
+        let FooterDivTag:HTMLDivElement = document.createElement("div");
         FooterDivTag.setAttribute("class", "container-fluid");
 
         // Anchor the div element to the nav element
         FooterNavTag.appendChild(FooterDivTag);
 
         // Create a new unordered list element for the navbar items
-        let FooterNavList = document.createElement("ul");
+        let FooterNavList:HTMLUListElement = document.createElement("ul");
         FooterNavList.setAttribute("class", "navbar-nav mx-auto mb-2 mb-lg-0"); // Add 'navbar-nav' class here
 
         // Anchor the list to the div element
@@ -172,10 +183,12 @@ Description: Main javascript file for Harmony Hub.
             // create a user object container
             let user = new User;
             // Fetch the session storage with the key User (as we've stored it from the login page function)
-            let userKey = sessionStorage.getItem("user");
+            let userKey:string|null = sessionStorage.getItem("user");
 
             // Deserialize that string and pass its values into our user object.
-            user.deserialize(userKey);
+            if (userKey != null) {
+                user.deserialize(userKey);
+            }
 
             // User's first name
             let username = user["firstName"]
@@ -205,7 +218,7 @@ Description: Main javascript file for Harmony Hub.
      * menu underneath the search bar.
      * @param results the results of the search bar input from user
      */
-    function displayResults(results) {
+    function displayResults(results: any[]) {
         console.log("DisplayResults called...");
         const resultsContainer = $("#search-dropdown");
         resultsContainer.empty(); // Clear previous results
@@ -240,7 +253,7 @@ Description: Main javascript file for Harmony Hub.
             // create a user object container
             let user = new User;
             // Fetch the session storage with the key User (as we've stored it from the login page function)
-            let userKey = sessionStorage.getItem("user");
+            let userKey:string|null = sessionStorage.getItem("user")!;
 
             // Deserialize that string and pass its values into our user object.
             user.deserialize(userKey);
@@ -261,7 +274,7 @@ Description: Main javascript file for Harmony Hub.
         let index = 0;
 
         // Fetching the animatedText target span tag from our HTML.
-        const textElement = document.getElementById("animatedText");
+        const textElement:HTMLElement = document.getElementById("animatedText")!;
 
         // Function to update the text
         function updateText() {
@@ -329,7 +342,7 @@ Description: Main javascript file for Harmony Hub.
         project8.pushObjectToArray();
 
         // Variable to hold the parent container to attach the list objects.
-        let projectListContainer = document.getElementById("project-list-container");
+        let projectListContainer:HTMLElement = document.getElementById("project-list-container")!;
 
         /** @function PopulateProjects()
          *  @description This function serves to loop through the project card array, and dynamically create HTML
@@ -341,9 +354,9 @@ Description: Main javascript file for Harmony Hub.
          *        2 every time the "load more" button is clicked.
          * @return none
          */
-        let projectsToRender = 3;
-        let loadMoreIncrement = 3;
-        function PopulateProjects(projectsToRender) {
+        let projectsToRender:number = 3;
+        let loadMoreIncrement:number = 3;
+        function PopulateProjects(projectsToRender:number):void {
             projectListContainer.innerHTML = ''; // Empty the container
 
             const existingLoadMoreBtn = document.getElementById("load-more-btn");
@@ -360,7 +373,7 @@ Description: Main javascript file for Harmony Hub.
 
             projectListContainer.appendChild(rowDiv);
 
-            let LoadMoreBtnParent = document.getElementById("load-more-btn-container");
+            let LoadMoreBtnParent:HTMLElement = document.getElementById("load-more-btn-container")!;
 
             if (projectsToRender < Project.ProjectCardsArray.length) {
                 let LoadMoreBtn = document.createElement("button");
@@ -494,17 +507,18 @@ Description: Main javascript file for Harmony Hub.
         }).addTo(map);
 
         // Form constant
-        const contactForm = document.getElementById("contactForm");
+        const contactForm: HTMLFormElement = document.getElementById("contactForm") as HTMLFormElement;
         // Constant for the first modal popup body which is the one that shows the form inputs
-        const modalBody = document.getElementById("modal-body");
+        const modalBody:HTMLElement = document.getElementById("modal-body")!;
         // First modal pop up confirm button
-        const looksGoodButton = document.getElementById("contactUsModalButton")
+        const looksGoodButton:HTMLElement = document.getElementById("contactUsModalButton")!;
         //the actual modal, yes the whole thing
-        const contactModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
+
+        const contactModal: bootstrap.Modal = new bootstrap.Modal(document.getElementById('staticBackdrop')!, {
             keyboard: false
         });
         //thank you message modal
-        const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'), {
+        const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal')!, {
             keyboard: false,
             backdrop: 'static'
         });
@@ -519,10 +533,14 @@ Description: Main javascript file for Harmony Hub.
             } else {
                 // If the form is valid, process the form data
                 console.log("Form is valid. Submitting...");
-                const userName = document.getElementById("userName").value;
-                const email = document.getElementById("email").value;
-                const subject = document.getElementById("subject").value;
-                const message = document.getElementById("message").value;
+                const userNameElement:HTMLInputElement = document.getElementById("userName") as HTMLInputElement;
+                const userName = userNameElement.value;
+                const emailElement:HTMLInputElement = document.getElementById("email") as HTMLInputElement;
+                const email = emailElement.value;
+                const subjectElement = document.getElementById("subject") as HTMLInputElement;
+                const subject = subjectElement.value;
+                const messageElement = document.getElementById("message") as HTMLInputElement;
+                const message = messageElement.value;
 
                 // Insert form data into modal
                 modalBody.innerHTML = `
@@ -549,12 +567,12 @@ Description: Main javascript file for Harmony Hub.
 
             // Start the countdown
             let countdownNumber = 5;
-            const countdownElement = document.getElementById('countdown');
-            countdownElement.textContent = countdownNumber;
+            const countdownElement:HTMLElement = document.getElementById('countdown')!;
+            countdownElement.textContent = countdownNumber.toString();
 
             const intervalId = setInterval(function () {
                 countdownNumber--;
-                countdownElement.textContent = countdownNumber;
+                countdownElement.textContent = countdownNumber.toString();
 
                 if (countdownNumber === 0) {
                     clearInterval(intervalId);
@@ -585,11 +603,14 @@ Description: Main javascript file for Harmony Hub.
             // Fetch button with jquery
             $("#login-button").on("click", function () {
 
-                // If fields are empty, don't waste compute power.
-                if($("#username").val() !== "" && $("#password").val() !== "") {
+                const usernameInput = $("#username").val() as string;
+                const passwordInput = $("#password").val() as string;
 
-                    let success = false;
-                    let newUser = new User();
+                // If fields are empty, don't waste compute power.
+                if(usernameInput !== "" && passwordInput !== "") {
+
+                    let success : boolean = false;
+                    let newUser : User = new User();
                     // Reset message area.
                     messageArea.removeClass("").text("");
 
@@ -603,7 +624,7 @@ Description: Main javascript file for Harmony Hub.
 
                             // check if the username and password text fields from the form match the user and password from
                             // the JSON user.
-                            if (username.value === user.Username && password.value === user.Password) {
+                            if (usernameInput === user.Username && passwordInput === user.Password) {
 
                                 // store the data from the matching user in the JSON file in this User Object
                                 newUser.fromJSON(user);
@@ -613,7 +634,7 @@ Description: Main javascript file for Harmony Hub.
                         }
                         if (success) {
                             // create a user object to serialize it into local storage.
-                            sessionStorage.setItem("user", newUser.serialize());
+                            sessionStorage.setItem("user", newUser.serialize()!);
                             // Redirect with appended success message to url
                             location.href = "index.html#loginSuccess";
                         } else {
@@ -636,23 +657,22 @@ Description: Main javascript file for Harmony Hub.
      */
     function validateRegisterForm() {
         // Defining regex patterns to match the ones in HTML input fields
-        let usernamePattern = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
-        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
-        let phonePattern = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
-        let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}$/;
+        let usernamePattern:RegExp = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
+        let emailPattern:RegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
+        let phonePattern:RegExp = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+        let passwordPattern :RegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}$/;
 
-        let username = $("#username").val().trim();
-        let email = $("#email").val().trim();
-        let phone = $("#phone").val().trim();
-        let password = $("#password").val().trim();
+        const username: string = ($("#username").val() as string || "").trim();
+        const email: string = ($("#email").val() as string || "").trim();
+        const phone: string = ($("#phone").val() as string || "").trim();
+        const password: string = ($("#password").val() as string || "").trim();
 
         let registerForm = $("#register-form");
 
-        if ($("#firstName").val().trim() === "") {
+        if (($("#firstName").val() as string ?? "").trim() === "") {
             registerForm.addClass('was-validated');
             return false;
-        }
-        else if ($("#lastName").val().trim() === "") {
+        } else if (($("#lastName").val() as string ?? "").trim() === "") {
             registerForm.addClass('was-validated');
             return false;
         }
@@ -699,12 +719,13 @@ Description: Main javascript file for Harmony Hub.
             } else {
 
                 // Fetch the valid data from form
-                let firstname = $("#firstName").val().trim();
-                let lastname = $("#lastName").val().trim();
-                let username = $("#username").val().trim();
-                let email = $("#email").val().trim();
-                let phone = $("#phone").val().trim();
-                let password = $("#password").val().trim();
+                let firstname = ($("#firstName").val() as string ?? "").trim();
+                let lastname = ($("#lastName").val() as string ?? "").trim();
+                let username = ($("#username").val() as string ?? "").trim();
+                let email = ($("#email").val() as string ?? "").trim();
+                let phone = ($("#phone").val() as string ?? "").trim();
+                let password = ($("#password").val() as string ?? "").trim();
+
 
                 // Create a user object with it for future storage into users.JSON.
                 let newlyRegisteredUser = new User(firstname, lastname, username, email, phone, password);
@@ -732,8 +753,17 @@ Description: Main javascript file for Harmony Hub.
                 // Access the 'events' array within the JSON
                 const events = data.events;
 
+                // Defining an interface data type for typescript
+                interface EventItem {
+                    image: string;
+                    month: string;
+                    day: string;
+                    title: string;
+                    subtitle: string;
+                    learnMoreLink: string;
+                }
                 // For each event item in the json create an event card with the data
-                events.forEach(item => {
+                events.forEach((item : EventItem) => {
                     const card = document.createElement('div');
                     card.className = 'col-md-4 on-hover';
 
@@ -746,22 +776,33 @@ Description: Main javascript file for Harmony Hub.
                         <a href="${item.learnMoreLink}" class="text-decoration-none linking text-themecolor mt-2">Learn More</a>
                     </div>
                 `;
-                    container.appendChild(card);
+                    if (container instanceof HTMLElement) { // Ensure container is HTMLElement
+                        container.appendChild(card);
+                    }
                 });
             })
             .catch(error => console.error('Error fetching data:', error));
     }
 
     /**
+     * GalleryItem interface to define a data. For typescript defintions.
+     */
+    interface GalleryItem {
+        image: string;
+        title: string;
+    }
+    /**
      * This function will be called when the title matches the gallery page.
      *
      */
     function DisplayGalleryPage() {
         fetch('./data/gallery.json')
+
             .then(response => response.json())
             .then(data => {
                 const container = document.querySelector('#dynamic-gallery-container');
-                data.gallery.forEach((item, index) => {
+
+                data.gallery.forEach((item : GalleryItem, index : GalleryItem) => {
                     // Use Bootstrap's grid system to allocate 4 columns per item for medium devices and up
                     const col = document.createElement('div');
                     col.className = 'col-12 col-md-4 mb-4';
@@ -771,7 +812,9 @@ Description: Main javascript file for Harmony Hub.
                     <img src="${item.image}" class="img-fluid" alt="${item.title}">
                 </a>
             `;
-                    container.appendChild(col);
+                    if (container != null){
+                        container.appendChild(col);
+                    }
                 });
 
                 setupLightboxModal(data.gallery);
@@ -783,20 +826,20 @@ Description: Main javascript file for Harmony Hub.
      * This function sets up the lightbox modal for the gallery page
      * @param galleryItems
      */
-    function setupLightboxModal(galleryItems) {
+    function setupLightboxModal(galleryItems : GalleryItem[]) {
         document.querySelectorAll('.gallery-item').forEach(item => {
-            item.addEventListener('click', function (e) {
+            item.addEventListener('click', function (this: HTMLElement, e:Event) {
                 e.preventDefault();
-                const index = parseInt(this.getAttribute('data-index'));
+                const index:number = parseInt(this.getAttribute('data-index')!);
                 updateCarousel(index, galleryItems);
                 $('#lightbox-modal').modal('show');
             });
         });
 
         // Fullscreen toggle buttons
-        const enlargeBtn = document.querySelector('.btn-fullscreen-enlarge');
-        const exitBtn = document.querySelector('.btn-fullscreen-exit');
-        const modalDialog = document.querySelector('#lightbox-modal .modal-dialog');
+        const enlargeBtn = document.querySelector('.btn-fullscreen-enlarge')!;
+        const exitBtn = document.querySelector('.btn-fullscreen-exit')!;
+        const modalDialog = document.querySelector('#lightbox-modal .modal-dialog')!;
 
         enlargeBtn.addEventListener('click', function() {
             modalDialog.classList.add('modal-fullscreen');
@@ -823,10 +866,15 @@ Description: Main javascript file for Harmony Hub.
      * @param selectedIndex
      * @param galleryItems
      */
-    function updateCarousel(selectedIndex, galleryItems) {
+    function updateCarousel(selectedIndex: number, galleryItems: GalleryItem[]) {
         const indicatorsContainer = document.querySelector('#lightboxCarousel .carousel-indicators');
         const innerContainer = document.querySelector('#lightboxCarousel .carousel-inner');
 
+
+        if (!indicatorsContainer || !innerContainer) {
+            console.error('Could not find carousel containers.');
+            return;
+        }
         // Reset carousel content
         indicatorsContainer.innerHTML = '';
         innerContainer.innerHTML = '';
@@ -868,8 +916,8 @@ Description: Main javascript file for Harmony Hub.
          */
         $("#search-input").on("input", function() {
 
-            const query = $(this).val().toLowerCase();
-            const resultsContainer = $("#search-dropdown");
+            const query: string = $(this).val()?.toString().toLowerCase() || '';
+            const resultsContainer: JQuery<HTMLElement> = $("#search-dropdown");
 
             // If the query is empty, reset the child <li> elements and hide the <ul> parent because it's empty.
             if (query === '') {
