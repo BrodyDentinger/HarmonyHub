@@ -1,7 +1,7 @@
 {
   "gallery": [
     {
-      "image": "/client/assets/images/gallery1.jpg",
+      "image": "/assets/images/gallery1.jpg",
       "title": "Thanksgiving Feast",
       "subtitle": "Short description of Event 1",
       "day": "15",
@@ -9,7 +9,7 @@
       "learnMoreLink": "http://example.com/event1"
     },
     {
-      "image": "/client/assets/images/gallery2.jpg",
+      "image": "/assets/images/gallery2.jpg",
       "title": "Terry Fox Run",
       "subtitle": "Short description of Event 2",
       "day": "23",
@@ -17,7 +17,7 @@
       "learnMoreLink": "http://example.com/event2"
     },
     {
-      "image": "/client/assets/images/gallery3.jpg",
+      "image": "/assets/images/gallery3.jpg",
       "title": "Community Garden Event",
       "subtitle": "Short description of Event 3",
       "day": "30",
@@ -25,7 +25,7 @@
       "learnMoreLink": "http://example.com/event3"
     },
     {
-      "image": "/client/assets/images/gallery4.jpg",
+      "image": "/assets/images/gallery4.jpg",
       "title": "Rock the Night Away",
       "subtitle": "Short description of Event 4",
       "day": "30",
@@ -33,7 +33,7 @@
       "learnMoreLink": "http://example.com/event3"
     },
     {
-      "image": "/client/assets/images/gallery5.jpg",
+      "image": "/assets/images/gallery5.jpg",
       "title": "Volleyball Tournament",
       "subtitle": "Short description of Event 5",
       "day": "30",
@@ -41,7 +41,7 @@
       "learnMoreLink": "http://example.com/event3"
     },
     {
-      "image": "/client/assets/images/gallery6.jpg",
+      "image": "/assets/images/gallery6.jpg",
       "title": "Snow Cone Day",
       "subtitle": "Short description of Event 6",
       "day": "30",

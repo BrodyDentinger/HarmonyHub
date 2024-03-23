@@ -3,7 +3,7 @@
 
   [
     {
-      "image": "/client/assets/images/event1.jpg",
+      "image": "/assets/images/event1.jpg",
       "day": "15",
       "month": "Jun",
       "title": "Seniors General Technology Seminar",
@@ -11,7 +11,7 @@
       "learnMoreLink": "#"
     },
     {
-      "image": "/client/assets/images/event2.jpg",
+      "image": "/assets/images/event2.jpg",
       "day": "27",
       "month": "July",
       "title": "Community Art Class",
@@ -19,7 +19,7 @@
       "learnMoreLink": "#"
     },
     {
-      "image": "/client/assets/images/event3.jpg",
+      "image": "/assets/images/event3.jpg",
       "day": "05",
       "month": "Aug",
       "title": "Community Nature Hike",

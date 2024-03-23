@@ -20,13 +20,13 @@ Description: Landing page for Harmony Hub.
 
 </head>
 
-<body>
+<body id = "<%= page %>">
     <!-- Import the header.html here.-->
     <header>
         <%- include('./components/header') %> <!-- the - means we want to execute this... = means render variable-->
     </header>
 
-    <main id = "<%= page %>">
+    <main>
         <%- include('./content/' + page) %>
     </main>
 

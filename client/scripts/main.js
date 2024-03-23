@@ -151,15 +151,15 @@ Description: Main javascript file for Harmony Hub.
         console.log("Called DisplayPortfolioPage...");
         // START DYNAMIC PORTFOLIO.HTML, PROJECT CARD POPULATION SECTION ------------------------------------
         // Initialize the project card objects to be stored in the array.
-        const project1 = new Project("Day Drop In", "General community drop-in, all ages", "/client/assets/images/project1image.png");
-        const project2 = new Project("Kids Sports Day", "Youth drop in for all sports.", "/client/assets/images/project2image.png");
-        const project3 = new Project("Hiking Adventure", "Community hike of the trails.", "/client/assets/images/project3image.png");
-        const project4 = new Project("Community Social", "Social with music, drinks, and snacks.", "/client/assets/images/project4image.jpg");
-        const project5 = new Project("Tennis Club", "Bi-Weekly tennis club.", "/client/assets/images/project5image.jpg");
-        const project6 = new Project("Pilates in the Park", "Workout and push each other!", "/client/assets/images/project6image.jpg");
-        const project7 = new Project("Basketball Tournament", "Above 16 Basketball.", "/client/assets/images/project7image.jpg");
-        const project8 = new Project("Sunset Mediation", "Led by a talented practitioner.", "/client/assets/images/project8image.jpg");
-        const project9 = new Project("Yoga", "Led by a talented practitioner.", "/client/assets/images/project9image.jpg");
+        const project1 = new Project("Day Drop In", "General community drop-in, all ages", "/assets/images/project1image.png");
+        const project2 = new Project("Kids Sports Day", "Youth drop in for all sports.", "/assets/images/project2image.png");
+        const project3 = new Project("Hiking Adventure", "Community hike of the trails.", "/assets/images/project3image.png");
+        const project4 = new Project("Community Social", "Social with music, drinks, and snacks.", "/assets/images/project4image.jpg");
+        const project5 = new Project("Tennis Club", "Bi-Weekly tennis club.", "/assets/images/project5image.jpg");
+        const project6 = new Project("Pilates in the Park", "Workout and push each other!", "/assets/images/project6image.jpg");
+        const project7 = new Project("Basketball Tournament", "Above 16 Basketball.", "/assets/images/project7image.jpg");
+        const project8 = new Project("Sunset Mediation", "Led by a talented practitioner.", "/assets/images/project8image.jpg");
+        const project9 = new Project("Yoga", "Led by a talented practitioner.", "/assets/images/project9image.jpg");
         project9.pushObjectToArray();
         project4.pushObjectToArray();
         project7.pushObjectToArray();
@@ -490,7 +490,7 @@ Description: Main javascript file for Harmony Hub.
      */
     function DisplayEventsPage() {
         console.log("DisplayEventsPage() called...");
-        fetch('../../client/data/events.json')
+        fetch('/data/events.json')
             .then(response => response.json())
             .then(data => {
             const container = document.querySelector('.row');
@@ -521,7 +521,7 @@ Description: Main javascript file for Harmony Hub.
      *
      */
     function DisplayGalleryPage() {
-        fetch('../../client/data/gallery.json')
+        fetch('/data/gallery.json')
             .then(response => response.json())
             .then(data => {
             const container = document.querySelector('#dynamic-gallery-container');
@@ -632,7 +632,7 @@ Description: Main javascript file for Harmony Hub.
             }
             // Use an ajax request to fetch the contentIndex.json
             $.ajax({
-                url: '../../client/data/contentIndex.json',
+                url: '/data/contentIndex.json',
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
