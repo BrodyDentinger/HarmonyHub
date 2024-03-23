@@ -1,0 +1,55 @@
+<!--
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
+File: index.html
+Description: Landing page for Harmony Hub.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> <%= title %>> </title>
+
+    <!-- CSS SECTION -->
+    <link rel = "stylesheet" href = "bootstrap/dist/css/bootstrap.min.css">
+    <link rel = "stylesheet" href = "@fortawesome/fontawesome-free/css/all.css">
+    <link rel="stylesheet" href="content/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+</head>
+
+<body>
+    <!-- Import the header.html here.-->
+    <header>
+        <%- include('./components/header') %> <!-- the - means we want to execute this... = means render variable-->
+    </header>
+
+    <main id = "<%= page %>">
+        <%- include('./content/' + page) %>
+    </main>
+
+    <footer id="footer-nav">
+        <%- include('./components/footer') %>
+    </footer>
+
+    <!-- SCRIPTING SECTION -->
+    <!-- Include Bootstrap JS -->
+    <script src="bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="axios/dist/axios.js"></script>
+    <script src = "jquery/dist/jquery.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/user.js"></script>
+    <script src="scripts/projectClass.js"></script>
+    <script src="scripts/newsArticle.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+</body>
+
+</html>
+
+
+
+

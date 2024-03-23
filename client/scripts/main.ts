@@ -15,122 +15,6 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
 (function():void {
 
 
-    // Using JavaScript, add a dynamic header nav bar, and a footer nav bar
-    document.addEventListener("DOMContentLoaded", function() {
-
-        // ADD HEADER NAV BAR SECTION --------------------------------------------------------
-        // Include header and attach to header-container. Header contains doctype, html, head, meta, title, css section,
-        // end head, starting body tag, and header nav bar.
-
-        // Using the axios library, we can get the header via a http request (get), and use it to import our header file.
-
-        axios.get("../../views/components/header.html")
-            .then((response: { data: string }) => {
-
-                // Insert the fetched HTML into the element with id 'header-container'
-                const headerContainer = document.getElementById("header-container")!;
-                headerContainer.innerHTML = response.data;
-
-                // Access the 'data-page-title' attribute from 'header-container'
-                let pageTitle :string |undefined = headerContainer.dataset.pageTitle;
-
-                // Set the document title dynamically based on the page title attribute
-                document.title = `${pageTitle}`;
-
-                $(`li>a:contains(${document.title})`).addClass("active").attr("aria-current", "page");
-
-                // Change the "Blog" word in our navbar to "News"
-                let BlogText :HTMLElement | null = document.getElementById("BlogText");
-
-                if(BlogText != null){
-                    BlogText.textContent = "News";
-                }
-
-                // Add a Careers Link to header
-                let CareerDiv :HTMLElement | null = document.getElementById("career-link-div");
-                let CareerAnchorTag = document.createElement("a");
-                CareerAnchorTag.setAttribute("class", "nav-link");
-                CareerAnchorTag.setAttribute("href", "#");
-                CareerAnchorTag.innerHTML = "Careers";
-
-                if(CareerDiv != null) {
-                    CareerDiv.appendChild(CareerAnchorTag);
-                }
-
-                CheckLogin();
-
-            })
-            .catch((error: unknown) => {
-                console.error("Error fetching header:", error);
-            });
-
-        // END HEADER NAV BAR SECTION --------------------------------------------------------
-
-
-        // ADD FOOTER NAV BAR SECTION --------------------------------------------------------
-
-        // Nav tag -----
-        // Create a variable to hold the parent/anchor footer tag in our index.html. Will append to this.
-        //let Footer = document.getElementById("footer-nav")
-
-        // Create a new nav element for the footer, and set its class to a Bootstrap navbar class
-        let FooterNavTag = document.createElement("nav");
-        FooterNavTag.setAttribute("class", "navbar fixed-bottom navbar-expand bg-body-tertiary");
-
-        // Anchor the nav element to the body
-        document.body.appendChild(FooterNavTag);
-
-        // Create a new div element for the navbar content
-        let FooterDivTag:HTMLDivElement = document.createElement("div");
-        FooterDivTag.setAttribute("class", "container-fluid");
-
-        // Anchor the div element to the nav element
-        FooterNavTag.appendChild(FooterDivTag);
-
-        // Create a new unordered list element for the navbar items
-        let FooterNavList:HTMLUListElement = document.createElement("ul");
-        FooterNavList.setAttribute("class", "navbar-nav mx-auto mb-2 mb-lg-0"); // Add 'navbar-nav' class here
-
-        // Anchor the list to the div element
-        FooterDivTag.appendChild(FooterNavList);
-
-        // Create a new anchor element for each navbar item
-
-        // Nav Item 1 - Privacy Policy
-        let FooterNavItem1 = document.createElement("li");
-        FooterNavItem1.setAttribute("class", "nav-item");
-        let FooterNavLink1 = document.createElement("a");
-        FooterNavLink1.setAttribute("class", "nav-link");
-        FooterNavLink1.href = "./privacypolicy.html";
-        FooterNavLink1.textContent = "Privacy Policy";
-        FooterNavItem1.appendChild(FooterNavLink1);
-        FooterNavList.appendChild(FooterNavItem1);
-
-        // Nav Item 2 - Terms of Service
-        let FooterNavItem2 = document.createElement("li");
-        FooterNavItem2.setAttribute("class", "nav-item");
-        let FooterNavLink2 = document.createElement("a");
-        FooterNavLink2.setAttribute("class", "nav-link");
-        FooterNavLink2.href = "./ToS.html";
-        FooterNavLink2.textContent = "Terms of Service";
-        FooterNavItem2.appendChild(FooterNavLink2);
-        FooterNavList.appendChild(FooterNavItem2);
-
-        // Nav Item 3 - Contact
-        let FooterNavItem3 = document.createElement("li");
-        FooterNavItem3.setAttribute("class", "nav-item");
-        let FooterNavLink3 = document.createElement("a");
-        FooterNavLink3.setAttribute("class", "nav-link");
-        FooterNavLink3.href = "./contact.html";
-        FooterNavLink3.textContent = "Contact";
-        FooterNavItem3.appendChild(FooterNavLink3);
-        FooterNavList.appendChild(FooterNavItem3);
-
-
-    });
-
-    // END DYNAMIC JAVASCRIPT FOOTER NAV BAR SECTION ----------------------------------------------------
-
     /**
      * This function will check the rating given by the user, and based on that rating, provide a
      *
@@ -947,45 +831,44 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
             });
         });
 
-        // Creating a switch that checks the title for the current page.
-        switch (document.title) {
-            case "Home":
+        // get the page id that the router is passing in through the ejs variable
+        let page_id = $("body")[0].getAttribute("id"); // body tags are in an array in the dom
+
+        CheckLogin();
+
+        // use the page id to determine which JS display function to call
+        switch(page_id){
+            case "home":
                 DisplayHomepage();
                 break;
-
-            case "Portfolio":
-                DisplayPortfolioPage();
-                break;
-
-            case "Services":
-                DisplayServicesPage();
-                break;
-
-            case "Team":
-                DisplayTeamPage();
-                break;
-
-            case "News":
-                DisplayNewsPage();
-                break;
-            case "Contact":
-                DisplayContactUsPage();
-                break;
-            case "Login":
-                DisplayLoginPage();
-                break;
-            case "Register":
-                DisplayRegisterPage();
-                break;
-            case "Events":
+            case "events":
                 DisplayEventsPage();
                 break;
-            case "Gallery":
+            case "contact":
+                DisplayContactUsPage();
+                break;
+            case "portfolio":
+                DisplayPortfolioPage();
+                break;
+            case "gallery":
                 DisplayGalleryPage();
+                break;
+            case "login":
+                DisplayLoginPage();
+                break;
+            case "news":
+                DisplayNewsPage();
+                break;
+            case "register":
+                DisplayRegisterPage();
+                break;
+            case "services":
+                DisplayServicesPage();
+                break;
+            case "team":
+                DisplayTeamPage();
                 break;
         }
     }
-
     window.addEventListener("load", Start);
-
 })()
