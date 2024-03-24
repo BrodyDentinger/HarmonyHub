@@ -58,7 +58,9 @@ router.get('/feedback_form', function(req, res, next) {
   res.render('index', { title: 'Feedback Form', page : 'feedback_form', displayName : '' });
 });
 
-
+router.get('/stats', function(req, res, next) {
+  res.render('index', { title: 'Statistics', page : 'stats', displayName : '' });
+});
 
 
 export default router;
