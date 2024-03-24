@@ -54,5 +54,11 @@ router.get('/ToS', function(req, res, next) {
   res.render('index', { title: 'Terms of Service', page : 'ToS', displayName : '' });
 });
 
+router.get('/feedback_form', function(req, res, next) {
+  res.render('index', { title: 'Feedback Form', page : 'feedback_form', displayName : '' });
+});
+
+
+
 
 export default router;

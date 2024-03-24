@@ -93,7 +93,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
 
         $("#logout").on("click", function(){
             sessionStorage.clear();
-            location.href = "../../views/content/login.html";
+            location.href = "/login";
         });
     }
 
@@ -344,7 +344,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
 
-        $.get("./feedback_form.html", function (html_data) {
+        $.get("/feedback_form", function (html_data) {
             // Insert the loaded content into the modal
             $("#feedbackModal").html(html_data);
 
@@ -353,7 +353,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
                 event.preventDefault();
 
                 // Keep the "Thank You" html data, and change the text asynchronously.
-                $.get("./feedback_form1.html", function (html_data) {
+                $.get("/feedback_form1", function (html_data) {
                     $("#feedbackModelQuestion1").html(html_data);
                 });
 
@@ -377,7 +377,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
 
                 CheckRating();
                 // Reset the form's contents to default... Request from original file.
-                $.get("./feedback_form.html", function (html_data) {
+                $.get("/feedback_form", function (html_data) {
                     $("#feedbackModal").html(html_data)
                 });
             });
@@ -462,7 +462,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
                     clearInterval(intervalId);
                     thankYouModal.hide();
                     // Redirect to Home page
-                    window.location.href = '../../views/content/index.html';
+                    window.location.href = '/index';
                 }
             }, 1000);
         });
@@ -501,7 +501,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
                     // JQuery version of an HTTP request
                     // function(data) = data already represents the returnText
                     // JQuery also already checks for 4 readystatechange, and 200 ok
-                    $.get("../../client/data/users.json", function (data) {
+                    $.get("/data/users.json", function (data) {
 
                         // loop through each user of the response json file
                         for (const user of data.users) {
@@ -520,7 +520,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
                             // create a user object to serialize it into local storage.
                             sessionStorage.setItem("user", newUser.serialize()!);
                             // Redirect with appended success message to url
-                            location.href = "index.html#loginSuccess";
+                            location.href = "/home#loginSuccess";
                         } else {
                             messageArea.addClass("alert alert-danger").text("Error: Invalid Credentials");
                         }
@@ -618,7 +618,7 @@ declare const axios: any; // Declares `axios` as any type, bypassing type checks
                 //sessionStorage.setItem("user", newlyRegisteredUser.serialize());
 
                 // Redirect login page with register in url
-                location.href = "login.html#registerSuccess";
+                location.href = "/home#registerSuccess";
             }
         });
     }

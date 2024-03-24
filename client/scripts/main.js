@@ -68,7 +68,7 @@ Description: Main javascript file for Harmony Hub.
         }
         $("#logout").on("click", function () {
             sessionStorage.clear();
-            location.href = "../../views/content/login.html";
+            location.href = "/login";
         });
     }
     /**
@@ -252,14 +252,14 @@ Description: Main javascript file for Harmony Hub.
      */
     function DisplayContactUsPage() {
         console.log("Called DisplayContactUsPage...");
-        $.get("./feedback_form.html", function (html_data) {
+        $.get("/feedback_form", function (html_data) {
             // Insert the loaded content into the modal
             $("#feedbackModal").html(html_data);
             // Submit button
             $(document).on("click", "#feedbackFormBtn", function (event) {
                 event.preventDefault();
                 // Keep the "Thank You" html data, and change the text asynchronously.
-                $.get("./feedback_form1.html", function (html_data) {
+                $.get("/feedback_form1", function (html_data) {
                     $("#feedbackModelQuestion1").html(html_data);
                 });
                 // change What is the main reason --> we look forward to implementing your feedback.
@@ -276,7 +276,7 @@ Description: Main javascript file for Harmony Hub.
             $(document).on("click", "#feedbackFormCloseBtn", function () {
                 CheckRating();
                 // Reset the form's contents to default... Request from original file.
-                $.get("./feedback_form.html", function (html_data) {
+                $.get("/feedback_form", function (html_data) {
                     $("#feedbackModal").html(html_data);
                 });
             });
@@ -349,7 +349,7 @@ Description: Main javascript file for Harmony Hub.
                     clearInterval(intervalId);
                     thankYouModal.hide();
                     // Redirect to Home page
-                    window.location.href = '../../views/content/index.html';
+                    window.location.href = '/index';
                 }
             }, 1000);
         });
@@ -379,7 +379,7 @@ Description: Main javascript file for Harmony Hub.
                 // JQuery version of an HTTP request
                 // function(data) = data already represents the returnText
                 // JQuery also already checks for 4 readystatechange, and 200 ok
-                $.get("../../client/data/users.json", function (data) {
+                $.get("/data/users.json", function (data) {
                     // loop through each user of the response json file
                     for (const user of data.users) {
                         // check if the username and password text fields from the form match the user and password from
@@ -395,7 +395,7 @@ Description: Main javascript file for Harmony Hub.
                         // create a user object to serialize it into local storage.
                         sessionStorage.setItem("user", newUser.serialize());
                         // Redirect with appended success message to url
-                        location.href = "index.html#loginSuccess";
+                        location.href = "/home#loginSuccess";
                     }
                     else {
                         messageArea.addClass("alert alert-danger").text("Error: Invalid Credentials");
@@ -480,7 +480,7 @@ Description: Main javascript file for Harmony Hub.
                 // Add to session storage to test functionality.
                 //sessionStorage.setItem("user", newlyRegisteredUser.serialize());
                 // Redirect login page with register in url
-                location.href = "login.html#registerSuccess";
+                location.href = "/home#registerSuccess";
             }
         });
     }
