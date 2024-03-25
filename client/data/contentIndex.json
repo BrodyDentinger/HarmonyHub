@@ -3,12 +3,12 @@
   [
     {
       "title" : "Home Page",
-      "url" : "/index",
+      "url" : "/home",
       "content" : "Description: Landing page for Harmony Hub. Harmony Hub Welcome to Harmony Hub Vibrant Energetic Community Experience"
     },
     {
       "title" : "Portfolio",
-      "url" : "./portfolio.html",
+      "url" : "./portfolio",
       "content" : "Description: Portfolio page for Harmony Hub. Portfolio Whatever you choose, you have an adventure waiting for you. Day Drop In General community drop-in, all ages. Kids Sports Day Youth drop in for all sports. Hiking Adventure Community hike of the trails. Community Social Social with music, drinks, and snacks. Tennis Club Bi-Weekly tennis club. Pilates in the Park Workout and push each other! Basketball Tournament Above 16 Basketball. Sunset Mediation Led by a talented practitioner. Yoga Led by a talented practitioner."
     },
     {

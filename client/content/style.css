@@ -288,12 +288,17 @@ body {
 /*teams page modal css ends*/
 
 .messageBox {
-    position: absolute;
-    top: 20px; /* Adjust as needed */
+    position: fixed;
+    top: 70px; /* Adjust as needed */
     left: 20px; /* Adjust as needed */
-    padding: 10px; /* Adjust as needed */
-    border-radius: 5px; /* Optional: adds rounded corners */
+    padding: .75rem 1.25rem;
+    border-radius: .25rem;
     z-index: 9999; /* Ensure it appears above everything */
+    width: fit-content;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    margin-bottom: 1rem;
 }
 
 .messageBox2 {

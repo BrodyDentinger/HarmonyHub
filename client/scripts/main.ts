@@ -12,6 +12,14 @@ Description: Main javascript file for Harmony Hub.
 
 (function():void {
 
+    function AuthGuard(){
+        let protected_routes = ["/stats"];
+        if(protected_routes.indexOf(location.pathname) > -1) { //reads path name everything after the port number
+            if (!sessionStorage.getItem("user")) {
+                location.href = "/login";
+            }
+        }
+    }
     /**
      * This function will check the rating given by the user, and based on that rating, provide a
      *
@@ -59,8 +67,6 @@ Description: Main javascript file for Harmony Hub.
 
         if(sessionStorage.getItem("user")){
 
-            //$('#login').attr('id', 'logout').attr('href', '#').text('Logout');
-
             // create a user object container
             let user = new User;
             // Fetch the session storage with the key User (as we've stored it from the login page function)
@@ -86,12 +92,20 @@ Description: Main javascript file for Harmony Hub.
             </li>
         `);
 
+            // Modify the empty statistics link to include the link and label
+            $('#statsLink').replaceWith(`
+            <li id = "statsLink" class="nav-item">
+                <a class="nav-link" href="/stats">Statistics</a>
+            </li>
+        `);
+
         }
 
         $("#logout").on("click", function(){
             sessionStorage.clear();
             location.href = "/login";
         });
+
     }
 
     /**
@@ -140,7 +154,8 @@ Description: Main javascript file for Harmony Hub.
             user.deserialize(userKey);
 
             // Query the login message div and add our welcome data.
-            $("#loginMessage").addClass("alert alert-light").text("Welcome " + user["firstName"] + "!");
+            $("#loginMessage").addClass("messageBox")
+                                    .text("Welcome " + user["firstName"] + "!");
 
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function() {
@@ -303,7 +318,7 @@ Description: Main javascript file for Harmony Hub.
         // Create 2 dummy objects of our news article class.
         const newsArticle1 = new NewsArticle(
             "Introduction to Harmony Hub!",
-            "./images/news1image.png",
+            "/assets/images/news1image.png",
             "Jane Doe",
             "January 15, 2024",
             "Learn about the exciting classes, services, and clubs we offer here." +
@@ -312,7 +327,7 @@ Description: Main javascript file for Harmony Hub.
 
         const newsArticle2 = new NewsArticle(
             "Harmony Hub Community Event",
-            "./images/news2image.jpg",
+            "/assets/images/news2image.jpg",
             "John Smith",
             "February 20, 2024",
             "Join us for a day of community bonding and fun activities at Harmony Hub! We'll have " +
@@ -809,29 +824,6 @@ Description: Main javascript file for Harmony Hub.
             }
         }
 
-        // Function to fetch data from the JSON file
-        /*async function fetchData(): Promise<number[]> {
-            try {
-
-                // AWAIT (pause) the function until data is fetched from the json
-                const response = await fetch('/data/statsData.json');
-                const data = await response.json();
-
-                // If our data traffic data is not empty and is of type array, set the array of data values
-                // for the chart equal to the array of data values in the JSON.
-                if (Array.isArray(data.traffic) && data.traffic.length > 0) {
-                    const monthlyTraffic = data.traffic[0];
-                    const trafficData: number[] = Object.values(monthlyTraffic);
-                    return trafficData;
-                } else {
-                    throw new Error('Invalid data format');
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                return []; // Return empty array as fallback
-            }
-        }*/
-
         // Function to update the chart with fetched data
         async function updateChart(jsonPath: string, arrayName: string, chartToUpdate: Chart) {
             const data = await fetchDataGeneric(jsonPath, arrayName);
@@ -1067,6 +1059,7 @@ Description: Main javascript file for Harmony Hub.
                 DisplayTeamPage();
                 break;
             case "stats":
+                AuthGuard();
                 DisplayStatsPage();
                 break;
         }
