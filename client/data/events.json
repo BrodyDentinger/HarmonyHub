@@ -8,7 +8,8 @@
       "month": "Jun",
       "title": "Seniors General Technology Seminar",
       "subtitle": "Come enjoy a relaxed, instructor-led, general technology seminar for our Senior members!",
-      "learnMoreLink": "#"
+      "learnMoreLink": "#",
+      "signUps" : 78
     },
     {
       "image": "/assets/images/event2.jpg",
@@ -16,7 +17,8 @@
       "month": "July",
       "title": "Community Art Class",
       "subtitle": "Special guest artist will be hosting a paint party for anyone looking to relax and create.",
-      "learnMoreLink": "#"
+      "learnMoreLink": "#",
+      "signUps" : 68
     },
     {
       "image": "/assets/images/event3.jpg",
@@ -24,7 +26,8 @@
       "month": "Aug",
       "title": "Community Nature Hike",
       "subtitle": "Get out in nature and experience something truly special while hiking our trails!",
-      "learnMoreLink": "#"
+      "learnMoreLink": "#",
+      "signUps" : 104
     }
   ]
 }

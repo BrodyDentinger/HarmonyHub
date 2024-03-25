@@ -6,6 +6,7 @@ File: main.js
 Description: Main javascript file for Harmony Hub.
 */
 "use strict";
+// IIFE
 (function () {
     /**
      * This function will check the rating given by the user, and based on that rating, provide a
@@ -611,6 +612,196 @@ Description: Main javascript file for Harmony Hub.
         });
     }
     /**
+     *
+     */
+    function DisplayStatsPage() {
+        async function fetchDataGeneric(jsonPath, arrayName) {
+            try {
+                // AWAIT (pause) the function until data is fetched from the json
+                const response = await fetch(jsonPath);
+                const data = await response.json();
+                const targetArray = data[arrayName];
+                // If our data traffic data is not empty and is of type array, set the array of data values
+                // for the chart equal to the array of data values in the JSON.
+                if (Array.isArray(targetArray) && targetArray.length > 0) {
+                    const fromJSONData = targetArray[0];
+                    const Data = Object.values(fromJSONData);
+                    return Data;
+                }
+                else {
+                    throw new Error('Invalid data format');
+                }
+            }
+            catch (error) {
+                console.error('Error fetching data:', error);
+                return []; // Return empty array as fallback
+            }
+        }
+        // Function to fetch data from the JSON file
+        /*async function fetchData(): Promise<number[]> {
+            try {
+
+                // AWAIT (pause) the function until data is fetched from the json
+                const response = await fetch('/data/statsData.json');
+                const data = await response.json();
+
+                // If our data traffic data is not empty and is of type array, set the array of data values
+                // for the chart equal to the array of data values in the JSON.
+                if (Array.isArray(data.traffic) && data.traffic.length > 0) {
+                    const monthlyTraffic = data.traffic[0];
+                    const trafficData: number[] = Object.values(monthlyTraffic);
+                    return trafficData;
+                } else {
+                    throw new Error('Invalid data format');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return []; // Return empty array as fallback
+            }
+        }*/
+        // Function to update the chart with fetched data
+        async function updateChart(jsonPath, arrayName, chartToUpdate) {
+            const data = await fetchDataGeneric(jsonPath, arrayName);
+            if (data.length > 0 && chartToUpdate.data && chartToUpdate.data.datasets) {
+                chartToUpdate.data.datasets[0].data = data;
+                chartToUpdate.update();
+            }
+        }
+        const ctx = document.getElementById('myChart');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                        label: 'Monthly Website Traffic',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(201, 203, 207, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)',
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)'
+                        ],
+                        borderWidth: 1,
+                    }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                }
+            }
+        });
+        // Update the chart with fetched data
+        updateChart('/data/statsData.json', 'traffic', chart);
+        const ctx2 = document.getElementById('myChart2');
+        const chart2 = new Chart(ctx2, {
+            type: 'polarArea',
+            data: {
+                labels: ['Gym Sports', 'Arts/Crafts', 'Outdoor Sports', 'Classes', 'Meeting Space', 'Clubs'],
+                datasets: [{
+                        label: 'User Usage Distribution',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(66,58,60,0.2)',
+                            'rgba(150,64,255,0.21)',
+                            'rgba(25,138,4,0.2)',
+                            'rgba(255,0,109,0.2)',
+                            'rgba(9,145,239,0.22)',
+                            'rgba(189,88,15,0.2)',
+                        ],
+                        borderWidth: 1,
+                    }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                }
+            }
+        });
+        updateChart('/data/statsData.json', 'userUsage', chart2);
+        async function fetchAndUpdateChart(chart) {
+            try {
+                const response = await fetch('/data/events.json');
+                const jsonData = await response.json();
+                const labels = jsonData.events.map((event) => event.title);
+                const data = jsonData.events.map((event) => event.signUps);
+                if (chart.data.datasets && chart.data.datasets.length > 0) {
+                    chart.data.labels = labels;
+                    chart.data.datasets.forEach((dataset) => {
+                        dataset.data = data;
+                    });
+                    chart.update();
+                }
+                else {
+                    console.error('Dataset is undefined or empty.');
+                }
+            }
+            catch (error) {
+                console.error('Error fetching or updating chart data:', error);
+            }
+        }
+        const ctx3 = document.getElementById('myChart3');
+        const chart3 = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                        label: 'Event Sign-Ups',
+                        data: [],
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        lineTension: 0.1,
+                    }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                }
+            }
+        });
+        fetchAndUpdateChart(chart3);
+    }
+    /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
      * given page's title, and call it's relevant DisplayFunction().
      * @return none
@@ -687,6 +878,9 @@ Description: Main javascript file for Harmony Hub.
                 break;
             case "team":
                 DisplayTeamPage();
+                break;
+            case "stats":
+                DisplayStatsPage();
                 break;
         }
     }

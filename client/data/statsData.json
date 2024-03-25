@@ -1,0 +1,28 @@
+{
+  "traffic": [
+    {
+      "Jan": 98,
+      "Feb": 105,
+      "Mar": 180,
+      "Apr": 250,
+      "May": 370,
+      "June": 576,
+      "July": 600,
+      "Aug": 587,
+      "Sept": 234,
+      "Oct": 165,
+      "Nov": 112,
+      "Dec": 80
+    }
+  ],
+  "userUsage": [
+    {
+      "Gym Sports" : 150,
+      "Arts and Crafts" : 126,
+      "Outdoor Sports" : 287,
+      "Classes" : 142,
+      "Meeting Space" : 85,
+      "Clubs" : 278
+    }
+  ]
+}

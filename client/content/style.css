@@ -553,4 +553,47 @@ body {
     color: #007bff; /* Change to your desired hover color */
 }
 
+.charts{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80vw;
+    height: 30vw;
+    display: flex; /* Use flexbox for centering vertically */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.chart_interior{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#myChart {
+    width: 100%; /* Ensure canvas fills its parent container */
+    height: 100%; /* Ensure canvas fills its parent container */
+}
+
+.chartsLower{
+    margin-left: auto;
+    margin-right: auto;
+    width: 50vw;
+    height: 20vw;
+    display: flex; /* Use flexbox for centering vertically */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.card-body {
+    height: 100%; /* This makes sure that the card body fills the card */
+}
+
+.card {
+    height: 100%; /* Ensures the card fills its parent */
+}
+
+/* Optional: Ensure canvas fills its container */
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
 
