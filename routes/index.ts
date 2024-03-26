@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'fs';
 const router = express.Router();
 
 /* GET home page. */
@@ -64,6 +65,55 @@ router.get('/stats', function(req, res, next) {
 
 router.get('/event_planning', function(req, res, next) {
   res.render('index', { title: 'Event Planning', page : 'event_planning', displayName : '' });
+});
+
+// POST ROUTES
+
+router.post('/addEvent', (req, res) => {
+
+  console.log("Post Event Active...")
+  // Extract data from the request
+  let title = req.body.title;
+  let owner = req.body.username;
+  let start = new Date(req.body.eventStart);
+  let end = new Date(req.body.eventEnd);
+  let description = req.body.eventDescription;
+
+  // Read the existing JSON file
+  fs.readFile('C:/Users/brody/Desktop/Durham College - Year 2 Winter/Web Dev - Client Side/HarmonyHub/client/data/calendarEvent.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error reading events.json');
+    }
+
+    // Parse the JSON data into a JavaScript object
+    let events = JSON.parse(data);
+
+    // Append the new record to the events array
+    let newEvent = {
+      id: events.length + 1,
+      owner: owner,
+      title: title,
+      start: start,
+      end: end,
+      description: description,
+      attendees: []
+    };
+    events.push(newEvent);
+
+    // Convert the modified JavaScript object back to a JSON string
+    let updatedEventsJSON = JSON.stringify(events);
+
+    // Write the updated JSON string back to the file
+    fs.writeFile('C:/Users/brody/Desktop/Durham College - Year 2 Winter/Web Dev - Client Side/HarmonyHub/client/data/calendarEvent.json', updatedEventsJSON, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error writing to events.json');
+      }
+      console.log('New event added successfully');
+      res.status(200).send('New event added successfully');
+    });
+  });
 });
 
 

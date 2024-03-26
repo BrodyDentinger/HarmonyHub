@@ -602,3 +602,7 @@ canvas {
     height: 100% !important;
 }
 
+#calendar{
+    height: 35vw;
+    width: 75vw;
+}

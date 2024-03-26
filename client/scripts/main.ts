@@ -812,31 +812,112 @@ Description: Main javascript file for Harmony Hub.
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: [
-                    {
-                        title: 'All Day Event',
-                        start: '2024-03-01'
-                    },
-                    {
-                        title: 'Long Event',
-                        start: '2024-03-07',
-                        end: '2024-03-10'
-                    },
-                    {
-                        groupId: '999',
-                        title: 'Repeating Event',
-                        start: '2024-03-09T16:00:00'
-                    }
-                ]
+
+                // pulling the event info from the json
+                events: '/data/calendarEvent.json',
+
+                // This is the clickable action on click of events
+                eventClick: function(info: { event: { title: string; }; }) {
+
+                    // info.event holds the event object
+                    alert('Event: ' + info.event.title);
+                }
             });
             calendar.render();
+
+        // Handle form submission
+        $('#addEventForm').on("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            // Get the username of user interacting with the form
+            let user = new User;
+            let userKey:string|null = sessionStorage.getItem("user");
+            if (userKey != null) {
+                user.deserialize(userKey);
+            }
+            let username = user["firstName"];
+
+            // Extract data from form
+            let title:string = $('#eventTitle').val() as string;
+            let owner = username;
+
+            // Assuming the date strings are in 'YYYY-MM-DD' or 'YYYY-MM-DDTHH:MM' format
+            let startInput = $('#eventStart').val() as string;
+            let endInput = $('#eventEnd').val() as string;
+            // Convert string to Date objects
+            let start: Date = new Date(startInput);
+            let end: Date = new Date(endInput);
+
+            let description = "";
+
+            // Create an eventCalendar object with this data
+            let newCalendarEvent = new CalendarEvent(1, owner, title, start, [], end, description);
+
+            // Convert it to JSON
+            //let eventData = newCalendarEvent.toJSON();
+
+            // Append it to the JSON file
+            const eventData = {
+                title: title,
+                username: username,
+                eventStart: start, // Example date format
+                eventEnd: end,   // Example date format
+                eventDescription: 'Event Description'
+            };
+
+            // Make a POST request using fetch
+            fetch('/addEvent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(eventData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add event');
+                    }
+                    // Handle successful response
+                    console.log('Event added successfully');
+                })
+                .catch(error => {
+                    console.error('Error adding event:', error);
+                });
+
+            // Add event to calendar
+            /*calendar.addEvent({
+                title: title,
+                start: start,
+                end: end || null // If end date is empty, set it to null
+            });*/
+
+            // INSTEAD OF ABOVE (non persistent), need to add to the json.
+
+            // Close the modal
+            $('#addEventModal').modal('hide');
+
+            let addEventForm = $('#addEventForm')[0] as HTMLFormElement;
+            // Clear form fields
+            addEventForm.reset();
+
+            location.href = "/event_planning"
+        });
+
+        calendar.render();
+
     }
 
     /**
-     *
+     * Scripts specific to the stats page
      */
     function DisplayStatsPage(){
 
+        /**
+         * Fetches an array of numbered data from a json file to be used to update a chart.js chart object
+         * @param jsonPath the path of the json file to be fetched
+         * @param arrayName the name of the array in the json to be accessed
+         * @returns Data an array of numbers returned from the json file
+         */
         async function fetchDataGeneric(jsonPath : string, arrayName : string): Promise<number[]> {
             try {
 
@@ -861,7 +942,13 @@ Description: Main javascript file for Harmony Hub.
             }
         }
 
-        // Function to update the chart with fetched data
+        /**
+         * Updates a chart.js Chart object by calling fetchDataGeneric(), which fetches data from a json file,
+         * and uses it to update the chart's data values.
+         * @param jsonPath the path to the json resource to fetch
+         * @param arrayName the name of the array you are accessing from the json
+         * @param chartToUpdate the chart.js Chart object to update with the json Data
+         */
         async function updateChart(jsonPath: string, arrayName: string, chartToUpdate: Chart) {
             const data = await fetchDataGeneric(jsonPath, arrayName);
             if (data.length > 0 && chartToUpdate.data && chartToUpdate.data.datasets) {
@@ -961,6 +1048,11 @@ Description: Main javascript file for Harmony Hub.
 
         updateChart('/data/statsData.json', 'userUsage', chart2);
 
+        /**
+         * Asynchronously fetches data from a json file to update BOTH the chart labels and the values.
+         * Utilizes map which differentiates it from the generic fetchDataGeneric().
+         * @param chart the chart.js chart to update
+         */
         async function fetchAndUpdateChart(chart: Chart) {
             try {
                 const response = await fetch('/data/events.json');

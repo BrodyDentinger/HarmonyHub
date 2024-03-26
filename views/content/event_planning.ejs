@@ -1,22 +1,60 @@
-<div class="blog-home2 mx-5 mb-4">
+<div class = "container-fluid mx-auto">
+    <div class="container-fluid mx-auto">
+        <div class="row">
+            <nav class="col-lg-3 col-xl-2 d-lg-flex flex-lg-column align-items-lg-start sidebar position-fixed mt-5">
+                <!-- Sidebar content goes here -->
+                <div class="sidebar-header grey">
+                    <h1 class="mb-1 mb-lg-2 f1 fw-600">Community Event Planner</h1>
+                    <p class="col-sm-8 col-lg-12 mx-auto mb-0 mb-lg-4">
+                        View and add events to share them with the Harmony Hub Community!
+                    </p>
+                </div>
+            </nav>
+        </div>
+    </div>
 
-    <div class="container-fluid">
-        <!-- Row  -->
+    <div class="container-fluid mx-auto">
         <div class="row justify-content-center">
-            <!-- Column -->
-            <div class="col-md-8 text-center">
-
-                <h3 class="my-3">Event Planning</h3>
-                Propose and Attend Events!
+            <div class="col-md-8">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                    Add Event
+                </button>
+                <div id="calendar"></div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div id="calendar"></div>
+<!-- Modal -->
+<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Event</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form id="addEventForm">
+                    <div class="form-group">
+                        <label for="eventTitle">Title</label>
+                        <input type="text" class="form-control" id="eventTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventStart">Start Date</label>
+                        <input type="datetime-local" class="form-control" id="eventStart" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="eventEnd">End Date</label>
+                        <input type="datetime-local" class="form-control" id="eventEnd">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Event</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
