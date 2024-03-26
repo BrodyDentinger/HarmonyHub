@@ -795,6 +795,33 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
+    function displayEventModal(event: { id: string; title: string; owner: any; start: any;}) {
+        // Get the modal element
+        let modal = document.getElementById('viewEventModal')!;
+
+        // Check if the modal exists
+        if (modal != null) {
+
+            let eventTitle = modal.querySelector('.modal-title')!;
+            let eventID = modal.querySelector('.modal-id')!;
+            let eventOwner = modal.querySelector('.modal-owner')!;
+            let eventDate = modal.querySelector('.modal-date')!;
+
+            // Set the title and other information in the modal
+            eventTitle.textContent = event.title;
+            eventID.textContent = event.id;
+            eventOwner.textContent = event.owner;
+            eventDate.textContent = event.start;
+
+            // Show the modal
+            // @ts-ignore
+            let modalInstance = new bootstrap.Modal(modal);
+            modalInstance.show();
+        } else {
+            console.error('Modal element not found.');
+        }
+    }
+
     /**
      *
      *
@@ -817,10 +844,33 @@ Description: Main javascript file for Harmony Hub.
                 events: '/data/calendarEvent.json',
 
                 // This is the clickable action on click of events
-                eventClick: function(info: { event: { title: string; }; }) {
+                eventClick: function(info: { event: { id: string; title: string; owner: string; start: any;}; }) {
+
+                    // The specific ID of the clicked event from the JSON File
+                    console.log(info.event.owner);
+
+                    // Fetch the JSON data associated with the events
+                    fetch('/data/calendarEvent.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Find the event data with matching ID
+                            let clickedEventData = data.find((event: { id: any; }) => event.id === info.event.id);
+
+                            if(clickedEventData){
+                                // Render the modal with event information
+                                console.log(clickedEventData.owner);
+                            }
+                            else{
+                                console.log("No records found.");
+                            }
+
+                        })
+                        .catch(error => {
+                            console.error('Error fetching event data:', error);
+                        });
 
                     // info.event holds the event object
-                    alert('Event: ' + info.event.title);
+                    displayEventModal(info.event);
                 }
             });
             calendar.render();
@@ -847,22 +897,15 @@ Description: Main javascript file for Harmony Hub.
             // Convert string to Date objects
             let start: Date = new Date(startInput);
             let end: Date = new Date(endInput);
-
-            let description = "";
-
-            // Create an eventCalendar object with this data
-            let newCalendarEvent = new CalendarEvent(1, owner, title, start, [], end, description);
-
-            // Convert it to JSON
-            //let eventData = newCalendarEvent.toJSON();
+            let description = "Event Description";
 
             // Append it to the JSON file
             const eventData = {
                 title: title,
                 username: username,
-                eventStart: start, // Example date format
-                eventEnd: end,   // Example date format
-                eventDescription: 'Event Description'
+                eventStart: start,
+                eventEnd: end,
+                eventDescription: description
             };
 
             // Make a POST request using fetch
@@ -884,15 +927,6 @@ Description: Main javascript file for Harmony Hub.
                     console.error('Error adding event:', error);
                 });
 
-            // Add event to calendar
-            /*calendar.addEvent({
-                title: title,
-                start: start,
-                end: end || null // If end date is empty, set it to null
-            });*/
-
-            // INSTEAD OF ABOVE (non persistent), need to add to the json.
-
             // Close the modal
             $('#addEventModal').modal('hide');
 
@@ -900,6 +934,7 @@ Description: Main javascript file for Harmony Hub.
             // Clear form fields
             addEventForm.reset();
 
+            // refresh the page for calendar re-render
             location.href = "/event_planning"
         });
 

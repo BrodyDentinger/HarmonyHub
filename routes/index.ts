@@ -72,6 +72,7 @@ router.get('/event_planning', function(req, res, next) {
 router.post('/addEvent', (req, res) => {
 
   console.log("Post Event Active...")
+
   // Extract data from the request
   let title = req.body.title;
   let owner = req.body.username;
