@@ -10,8 +10,8 @@ router.get('/home', function(req, res, next) {
   res.render('index', { title: 'Home', page : 'home', displayName : '' });
 });
 
-router.get('/events', function(req, res, next) {
-  res.render('index', { title: 'Events', page : 'events', displayName : '' });
+router.get('/ourEvents', function(req, res, next) {
+  res.render('index', { title: 'Our Events', page : 'ourEvents', displayName : '' });
 });
 
 router.get('/contact', function(req, res, next) {
@@ -60,6 +60,10 @@ router.get('/feedback_form', function(req, res, next) {
 
 router.get('/stats', function(req, res, next) {
   res.render('index', { title: 'Statistics', page : 'stats', displayName : '' });
+});
+
+router.get('/event_planning', function(req, res, next) {
+  res.render('index', { title: 'Event Planning', page : 'event_planning', displayName : '' });
 });
 
 

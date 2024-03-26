@@ -13,7 +13,7 @@ Description: Main javascript file for Harmony Hub.
 (function():void {
 
     function AuthGuard(){
-        let protected_routes = ["/stats"];
+        let protected_routes = ["/stats", "/event_planning"];
         if(protected_routes.indexOf(location.pathname) > -1) { //reads path name everything after the port number
             if (!sessionStorage.getItem("user")) {
                 location.href = "/login";
@@ -797,6 +797,43 @@ Description: Main javascript file for Harmony Hub.
 
     /**
      *
+     *
+     */
+    function DisplayEventPlanningPage(){
+        console.log("DisplayEventPlanning() called...")
+
+            let calendarEl = document.getElementById('calendar');
+            // @ts-ignore
+            let calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                initialDate: '2024-03-07',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2024-03-01'
+                    },
+                    {
+                        title: 'Long Event',
+                        start: '2024-03-07',
+                        end: '2024-03-10'
+                    },
+                    {
+                        groupId: '999',
+                        title: 'Repeating Event',
+                        start: '2024-03-09T16:00:00'
+                    }
+                ]
+            });
+            calendar.render();
+    }
+
+    /**
+     *
      */
     function DisplayStatsPage(){
 
@@ -1031,7 +1068,7 @@ Description: Main javascript file for Harmony Hub.
             case "home":
                 DisplayHomepage();
                 break;
-            case "events":
+            case "ourEvents":
                 DisplayEventsPage();
                 break;
             case "contact":
@@ -1061,6 +1098,10 @@ Description: Main javascript file for Harmony Hub.
             case "stats":
                 AuthGuard();
                 DisplayStatsPage();
+                break;
+            case "event_planning":
+                AuthGuard();
+                DisplayEventPlanningPage();
                 break;
         }
     }
