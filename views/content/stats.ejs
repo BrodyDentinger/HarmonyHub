@@ -1,11 +1,15 @@
-<div class="blog-home2 mx-5 mb-4">
-    <div class="container-fluid">
-        <!-- Row  -->
-        <div class="row justify-content-center">
-            <!-- Column -->
-            <div class="col-md-8 text-center">
-                <h3 class="my-3">Our Statistics</h3>
-                Here is a collection of charts to visualize how the community is engaging in Harmony Hub.
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="statistics" role="tabpanel" aria-labelledby="statistics-tab">
+        <div class="blog-home2 mx-5 mb-4">
+            <div class="container-fluid">
+                <!-- Row  -->
+                <div class="row justify-content-center">
+                    <!-- Column -->
+                    <div class="col-md-8 text-center">
+                        <h3 class="my-3">Our Statistics</h3>
+                        Here is a collection of charts to visualize how the community is engaging in Harmony Hub.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -14,32 +18,44 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <canvas id="myChart"></canvas>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link show active" id="chart1-tab" data-bs-toggle="tab" data-bs-target="#chart1" type="button" role="tab" aria-controls="chart1" aria-selected="true">Monthly Traffic</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="chart2-tab" data-bs-toggle="tab" data-bs-target="#chart2" type="button" role="tab" aria-controls="chart2" aria-selected="false">Usage Distribution</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="chart3-tab" data-bs-toggle="tab" data-bs-target="#chart3" type="button" role="tab" aria-controls="chart3" aria-selected="false">Event Distribution</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="chart1" role="tabpanel" aria-labelledby="chart1-tab">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="chart2" role="tabpanel" aria-labelledby="chart2-tab">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <canvas id="myChart2"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="chart3" role="tabpanel" aria-labelledby="chart3-tab">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <canvas id="myChart3"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-md-6 mb-4" style="display: flex;">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                        <canvas id="myChart2"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4" style="display: flex;">
-                <div class="card" style="width: 100%;">
-                    <div class="card-body">
-                        <canvas id="myChart3"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+

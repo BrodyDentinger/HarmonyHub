@@ -74,11 +74,50 @@
                 <h5 id = "eventOwner" class="modal-owner"></h5>
                 <label for="eventStart">Start Date</label>
                 <h5 id = "eventStart" class="modal-date"></h5>
+                <label for="eventAttendees">Attending:</label>
+                <h5 id = "eventAttendees" class="modal-attendees"></h5>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Attend</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Delete</button>
+                <div id = "feedbackMessage"></div>
+                <button type="button" class="btn btn-primary attend-event-button" data-bs-dismiss="modal">Attend</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger delete-event-button">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for successful signup to an event -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>You have successfully signed up for the event.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for successful unattend to an event -->
+<div class="modal fade" id="unattendSuccessModal" tabindex="-1" aria-labelledby="unattendSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="unattendSuccessModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>You have successfully unattended the event.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
             </div>
         </div>
     </div>

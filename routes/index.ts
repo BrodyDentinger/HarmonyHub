@@ -117,5 +117,21 @@ router.post('/addEvent', (req, res) => {
   });
 });
 
+// Update events endpoint
+router.post('/updateEvents', (req, res) => {
+  // Assuming req.body contains the updated events data
+  const updatedEvents = req.body;
+
+  // Write the updated events data to the JSON file
+  fs.writeFile('C:/Users/brody/Desktop/Durham College - Year 2 Winter/Web Dev - Client Side/HarmonyHub/client/data/calendarEvent.json', JSON.stringify(updatedEvents), err => {
+    if (err) {
+      console.error('Error updating events:', err);
+      res.status(500).send('Internal server error');
+    } else {
+      console.log('Events updated successfully');
+      res.status(200).send('Events updated successfully');
+    }
+  });
+});
 
 export default router;

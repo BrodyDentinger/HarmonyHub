@@ -20,7 +20,7 @@
             {
               "firstName" : "Admin",
               "LastName" : "Admin",
-              "Username" : "admin",
+              "Username" : "Admin",
               "EmailAddress" : "admin@example.com",
               "PhoneNumber" : "123-456-7892",
               "Password" : "555555"

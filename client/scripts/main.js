@@ -76,7 +76,7 @@ Description: Main javascript file for Harmony Hub.
             // Modify the empty statistics link to include the link and label
             $('#statsLink').replaceWith(`
             <li id = "statsLink" class="nav-item">
-                <a class="nav-link" href="/stats">Statistics</a>
+                <a class="nav-link" href="/stats"><i class="fa-solid fa-chart-line"></i> Statistics</a>
             </li>
         `);
         }
@@ -625,6 +625,140 @@ Description: Main javascript file for Harmony Hub.
         `;
         });
     }
+    function AttendEventButton(event) {
+        let modal = document.getElementById('viewEventModal');
+        const attendButton = modal.querySelector('.attend-event-button');
+        const feedbackMessageArea = modal.querySelector('#feedbackMessage');
+        let user = new User;
+        let userKey = sessionStorage.getItem("user");
+        if (userKey != null) {
+            user.deserialize(userKey);
+        }
+        let username = user["firstName"];
+        // Add event listener to attend button
+        attendButton.addEventListener('click', function () {
+            // User is NOT attending the event
+            if (!event.attendees.includes(username)) {
+                // If not attending, add the user to the attendees list
+                event.attendees.push(username);
+                // Update the JSON file with the modified data
+                fetch('/updateEvents', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify([event]) // Update data with modified event
+                })
+                    .then(response => {
+                    if (response.ok) {
+                        console.log('User added to attendees successfully');
+                        $('#successModal').modal('show');
+                    }
+                    else {
+                        console.error('Failed to add user to attendees');
+                    }
+                })
+                    .catch(error => {
+                    console.error('Error updating events:', error);
+                });
+                // User is already attending the event (Unattend Functionality here)
+            }
+            else {
+                // Find the index of the user in the attendees list
+                const index = event.attendees.indexOf(username);
+                // Remove the user from the attendees list
+                if (index !== -1) {
+                    event.attendees.splice(index, 1);
+                    // Update the JSON file with the modified data
+                    fetch('/updateEvents', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify([event]) // Update data with modified event
+                    })
+                        .then(response => {
+                        if (response.ok) {
+                            console.log('User removed from attendees successfully');
+                            // Optionally, you can update the modal display to show that the user is no longer attending
+                        }
+                        else {
+                            console.error('Failed to remove user from attendees');
+                        }
+                    })
+                        .catch(error => {
+                        console.error('Error updating events:', error);
+                    });
+                }
+                $('#unattendSuccessModal').modal('show');
+            }
+        });
+    }
+    function DeleteEventButton(event) {
+        let modal = document.getElementById('viewEventModal');
+        let deleteButton = modal.querySelector('.delete-event-button');
+        const feedbackMessageArea = modal.querySelector('#feedbackMessage');
+        let user = new User;
+        let userKey = sessionStorage.getItem("user");
+        if (userKey != null) {
+            user.deserialize(userKey);
+        }
+        let username = user["firstName"];
+        // Add event listener to delete button
+        deleteButton.addEventListener('click', function () {
+            // Only proceed if the logged in username matches the event's owner
+            if (event.owner == username) {
+                // Fetch the JSON data associated with the events
+                fetch('/data/calendarEvent.json')
+                    .then(response => response.json())
+                    .then(data => {
+                    // Find the index of the event data with matching ID
+                    const index = data.findIndex((e) => e.id == event.id);
+                    // If the event is found, proceed with delete action
+                    if (index !== -1) {
+                        // Remove the event from the array
+                        data.splice(index, 1);
+                        // Update the JSON file with the modified data
+                        fetch('/updateEvents', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        })
+                            .then(response => {
+                            if (response.ok) {
+                                console.log('Event deleted successfully');
+                                location.href = "/event_planning";
+                            }
+                            else {
+                                console.error('Failed to delete event');
+                            }
+                        })
+                            .catch(error => {
+                            console.error('Error updating events:', error);
+                        });
+                    }
+                    else {
+                        console.log('Event not found');
+                    }
+                })
+                    .catch(error => {
+                    console.error('Error fetching event data:', error);
+                });
+            }
+            else {
+                feedbackMessageArea.classList.add("alert");
+                feedbackMessageArea.classList.add("alert-danger");
+                feedbackMessageArea.setAttribute("id", "modalAlertMessage");
+                feedbackMessageArea.textContent = "You don't own this event!";
+                feedbackMessageArea.style.display = "block"; // Show the message
+                setTimeout(function () {
+                    feedbackMessageArea.style.display = "none";
+                }, 3000);
+            }
+        });
+    }
     function displayEventModal(event) {
         // Get the modal element
         let modal = document.getElementById('viewEventModal');
@@ -633,12 +767,37 @@ Description: Main javascript file for Harmony Hub.
             let eventTitle = modal.querySelector('.modal-title');
             let eventID = modal.querySelector('.modal-id');
             let eventOwner = modal.querySelector('.modal-owner');
+            let eventAttendees = modal.querySelector('.modal-attendees');
             let eventDate = modal.querySelector('.modal-date');
+            let attendButton = modal.querySelector('.attend-event-button');
+            // Our time is stored in ISO 8601 format. Must convert to local time
+            const inputTimeISO = event.start;
+            // Convert the input string to a Date object
+            const inputTime = new Date(inputTimeISO);
+            // Convert the time to Eastern Daylight Time (EDT)
+            const convertedTime = inputTime.toLocaleString('en-US', { timeZone: 'America/New_York' });
+            // Get the username of user interacting with the form
+            let user = new User;
+            let userKey = sessionStorage.getItem("user");
+            if (userKey != null) {
+                user.deserialize(userKey);
+            }
+            let username = user["firstName"];
+            const isUserAttending = event.attendees.includes(username);
+            if (isUserAttending) {
+                attendButton.textContent = "Unattend";
+            }
+            else {
+                attendButton.textContent = "Attend";
+            }
             // Set the title and other information in the modal
             eventTitle.textContent = event.title;
             eventID.textContent = event.id;
             eventOwner.textContent = event.owner;
-            eventDate.textContent = event.start;
+            eventDate.textContent = convertedTime;
+            eventAttendees.textContent = event.attendees.length.toString();
+            DeleteEventButton(event);
+            AttendEventButton(event);
             // Show the modal
             // @ts-ignore
             let modalInstance = new bootstrap.Modal(modal);
@@ -668,17 +827,20 @@ Description: Main javascript file for Harmony Hub.
             events: '/data/calendarEvent.json',
             // This is the clickable action on click of events
             eventClick: function (info) {
-                // The specific ID of the clicked event from the JSON File
-                console.log(info.event.owner);
                 // Fetch the JSON data associated with the events
                 fetch('/data/calendarEvent.json')
                     .then(response => response.json())
                     .then(data => {
                     // Find the event data with matching ID
-                    let clickedEventData = data.find((event) => event.id === info.event.id);
+                    let clickedEventData = data.find((event) => event.id == info.event.id);
+                    // Actions to occur if a record has been found matching the clicked event's ID
                     if (clickedEventData) {
                         // Render the modal with event information
                         console.log(clickedEventData.owner);
+                        console.log(clickedEventData.id);
+                        console.log(clickedEventData.attendees);
+                        // info.event holds the event object
+                        displayEventModal(clickedEventData);
                     }
                     else {
                         console.log("No records found.");
@@ -687,8 +849,6 @@ Description: Main javascript file for Harmony Hub.
                     .catch(error => {
                     console.error('Error fetching event data:', error);
                 });
-                // info.event holds the event object
-                displayEventModal(info.event);
             }
         });
         calendar.render();
