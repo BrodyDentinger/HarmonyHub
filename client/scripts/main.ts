@@ -795,6 +795,113 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
+    function EditEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}){
+
+        let editModal = document.getElementById('editEventModal')!;
+        let modal = document.getElementById('viewEventModal')!;
+        const editButton = modal.querySelector('.edit-event-button')!;
+        let user = new User;
+        let userKey: string | null = sessionStorage.getItem("user");
+        if (userKey != null) {
+            user.deserialize(userKey);
+        }
+        let username = user["firstName"];
+        let feedbackMessageArea: HTMLElement = modal.querySelector('#feedbackMessage')!;
+
+        editButton.addEventListener('click', function () {
+
+            console.log("Event Owner:  " + event.owner);
+            console.log("Event Owner:  " + username);
+            // User owns event
+
+            if(event.owner == username){
+
+                let editEventTitle = editModal.querySelector('.editEventTitle') as HTMLInputElement;
+                let editEventStart = editModal.querySelector('.editEventStart') as HTMLInputElement;
+                let editEventEnd = editModal.querySelector('.editEventEnd') as HTMLInputElement;
+                // Populate form fields with event data
+                editEventTitle.value = event.title;
+                const startDate = new Date(event.start);
+                const year = startDate.getFullYear();
+                const month = String(startDate.getMonth() + 1).padStart(2, '0');
+                const day = String(startDate.getDate()).padStart(2, '0');
+                const hours = String(startDate.getHours()).padStart(2, '0');
+                const minutes = String(startDate.getMinutes()).padStart(2, '0');
+                const startDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
+                editEventStart.value = startDateString;
+                editEventEnd.value = event.end;
+
+                let modalInstance = new bootstrap.Modal(editModal);
+                modalInstance.show();
+
+                // Add event listener for form submission
+                let deleteButton = editModal.querySelector('.saveChangesButton')!;
+                deleteButton.addEventListener('click', function () {
+
+                    // Extract values from input fields
+                    const newTitle = editEventTitle.value;
+                    const newStart = editEventStart.value;
+                    const newEnd = editEventEnd.value;
+
+                    // Fetch the JSON data associated with the events
+                    fetch('/data/calendarEvent.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Find the index of the event data with matching ID
+                            const index = data.findIndex((e: { id: any; }) => e.id === event.id);
+
+                            // If the event is found, proceed with edit action
+                            if (index !== -1) {
+                                // Update the event in the array
+                                data[index].title = newTitle;
+                                data[index].start = newStart;
+                                data[index].end = newEnd;
+
+                                // Update the JSON file with the modified data
+                                fetch('/updateEvents', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(data)
+                                })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            console.log('Event edited successfully');
+                                            location.href = "/event_planning";
+                                        } else {
+                                            console.error('Failed to edit event');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error updating events:', error);
+                                    });
+                            } else {
+                                console.log('Event not found');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching event data:', error);
+                        });
+                })
+            }
+            // User doesn't own event
+            else {
+                feedbackMessageArea.classList.add("alert");
+                feedbackMessageArea.classList.add("alert-danger");
+                feedbackMessageArea.setAttribute("id", "modalAlertMessage");
+                feedbackMessageArea.textContent = "You don't own this event!";
+                feedbackMessageArea.style.display = "block"; // Show the message
+
+                setTimeout(function () {
+                    feedbackMessageArea.style.display = "none";
+                }, 3000);
+            }
+
+            });
+    }
+
+
     function AttendEventButton(event: { id: string; title: string; owner: string; start: any; attendees: string[]}){
 
         let modal = document.getElementById('viewEventModal')!;
@@ -939,7 +1046,7 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
-    function displayEventModal(event: { id: string; title: string; owner: string; start: any; attendees: string[]}) {
+    function displayEventModal(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}) {
         // Get the modal element
         let modal = document.getElementById('viewEventModal')!;
 
@@ -985,6 +1092,8 @@ Description: Main javascript file for Harmony Hub.
             DeleteEventButton(event);
 
             AttendEventButton(event);
+
+            EditEventButton(event);
 
             // Show the modal
             // @ts-ignore
