@@ -638,7 +638,7 @@ Description: Main javascript file for Harmony Hub.
         let feedbackMessageArea = modal.querySelector('#feedbackMessage');
         editButton.addEventListener('click', function () {
             console.log("Event Owner:  " + event.owner);
-            console.log("Event Owner:  " + username);
+            console.log("Username:  " + username);
             // User owns event
             if (event.owner == username) {
                 let editEventTitle = editModal.querySelector('.editEventTitle');

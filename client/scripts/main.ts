@@ -811,7 +811,7 @@ Description: Main javascript file for Harmony Hub.
         editButton.addEventListener('click', function () {
 
             console.log("Event Owner:  " + event.owner);
-            console.log("Event Owner:  " + username);
+            console.log("Username:  " + username);
             // User owns event
 
             if(event.owner == username){
@@ -902,7 +902,7 @@ Description: Main javascript file for Harmony Hub.
     }
 
 
-    function AttendEventButton(event: { id: string; title: string; owner: string; start: any; attendees: string[]}){
+    function AttendEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}){
 
         let modal = document.getElementById('viewEventModal')!;
         const attendButton = modal.querySelector('.attend-event-button')!;
@@ -976,7 +976,7 @@ Description: Main javascript file for Harmony Hub.
         });
     }
 
-    function DeleteEventButton(event: { id: string; title: string; owner: string; start: any; attendees: string[]}){
+    function DeleteEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}){
 
         let modal = document.getElementById('viewEventModal')!;
         let deleteButton = modal.querySelector('.delete-event-button')!;

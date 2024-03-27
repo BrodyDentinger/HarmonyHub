@@ -21,6 +21,7 @@ app.use(cookieParser());
 // STATIC CONFIGURATION
 app.use(express.static(path.join(__dirname, "client")));      // serve static files from 'client' directory
 app.use(express.static(path.join(__dirname, "node_modules"))); // serve static files from 'node_modules' directory
+app.use(express.static(path.join(__dirname, "data")));
 
 // Stripping the URL so it DOES NOT include text after the hashtag. This is for passing "login success" or
 // other information when users first login or register for welcome messages etc.

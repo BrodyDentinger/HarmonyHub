@@ -81,7 +81,7 @@ router.post('/addEvent', (req, res) => {
   let description = req.body.eventDescription;
 
   // Read the existing JSON file
-  fs.readFile('C:/Users/brody/Desktop/Durham College - Year 2 Winter/Web Dev - Client Side/HarmonyHub/client/data/calendarEvent.json', 'utf8', (err, data) => {
+  fs.readFile('./client/data/calendarEvent.json', 'utf8', (err, data) => {
     if (err) {
       console.error(err);
       return res.status(500).send('Error reading events.json');
@@ -106,7 +106,7 @@ router.post('/addEvent', (req, res) => {
     let updatedEventsJSON = JSON.stringify(events);
 
     // Write the updated JSON string back to the file
-    fs.writeFile('C:/Users/brody/Desktop/Durham College - Year 2 Winter/Web Dev - Client Side/HarmonyHub/client/data/calendarEvent.json', updatedEventsJSON, (err) => {
+    fs.writeFile('./client/data/calendarEvent.json', updatedEventsJSON, (err) => {
       if (err) {
         console.error(err);
         return res.status(500).send('Error writing to events.json');
@@ -123,7 +123,7 @@ router.post('/updateEvents', (req, res) => {
   const updatedEvents = req.body;
 
   // Write the updated events data to the JSON file
-  fs.writeFile('C:/Users/brody/Desktop/Durham College - Year 2 Winter/Web Dev - Client Side/HarmonyHub/client/data/calendarEvent.json', JSON.stringify(updatedEvents), err => {
+  fs.writeFile('./client/data/calendarEvent.json', JSON.stringify(updatedEvents), err => {
     if (err) {
       console.error('Error updating events:', err);
       res.status(500).send('Internal server error');
