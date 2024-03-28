@@ -71,7 +71,7 @@ router.get('/event_planning', function(req, res, next) {
 
 router.post('/addEvent', (req, res) => {
 
-  console.log("Post Event Active...")
+  console.log("Post Event Active...");
 
   // Extract data from the request
   let title = req.body.title;
@@ -92,7 +92,7 @@ router.post('/addEvent', (req, res) => {
 
     // Append the new record to the events array
     let newEvent = {
-      id: events.length + 1,
+      id: Date.now(),
       owner: owner,
       title: title,
       start: start,

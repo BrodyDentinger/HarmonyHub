@@ -808,7 +808,7 @@ Description: Main javascript file for Harmony Hub.
         let username = user["firstName"];
         let feedbackMessageArea: HTMLElement = modal.querySelector('#feedbackMessage')!;
 
-        editButton.addEventListener('click', function () {
+        (editButton as HTMLElement).onclick = function() {
 
             console.log("Event Owner:  " + event.owner);
             console.log("Username:  " + username);
@@ -836,7 +836,8 @@ Description: Main javascript file for Harmony Hub.
 
                 // Add event listener for form submission
                 let deleteButton = editModal.querySelector('.saveChangesButton')!;
-                deleteButton.addEventListener('click', function () {
+
+                (deleteButton as HTMLElement).onclick = function() {
 
                     // Extract values from input fields
                     const newTitle = editEventTitle.value;
@@ -848,7 +849,7 @@ Description: Main javascript file for Harmony Hub.
                         .then(response => response.json())
                         .then(data => {
                             // Find the index of the event data with matching ID
-                            const index = data.findIndex((e: { id: any; }) => e.id === event.id);
+                            const index = data.findIndex((e: { id: any; }) => e.id == event.id);
 
                             // If the event is found, proceed with edit action
                             if (index !== -1) {
@@ -883,7 +884,7 @@ Description: Main javascript file for Harmony Hub.
                         .catch(error => {
                             console.error('Error fetching event data:', error);
                         });
-                })
+                }
             }
             // User doesn't own event
             else {
@@ -898,82 +899,71 @@ Description: Main javascript file for Harmony Hub.
                 }, 3000);
             }
 
-            });
+            };
     }
 
 
-    function AttendEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}){
-
-        let modal = document.getElementById('viewEventModal')!;
+    function AttendEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}): void {
+        const modal = document.getElementById('viewEventModal')!;
         const attendButton = modal.querySelector('.attend-event-button')!;
-        const feedbackMessageArea:HTMLElement = modal.querySelector('#feedbackMessage')!;
-        let user = new User;
-        let userKey:string|null = sessionStorage.getItem("user");
+        let user = new User();
+        const userKey: string | null = sessionStorage.getItem("user");
         if (userKey != null) {
             user.deserialize(userKey);
         }
-        let username = user["firstName"];
+        const username = user.firstName;
 
-        // Add event listener to attend button
+        (attendButton as HTMLElement).onclick = function() {
+            // Fetch the current list of all events
+            fetch('/data/calendarEvent.json')
+                .then(response => response.json())
+                .then((allEvents: typeof event[]) => {
+                    // Find the event being updated in the array of all events
+                    const eventIndex = allEvents.findIndex(e => e.id === event.id);
 
-        attendButton.addEventListener('click', function () {
+                    if (eventIndex !== -1) {
+                        // Determine if the user is already attending the event
+                        const isAttending = allEvents[eventIndex].attendees.includes(username);
 
-            // User is NOT attending the event
-            if (!event.attendees.includes(username)) {
-                // If not attending, add the user to the attendees list
-                event.attendees.push(username);
-
-                // Update the JSON file with the modified data
-                fetch('/updateEvents', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify([event]) // Update data with modified event
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log('User added to attendees successfully');
-                            $('#successModal').modal('show');
+                        // Update the attendance status
+                        if (!isAttending) {
+                            allEvents[eventIndex].attendees.push(username); // Add to attendees
                         } else {
-                            console.error('Failed to add user to attendees');
+                            const attendeeIndex = allEvents[eventIndex].attendees.indexOf(username);
+                            allEvents[eventIndex].attendees.splice(attendeeIndex, 1); // Remove from attendees
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error updating events:', error);
-                    });
 
-            // User is already attending the event (Unattend Functionality here)
-            } else {
-
-                // Find the index of the user in the attendees list
-                const index = event.attendees.indexOf(username);
-                // Remove the user from the attendees list
-                if (index !== -1) {
-                    event.attendees.splice(index, 1);
-                    // Update the JSON file with the modified data
-                    fetch('/updateEvents', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify([event]) // Update data with modified event
-                    })
-                        .then(response => {
-                            if (response.ok) {
-                                console.log('User removed from attendees successfully');
-                                // Optionally, you can update the modal display to show that the user is no longer attending
-                            } else {
-                                console.error('Failed to remove user from attendees');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error updating events:', error);
+                        // Update the JSON file with the modified list of events
+                        return fetch('/updateEvents', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(allEvents), // Send the updated array of events
                         });
-                }
-                $('#unattendSuccessModal').modal('show');
-            }
-        });
+                    } else {
+                        throw new Error('Event not found in the list');
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update event');
+                    }
+                    console.log('Event attendance updated successfully');
+
+                    // Provide feedback to the user
+                    if (!event.attendees.includes(username)) {
+                        console.log('User added to attendees successfully');
+                        $('#successModal').modal('show');
+                    } else {
+                        console.log('User removed from attendees successfully');
+                        $('#unattendSuccessModal').modal('show');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating events:', error);
+                });
+        };
     }
 
     function DeleteEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}){
@@ -989,7 +979,7 @@ Description: Main javascript file for Harmony Hub.
         let username = user["firstName"];
 
         // Add event listener to delete button
-        deleteButton.addEventListener('click', function () {
+        (deleteButton as HTMLElement).onclick = function() {
 
             // Only proceed if the logged in username matches the event's owner
             if(event.owner == username) {
@@ -1033,6 +1023,7 @@ Description: Main javascript file for Harmony Hub.
                     });
             }
             else{
+
                 feedbackMessageArea.classList.add("alert");
                 feedbackMessageArea.classList.add("alert-danger");
                 feedbackMessageArea.setAttribute("id", "modalAlertMessage");
@@ -1043,7 +1034,7 @@ Description: Main javascript file for Harmony Hub.
                     feedbackMessageArea.style.display = "none";
                 }, 3000);
             }
-        });
+        }
     }
 
     function displayEventModal(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}) {
@@ -1059,6 +1050,7 @@ Description: Main javascript file for Harmony Hub.
             let eventAttendees = modal.querySelector('.modal-attendees')!;
             let eventDate = modal.querySelector('.modal-date')!;
             let attendButton = modal.querySelector('.attend-event-button')!;
+            const feedbackMessageArea:HTMLElement = modal.querySelector('#feedbackMessage')!;
 
             // Our time is stored in ISO 8601 format. Must convert to local time
             const inputTimeISO = event.start;
