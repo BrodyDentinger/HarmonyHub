@@ -708,9 +708,9 @@ Description: Main javascript file for Harmony Hub.
             }
             // User doesn't own event
             else {
+                feedbackMessageArea.classList.add("modalAlertMessage");
                 feedbackMessageArea.classList.add("alert");
                 feedbackMessageArea.classList.add("alert-danger");
-                feedbackMessageArea.setAttribute("id", "modalAlertMessage");
                 feedbackMessageArea.textContent = "You don't own this event!";
                 feedbackMessageArea.style.display = "block"; // Show the message
                 setTimeout(function () {
@@ -782,7 +782,7 @@ Description: Main javascript file for Harmony Hub.
     function DeleteEventButton(event) {
         let modal = document.getElementById('viewEventModal');
         let deleteButton = modal.querySelector('.delete-event-button');
-        const feedbackMessageArea = modal.querySelector('#feedbackMessage');
+        let feedbackMessageArea = modal.querySelector('#feedbackMessage');
         let user = new User;
         let userKey = sessionStorage.getItem("user");
         if (userKey != null) {
@@ -833,9 +833,9 @@ Description: Main javascript file for Harmony Hub.
                 });
             }
             else {
+                feedbackMessageArea.classList.add("modalAlertMessage");
                 feedbackMessageArea.classList.add("alert");
                 feedbackMessageArea.classList.add("alert-danger");
-                feedbackMessageArea.setAttribute("id", "modalAlertMessage");
                 feedbackMessageArea.textContent = "You don't own this event!";
                 feedbackMessageArea.style.display = "block"; // Show the message
                 setTimeout(function () {

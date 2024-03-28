@@ -569,7 +569,7 @@ canvas {
     width: 75vw;
 }
 
-#modalAlertMessage {
+.modalAlertMessage {
     padding: 0.375rem 0.75rem; /* Adjust the padding to make the alert skinnier vertically */
 }
 
