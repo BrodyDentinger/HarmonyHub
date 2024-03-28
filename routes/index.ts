@@ -1,3 +1,11 @@
+/*
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: MArch 28, 2024
+File: index.js
+Description: This file holds all the express routing.
+*/
+
 import express from 'express';
 import fs from 'fs';
 const router = express.Router();

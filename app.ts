@@ -1,3 +1,11 @@
+/*
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
+File: app.ts
+Description: Linking server and directory.
+*/
+
 import createError from 'http-errors';
 import express, {NextFunction} from 'express';
 import path from 'path';
