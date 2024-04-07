@@ -693,30 +693,30 @@ Description: Main javascript file for Harmony Hub.
      *
      */
     function DisplayGalleryPage() {
-        fetch('/data/gallery.json')
-
-            .then(response => response.json())
-            .then(data => {
-                const container = document.querySelector('#dynamic-gallery-container');
-
-                data.gallery.forEach((item : GalleryItem, index : GalleryItem) => {
-                    // Use Bootstrap's grid system to allocate 4 columns per item for medium devices and up
-                    const col = document.createElement('div');
-                    col.className = 'col-12 col-md-4 mb-4';
-                    col.innerHTML = `
-                <a class="gallery-item"
-                 data-index="${index}" data-image="${item.image}" data-caption="${item.title}">
-                    <img src="${item.image}" class="img-fluid" alt="${item.title}">
-                </a>
-            `;
-                    if (container != null){
-                        container.appendChild(col);
-                    }
-                });
-
-                setupLightboxModal(data.gallery);
-            })
-            .catch(error => console.error('Error fetching data:', error));
+        // fetch('/data/gallery.json')
+        //
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         const container = document.querySelector('#dynamic-gallery-container');
+        //
+        //         data.gallery.forEach((item : GalleryItem, index : GalleryItem) => {
+        //             // Use Bootstrap's grid system to allocate 4 columns per item for medium devices and up
+        //             const col = document.createElement('div');
+        //             col.className = 'col-12 col-md-4 mb-4';
+        //             col.innerHTML = `
+        //         <a class="gallery-item"
+        //          data-index="${index}" data-image="${item.image}" data-caption="${item.title}">
+        //             <img src="${item.image}" class="img-fluid" alt="${item.title}">
+        //         </a>
+        //     `;
+        //             if (container != null){
+        //                 container.appendChild(col);
+        //             }
+        //         });
+        //
+        //         setupLightboxModal(data.gallery);
+        //     })
+        //     .catch(error => console.error('Error fetching data:', error));
     }
 
     /**

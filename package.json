@@ -21,6 +21,7 @@
     "fullcalendar-scheduler": "^6.1.11",
     "http-errors": "^2.0.0",
     "jquery": "^3.7.1",
+    "mongoose": "^8.3.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {

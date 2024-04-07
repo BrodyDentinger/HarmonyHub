@@ -8,6 +8,10 @@ Description: Main javascript file for Harmony Hub.
 "use strict";
 // IIFE
 (function () {
+    /**
+     * Authguard references path name, and if it's in the protected_routes, redirects to the login page.
+     *
+     */
     function AuthGuard() {
         let protected_routes = ["/stats", "/event_planning"];
         if (protected_routes.indexOf(location.pathname) > -1) { //reads path name everything after the port number
@@ -17,7 +21,7 @@ Description: Main javascript file for Harmony Hub.
         }
     }
     /**
-     * This function will check the rating given by the user, and based on that rating, provide a
+     * This function will check the rating given by the user, and based on that rating, provide feedback.
      *
      */
     function CheckRating() {
@@ -157,7 +161,6 @@ Description: Main javascript file for Harmony Hub.
         // Initial update
         updateText();
     }
-    // END CAROUSEL OVERLAY ANIMATED TEXT SECTION ---------------------------------------------
     /**
      * A function that calls when the title is "Portfolio". Will handle all relevant logic to the portfolio page.
      * @return none
@@ -536,27 +539,30 @@ Description: Main javascript file for Harmony Hub.
      *
      */
     function DisplayGalleryPage() {
-        fetch('/data/gallery.json')
-            .then(response => response.json())
-            .then(data => {
-            const container = document.querySelector('#dynamic-gallery-container');
-            data.gallery.forEach((item, index) => {
-                // Use Bootstrap's grid system to allocate 4 columns per item for medium devices and up
-                const col = document.createElement('div');
-                col.className = 'col-12 col-md-4 mb-4';
-                col.innerHTML = `
-                <a class="gallery-item"
-                 data-index="${index}" data-image="${item.image}" data-caption="${item.title}">
-                    <img src="${item.image}" class="img-fluid" alt="${item.title}">
-                </a>
-            `;
-                if (container != null) {
-                    container.appendChild(col);
-                }
-            });
-            setupLightboxModal(data.gallery);
-        })
-            .catch(error => console.error('Error fetching data:', error));
+        // fetch('/data/gallery.json')
+        //
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         const container = document.querySelector('#dynamic-gallery-container');
+        //
+        //         data.gallery.forEach((item : GalleryItem, index : GalleryItem) => {
+        //             // Use Bootstrap's grid system to allocate 4 columns per item for medium devices and up
+        //             const col = document.createElement('div');
+        //             col.className = 'col-12 col-md-4 mb-4';
+        //             col.innerHTML = `
+        //         <a class="gallery-item"
+        //          data-index="${index}" data-image="${item.image}" data-caption="${item.title}">
+        //             <img src="${item.image}" class="img-fluid" alt="${item.title}">
+        //         </a>
+        //     `;
+        //             if (container != null){
+        //                 container.appendChild(col);
+        //             }
+        //         });
+        //
+        //         setupLightboxModal(data.gallery);
+        //     })
+        //     .catch(error => console.error('Error fetching data:', error));
     }
     /**
      * This function sets up the lightbox modal for the gallery page
@@ -625,6 +631,12 @@ Description: Main javascript file for Harmony Hub.
         `;
         });
     }
+    /**
+     * This function handles editing calendar events clicked from the calendar.
+     * Consolidates event data, fetches JSON, and updates that event in the JSON.
+     * @param event the clicked event from the calendar
+     *
+     */
     function EditEventButton(event) {
         let editModal = document.getElementById('editEventModal');
         let modal = document.getElementById('viewEventModal');
@@ -719,6 +731,12 @@ Description: Main javascript file for Harmony Hub.
             }
         };
     }
+    /**
+     * This function handles attending calendar events clicked from the calendar.
+     * Consolidates event data, fetches JSON, and updates that event in the JSON.
+     * @param event the clicked event from the calendar.
+     *
+     */
     function AttendEventButton(event) {
         const modal = document.getElementById('viewEventModal');
         const attendButton = modal.querySelector('.attend-event-button');
@@ -779,6 +797,12 @@ Description: Main javascript file for Harmony Hub.
             });
         };
     }
+    /**
+     * This function handles deleting calendar events clicked from the calendar.
+     * Consolidates event data, fetches JSON, and updates that event in the JSON.
+     * @param event the clicked event from the calendar.
+     *
+     */
     function DeleteEventButton(event) {
         let modal = document.getElementById('viewEventModal');
         let deleteButton = modal.querySelector('.delete-event-button');
@@ -844,6 +868,10 @@ Description: Main javascript file for Harmony Hub.
             }
         };
     }
+    /**
+     * This function displays the clicked event from the calendar in a modal with further options.
+     * @param event The clicked event from the calendar.
+     */
     function displayEventModal(event) {
         // Get the modal element
         let modal = document.getElementById('viewEventModal');
@@ -895,7 +923,7 @@ Description: Main javascript file for Harmony Hub.
         }
     }
     /**
-     *
+     * This is a function called on request of the event planning page.
      *
      */
     function DisplayEventPlanningPage() {

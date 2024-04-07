@@ -9,6 +9,9 @@ Description: This file holds all the express routing.
 import express from 'express';
 import fs from 'fs';
 const router = express.Router();
+import Gallery from "../models/gallery";
+import {HttpError} from "http-errors";
+import gallery from "../models/gallery";
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -28,7 +31,17 @@ router.get('/contact', function(req, res, next) {
 });
 
 router.get('/gallery', function(req, res, next) {
-  res.render('index', { title: 'Gallery', page : 'gallery', displayName : '' });
+
+  Gallery.find().then(function (data :any){
+    console.log(data); // Add this before res.render within the Gallery.find().then(...)
+
+    // console.log(contacts);
+    res.render('index', { title: 'Gallery', page : "gallery",
+      gallery: data, displayName : '' });
+  }).catch(function (err : HttpError){
+    console.error("Error reading gallery from Database " + err);
+    res.end();
+  })
 });
 
 router.get('/portfolio', function(req, res, next) {
