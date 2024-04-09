@@ -10,9 +10,27 @@
             <!-- Gallery Container -->
             <div class="container mx-5">
                 <div class="row mt-4" id="dynamic-gallery-container">
-                    <!-- Dynamic cards will be inserted here by JavaScript -->
+                    <%
+                    items.forEach(function(item) { %>
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <img src="<%= item.image %>" alt="<%= item.title %>" class="bd-placeholder-img card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= item.title %></h5>
+                                    <p class="card-text"><%= item.subtitle %></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a href="<%= item.learnMoreLink %>" class="btn btn-sm btn-outline-secondary">Learn More</a>
+                                        </div>
+                                        <small class="text-muted"><%= item.day %> <%= item.month %></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
                 </div>
             </div>
+
 
             <!-- Bootstrap Modal for Lightbox, now with predefined carousel structure -->
             <div class="modal fade lightbox-modal" id="lightbox-modal" tabindex="-1">
