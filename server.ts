@@ -12,7 +12,7 @@ Description: starts our express server.
  * Module dependencies.
  */
 
-import app from './app';
+import app from './config/app';
 import debug from 'debug';
 import http from 'http';
 import {HttpError} from "http-errors";
