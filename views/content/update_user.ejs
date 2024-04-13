@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <!-- Column -->
             <div class="col-md-8 text-center">
-                <h3 class="my-3">Register</h3>
+                <h3 class="my-3">Update</h3>
             </div>
         </div>
     </div>
@@ -15,9 +15,10 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div>
+                <div id = "messageArea" class = "px-3 mb-0"></div>
                 <h5 class="card-header"></h5>
                 <div>
-                    <form class="contact-info needs-validation" id="register-form" novalidate>
+                    <form class="contact-info needs-validation" id="update-form" novalidate>
                         <div id = "messageArea"></div>
                         <div class="mb-3">
                             <label for="firstName" class="form-label">First Name</label>
@@ -74,15 +75,27 @@
                                 <input type="password" class="form-control" id="password" name="password"
                                        placeholder="Password"
                                        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}"
-                                        required>
+                                       required>
                                 <div class="invalid-feedback">Please enter a valid password
-                                                            (6-30 Characters, 1 upper and lowercase letter, 1 number, 1 special character).
+                                    (6-30 Characters, 1 upper and lowercase letter, 1 number, 1 special character).
                                 </div>
                             </div>
                         </div>
+                        <!--<div class="mb-3">
+                            <label for="confirm-password" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                <input type="password" class="form-control" id="confirm-password" name="confirm-password"
+                                       placeholder="Confirm Password"
+                                       pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}"
+                                       required>
+                                <div class="invalid-feedback">Please enter a valid password
+                                    (6-30 Characters, 1 upper and lowercase letter, 1 number, 1 special character).
+                                </div>
+                            </div>
+                        </div>-->
                         <div>
-                            <button id="register-button" type="submit" class="btn btn-primary">Register</button>
-                            <span>Have an account? </span><a href="/login">Login</a>
+                            <button id="update-info-button" type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </form>
                 </div>

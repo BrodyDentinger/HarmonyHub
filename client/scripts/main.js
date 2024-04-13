@@ -60,12 +60,13 @@ Description: Main javascript file for Harmony Hub.
             let user = new User;
             // Fetch the session storage with the key User (as we've stored it from the login page function)
             let userKey = sessionStorage.getItem("user");
+            let username = "";
             // Deserialize that string and pass its values into our user object.
             if (userKey != null) {
-                user.deserialize(userKey);
+                const user = JSON.parse(userKey);
+                // Access the user's first name
+                username = user.firstName;
             }
-            // User's first name
-            let username = user["firstName"];
             // Modify the login button to show the user's name and add a dropdown for logout
             $('#login').replaceWith(`
             <li class="nav-item dropdown">
@@ -73,6 +74,7 @@ Description: Main javascript file for Harmony Hub.
                     data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-regular fa-user"></i> ${username}
                 </a>
                 <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="userDropdown">
+                    <li><a class ="dropdown-item" href = "/update">Update</a></li>
                     <li><a class="dropdown-item" href="#" id="logout">Logout</a></li>
                 </ul>
             </li>
@@ -127,9 +129,21 @@ Description: Main javascript file for Harmony Hub.
             let userKey = sessionStorage.getItem("user");
             // Deserialize that string and pass its values into our user object.
             user.deserialize(userKey);
-            // Query the login message div and add our welcome data.
-            $("#loginMessage").addClass("messageBox")
-                .text("Welcome " + user["firstName"] + "!");
+            // Deserialize the string and parse it into an object
+            user = JSON.parse(userKey);
+            // Access the "firstName" property of the user object
+            const firstName = user.firstName;
+            // Query the login message div and add our welcome message
+            $("#loginMessage").addClass("messageBox").text("Welcome " + firstName + "!");
+            // Use setTimeout to clear the message after 3 seconds
+            setTimeout(function () {
+                $("#loginMessage").text("").removeClass();
+            }, 5000);
+        }
+        // If a user has navigated here after successfully updating their information
+        if (window.location.href.includes("updatedSuccess")) {
+            // Query the login message div and add our welcome message
+            $("#loginMessage").addClass("messageBox").text("Update Success.");
             // Use setTimeout to clear the message after 3 seconds
             setTimeout(function () {
                 $("#loginMessage").text("").removeClass();
@@ -394,30 +408,30 @@ Description: Main javascript file for Harmony Hub.
                 let newUser = new User();
                 // Reset message area.
                 messageArea.removeClass("").text("");
-                // JQuery version of an HTTP request
-                // function(data) = data already represents the returnText
-                // JQuery also already checks for 4 readystatechange, and 200 ok
-                $.get("/data/users.json", function (data) {
-                    // loop through each user of the response json file
-                    for (const user of data.users) {
-                        // check if the username and password text fields from the form match the user and password from
-                        // the JSON user.
-                        if (usernameInput === user.Username && passwordInput === user.Password) {
-                            // store the data from the matching user in the JSON file in this User Object
-                            newUser.fromJSON(user);
-                            success = true;
-                            break;
-                        }
-                    }
-                    if (success) {
-                        // create a user object to serialize it into local storage.
-                        sessionStorage.setItem("user", newUser.serialize());
-                        // Redirect with appended success message to url
+                fetch('/authUserDB', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userName: usernameInput, password: passwordInput }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                    if (data.message === 'Authentication successful') {
+                        console.log('Authenticated successfully.');
+                        const user = data.user;
+                        const firstName = user.firstName; // Assuming firstName is the property containing the first name
+                        sessionStorage.setItem("user", JSON.stringify(user)); // Store entire user object
+                        sessionStorage.setItem("firstName", firstName); // Store first name separately
                         location.href = "/home#loginSuccess";
                     }
                     else {
+                        console.error('Failed to authenticate user.');
                         messageArea.addClass("alert alert-danger").text("Error: Invalid Credentials");
                     }
+                })
+                    .catch(error => {
+                    console.error('Error updating event:', error);
                 });
             }
             // No credentials provided
@@ -433,43 +447,42 @@ Description: Main javascript file for Harmony Hub.
      */
     function validateRegisterForm() {
         // Defining regex patterns to match the ones in HTML input fields
-        let usernamePattern = /^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/;
-        let emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
-        let phonePattern = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
-        let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}$/;
-        const username = ($("#username").val() || "").trim();
-        const email = ($("#email").val() || "").trim();
-        const phone = ($("#phone").val() || "").trim();
-        const password = ($("#password").val() || "").trim();
-        let registerForm = $("#register-form");
-        if (($("#firstName").val() ?? "").trim() === "") {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const phonePattern = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{6,30}$/;
+        const firstName = $("#firstName").val().trim();
+        const lastName = $("#lastName").val().trim();
+        const username = $("#username").val().trim();
+        const email = $("#email").val().trim();
+        const phone = $("#phone").val().trim();
+        const password = $("#password").val().trim();
+        const registerForm = $("#register-form");
+        if (!firstName) {
             registerForm.addClass('was-validated');
             return false;
         }
-        else if (($("#lastName").val() ?? "").trim() === "") {
+        if (!lastName) {
             registerForm.addClass('was-validated');
             return false;
         }
-        else if (!usernamePattern.test(username)) {
+        if (username.length < 5) {
             registerForm.addClass('was-validated');
             return false;
         }
-        else if (!emailPattern.test(email)) {
+        if (!emailPattern.test(email)) {
             registerForm.addClass('was-validated');
             return false;
         }
-        else if (!phonePattern.test(phone)) {
+        if (!phonePattern.test(phone)) {
             registerForm.addClass('was-validated');
             return false;
         }
-        else if (!passwordPattern.test(password)) {
+        if (!passwordPattern.test(password)) {
             registerForm.addClass('was-validated');
             return false;
         }
         // All validations passed, return true
-        else {
-            return true;
-        }
+        return true;
     }
     /**
      * This function will be called when the title matches the register page.
@@ -483,9 +496,11 @@ Description: Main javascript file for Harmony Hub.
             // Invalid form
             if (!validateRegisterForm()) {
                 registerForm.addClass('was-validated');
+                console.log("Invalid data....");
                 // Valid
             }
             else {
+                console.log("Valid data....");
                 // Fetch the valid data from form
                 let firstname = ($("#firstName").val() ?? "").trim();
                 let lastname = ($("#lastName").val() ?? "").trim();
@@ -493,12 +508,32 @@ Description: Main javascript file for Harmony Hub.
                 let email = ($("#email").val() ?? "").trim();
                 let phone = ($("#phone").val() ?? "").trim();
                 let password = ($("#password").val() ?? "").trim();
-                // Create a user object with it for future storage into users.JSON.
-                let newlyRegisteredUser = new User(firstname, lastname, username, email, phone, password);
-                // Add to session storage to test functionality.
-                //sessionStorage.setItem("user", newlyRegisteredUser.serialize());
-                // Redirect login page with register in url
-                location.href = "/home#registerSuccess";
+                // Fetch route endpoint and pass in valid data
+                fetch('/registerUserDB', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userName: username,
+                        lastName: lastname,
+                        firstName: firstname,
+                        Email: email,
+                        Phone: phone,
+                        Password: password }),
+                })
+                    .then(response => {
+                    if (response.ok) {
+                        console.log('User registered successfully');
+                        // Redirect login page with register in url
+                        location.href = "/login#registerSuccess";
+                    }
+                    else {
+                        console.error('Failed to register user');
+                    }
+                })
+                    .catch(error => {
+                    console.error('Error registering user:', error);
+                });
             }
         });
     }
@@ -641,12 +676,16 @@ Description: Main javascript file for Harmony Hub.
         const editButton = modal.querySelector('.edit-event-button');
         let user = new User;
         let userKey = sessionStorage.getItem("user");
+        let username = "";
         if (userKey != null) {
-            user.deserialize(userKey);
+            const user = JSON.parse(userKey);
+            // Access the firstName property of the user object
+            username = user.firstName;
         }
-        let username = user["firstName"];
         let feedbackMessageArea = modal.querySelector('#feedbackMessage');
         editButton.onclick = function () {
+            console.log("Event owner: " + event.owner);
+            console.log("Username from session " + username);
             // User owns event
             if (event.owner == username) {
                 let editEventTitle = editModal.querySelector('.editEventTitle');
@@ -678,7 +717,7 @@ Description: Main javascript file for Harmony Hub.
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        // pass the clicked event's id in the body of this request
+                        // pass the clicked event's id, as well as all the new data from the user's form to the route
                         body: JSON.stringify({ eventId: event.id,
                             eventsFromDb: events,
                             newStart: newStart,
@@ -1190,6 +1229,91 @@ Description: Main javascript file for Harmony Hub.
         fetchAndUpdateChart(chart3);
     }
     /**
+     * The display update page is primarily for validating the form, and then updating the user's information
+     * in the database. Will also refresh the
+     *
+     */
+    function DisplayUpdatePage() {
+        console.log("DisplayUpdatePage called... ");
+        let updateForm = $("#update-form");
+        const userData = sessionStorage.getItem('user');
+        if (userData) {
+            // Parse user data from JSON
+            const user = JSON.parse(userData);
+            // Populate form fields with user data
+            document.getElementById('firstName').value = user.firstName;
+            document.getElementById('lastName').value = user.LastName;
+            document.getElementById('username').value = user.Username;
+            document.getElementById('email').value = user.EmailAddress;
+            document.getElementById('phone').value = user.PhoneNumber;
+        }
+        $("#update-info-button").on("click", function (event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+            // Invalid form
+            // @ts-ignore
+            if (!validateRegisterForm()) {
+                updateForm.addClass('was-validated');
+                console.log("Invalid data....");
+                // Valid
+            }
+            else {
+                console.log("Valid data....");
+                // Fetch the valid data from form
+                let firstname = ($("#firstName").val() ?? "").trim();
+                let lastname = ($("#lastName").val() ?? "").trim();
+                let username = ($("#username").val() ?? "").trim();
+                let email = ($("#email").val() ?? "").trim();
+                let phone = ($("#phone").val() ?? "").trim();
+                let password = ($("#password").val() ?? "").trim();
+                const userKey = sessionStorage.getItem("user");
+                let _id = null; // Initialize _id as null or with default value
+                if (userKey !== null) {
+                    const user = JSON.parse(userKey);
+                    _id = user._id;
+                }
+                // Fetch route endpoint and pass in valid data
+                fetch('/updateUserDB', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userName: username,
+                        userId: _id,
+                        lastName: lastname,
+                        firstName: firstname,
+                        Email: email,
+                        Phone: phone,
+                        Password: password }),
+                })
+                    .then(response => {
+                    if (response.ok) {
+                        console.log('User updated successfully');
+                        // Refresh the session with updated user data.
+                        sessionStorage.removeItem('user');
+                        const updatedUserData = {
+                            firstName: firstname,
+                            LastName: lastname,
+                            Username: username,
+                            EmailAddress: email,
+                            PhoneNumber: phone,
+                            Password: password,
+                            _id: _id
+                        };
+                        sessionStorage.setItem('user', JSON.stringify(updatedUserData));
+                        // Redirect login page with register in url
+                        location.href = "/home#updatedSuccess";
+                    }
+                    else {
+                        console.error('Failed to register user');
+                    }
+                })
+                    .catch(error => {
+                    console.error('Error registering user:', error);
+                });
+            }
+        });
+    }
+    /**
      * A function that calls when the website starts. Will handle page detection logic, using a switch to check the
      * given page's title, and call it's relevant DisplayFunction().
      * @return none
@@ -1276,6 +1400,10 @@ Description: Main javascript file for Harmony Hub.
                 GetEventsFromDB().then(data => {
                     DisplayEventPlanningPage(data);
                 });
+                break;
+            case "update_user":
+                AuthGuard();
+                DisplayUpdatePage();
                 break;
         }
     }

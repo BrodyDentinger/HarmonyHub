@@ -11,11 +11,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const fs_1 = __importDefault(require("fs"));
 const gallery_1 = __importDefault(require("../models/gallery"));
 const calendarEvent_1 = __importDefault(require("../models/calendarEvent"));
 const calendarEvent_2 = __importDefault(require("../models/calendarEvent"));
+const user_1 = __importDefault(require("../models/user"));
 const router = express_1.default.Router();
+const mongodb_1 = require("mongodb");
+const bcrypt_1 = __importDefault(require("bcrypt"));
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('index', { title: 'Home', page: 'home', displayName: '' });
@@ -70,10 +72,13 @@ router.get('/feedback_form', function (req, res, next) {
 router.get('/stats', function (req, res, next) {
     res.render('index', { title: 'Statistics', page: 'stats', displayName: '' });
 });
+router.get('/update', function (req, res) {
+    res.render('index', { title: 'Update', page: 'update_user', displayName: '' });
+});
 router.get('/event_planning', function (req, res, next) {
     res.render('index', { title: 'Event Planning', page: 'event_planning', displayName: '' });
 });
-// Trying populate events route for calendar initialization
+// populate events route for calendar initialization
 router.get('/populate_events', function (req, res) {
     calendarEvent_1.default.find().then(function (data) {
         res.json(data);
@@ -114,6 +119,7 @@ router.post('/updateEventDB', async (req, res) => {
         res.status(500).send('Error updating event');
     }
 });
+// Route to handle adding calendar events
 router.post('/addEvent', (req, res) => {
     console.log("Post Event Active...");
     // Extract data from the request
@@ -165,20 +171,122 @@ router.post('/deleteEventDB', async (req, res) => {
         res.status(500).send('Error deleting event');
     }
 });
-// Update events endpoint
-router.post('/updateEvents', (req, res) => {
-    // Assuming req.body contains the updated events data
-    const updatedEvents = req.body;
-    // Write the updated events data to the JSON file
-    fs_1.default.writeFile('./client/data/calendarEvent.json', JSON.stringify(updatedEvents), err => {
-        if (err) {
-            console.error('Error updating events:', err);
-            res.status(500).send('Internal server error');
+/**
+ * Authenticate user route
+ */
+router.post('/authUserDB', async (req, res) => {
+    const { userName, password } = req.body;
+    try {
+        const userFromDB = await user_1.default.findOne({ Username: userName });
+        const passwordFromDB = userFromDB.Password;
+        // compare the plaintext password to the encrpyed password from the db
+        const passwordMatch = await bcrypt_1.default.compare(password, passwordFromDB);
+        // If no match
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid username or password' });
+        }
+        // if match
+        else {
+            // If authentication is successful
+            res.status(200).json({ message: 'Authentication successful', user: userFromDB });
+        }
+    }
+    catch (error) {
+        console.error('Error authenticating user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+/**
+ * Register a user route.
+ */
+router.post('/registerUserDB', async (req, res) => {
+    // fetch data from req body
+    const firstname = req.body.firstName;
+    const lastname = req.body.lastName;
+    const username = req.body.userName;
+    const email = req.body.Email;
+    const phone = req.body.Phone;
+    const password = req.body.Password;
+    // Encrypt the password
+    const hashedPassword = await bcrypt_1.default.hash(password, 10);
+    // Turn it into a mongo model
+    const UserData = {
+        firstName: firstname,
+        LastName: lastname,
+        Username: username,
+        EmailAddress: email,
+        PhoneNumber: phone,
+        Password: hashedPassword
+    };
+    const newUserDataModel = new user_1.default(UserData);
+    // try to insert the newly created record into mongo db
+    newUserDataModel.save()
+        .then(() => {
+        console.log('New user registered successfully.');
+        res.status(200).json({ message: 'User registered successfully' });
+    })
+        .catch(error => {
+        console.error('Error adding event:', error);
+        res.status(500).json({ message: 'Failed to register user', error: error.message });
+    });
+});
+/**
+ * Updating a user in the system's information in the db.
+ */
+router.post('/updateUserDB', async (req, res) => {
+    // fetch data from req body
+    const firstname = req.body.firstName;
+    const lastname = req.body.lastName;
+    const username = req.body.userName;
+    const email = req.body.Email;
+    const phone = req.body.Phone;
+    const password = req.body.Password;
+    const idFromSession = req.body.userId;
+    console.log("Id from session in route side: " + idFromSession);
+    // Check if the password has changed
+    let hashedPassword = password; // Initialize with the provided password
+    if (password) {
+        // Hash the password only if it's provided (not null or undefined)
+        hashedPassword = await bcrypt_1.default.hash(password, 10); // Use the same salt rounds as before
+    }
+    // Turn it into a mongo model
+    const UserData = {
+        firstName: firstname,
+        LastName: lastname,
+        Username: username,
+        EmailAddress: email,
+        PhoneNumber: phone,
+        Password: hashedPassword
+    };
+    const newUserDataModel = new user_1.default(UserData);
+    const id = new mongodb_1.ObjectId(idFromSession);
+    try {
+        // try to insert the newly created record into mongo db
+        const result = await user_1.default.findOneAndUpdate({ _id: id }, {
+            $set: {
+                firstName: firstname,
+                LastName: lastname,
+                Username: username,
+                EmailAddress: email,
+                PhoneNumber: phone,
+                Password: hashedPassword
+            }
+        });
+        // Successfully update / success code.
+        if (result) {
+            console.log('User updated successfully');
+            res.status(200).send('User updated successfully');
+            // Unsuccessful update
         }
         else {
-            console.log('Events updated successfully');
-            res.status(200).send('Events updated successfully');
+            console.log('User not found');
+            res.status(404).send('User not found.');
         }
-    });
+        // Error accessing db
+    }
+    catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).send('Error updating user');
+    }
 });
 exports.default = router;
