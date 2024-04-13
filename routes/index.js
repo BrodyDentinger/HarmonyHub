@@ -115,6 +115,26 @@ router.post('/addEvent', (req, res) => {
         console.error('Error adding event:', error);
     });
 });
+// Delete event from DB end point
+router.post('/deleteEventDB', async (req, res) => {
+    try {
+        const eventId = req.body.eventId; // Assuming eventId is passed in the request body
+        // Find the event by the custom ID and delete it
+        const deletedEvent = await calendarEvent_2.default.findOneAndDelete({ id: eventId });
+        if (deletedEvent) {
+            console.log('Event deleted successfully');
+            res.status(200).send('Event deleted successfully');
+        }
+        else {
+            console.log('Event not found');
+            res.status(404).send('Event not found');
+        }
+    }
+    catch (error) {
+        console.error('Error deleting event:', error);
+        res.status(500).send('Error deleting event');
+    }
+});
 // Update events endpoint
 router.post('/updateEvents', (req, res) => {
     // Assuming req.body contains the updated events data

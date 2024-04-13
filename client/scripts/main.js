@@ -812,45 +812,27 @@ Description: Main javascript file for Harmony Hub.
         let username = user["firstName"];
         // Add event listener to delete button
         deleteButton.onclick = function () {
-            // Only proceed if the logged in username matches the event's owner
+            // Only proceed if the logged-in username matches the event's owner
             if (event.owner == username) {
-                // Fetch the JSON data associated with the events
-                fetch('/data/calendarEvent.json')
-                    .then(response => response.json())
-                    .then(data => {
-                    // Find the index of the event data with matching ID
-                    const index = data.findIndex((e) => e.id == event.id);
-                    // If the event is found, proceed with delete action
-                    if (index !== -1) {
-                        // Remove the event from the array
-                        data.splice(index, 1);
-                        // Update the JSON file with the modified data
-                        fetch('/updateEvents', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        })
-                            .then(response => {
-                            if (response.ok) {
-                                console.log('Event deleted successfully');
-                                location.href = "/event_planning";
-                            }
-                            else {
-                                console.error('Failed to delete event');
-                            }
-                        })
-                            .catch(error => {
-                            console.error('Error updating events:', error);
-                        });
+                // Make a POST request to delete the event
+                fetch('/deleteEventDB', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ eventId: event.id })
+                })
+                    .then(response => {
+                    if (response.ok) {
+                        console.log('Event deleted successfully');
+                        location.href = "/event_planning";
                     }
                     else {
-                        console.log('Event not found');
+                        console.error('Failed to delete event');
                     }
                 })
                     .catch(error => {
-                    console.error('Error fetching event data:', error);
+                    console.error('Error deleting event:', error);
                 });
             }
             else {
