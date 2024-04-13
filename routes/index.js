@@ -83,6 +83,37 @@ router.get('/populate_events', function (req, res) {
     });
 });
 // POST ROUTES
+// Route to handle event updates
+router.post('/updateEventDB', async (req, res) => {
+    try {
+        // Strip the ID and the updated data from req body
+        const eventId = req.body.eventId; // eventId is passed in the request body
+        const newStart = req.body.newStart;
+        const newEnd = req.body.newEnd;
+        const newTitle = req.body.newTitle;
+        const eventsFromDb = req.body.eventsFromDb; // the json string of all events from the db
+        // Find the event by MY id property (not mongos), and update it with the new info
+        const result = await calendarEvent_2.default.findOneAndUpdate({ id: eventId }, {
+            $set: {
+                title: newTitle,
+                start: newStart,
+                end: newEnd
+            }
+        });
+        if (result) {
+            console.log('Event updated successfully');
+            res.status(200).send('Event updated successfully');
+        }
+        else {
+            console.log('Event not found');
+            res.status(404).send('Event not found');
+        }
+    }
+    catch (error) {
+        console.error('Error updating event:', error);
+        res.status(500).send('Error updating event');
+    }
+});
 router.post('/addEvent', (req, res) => {
     console.log("Post Event Active...");
     // Extract data from the request
@@ -91,10 +122,7 @@ router.post('/addEvent', (req, res) => {
     let start = req.body.eventStart;
     let end = req.body.eventEnd;
     let description = req.body.eventDescription;
-    // Read the existing JSON file
-    // Parse the JSON data into a JavaScript object
-    //let events = JSON.parse(data);
-    // Append the new record to the events array
+    // Format that data from the req (form), and create a new calendarEvent model with it
     const eventData = {
         id: Date.now(),
         owner: owner,
@@ -115,10 +143,12 @@ router.post('/addEvent', (req, res) => {
         console.error('Error adding event:', error);
     });
 });
-// Delete event from DB end point
+/**
+ * Delete an event from the DB
+ */
 router.post('/deleteEventDB', async (req, res) => {
     try {
-        const eventId = req.body.eventId; // Assuming eventId is passed in the request body
+        const eventId = req.body.eventId; // eventId is passed in the request body
         // Find the event by the custom ID and delete it
         const deletedEvent = await calendarEvent_2.default.findOneAndDelete({ id: eventId });
         if (deletedEvent) {

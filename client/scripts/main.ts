@@ -800,9 +800,10 @@ Description: Main javascript file for Harmony Hub.
      * This function handles editing calendar events clicked from the calendar.
      * Consolidates event data, fetches JSON, and updates that event in the JSON.
      * @param event the clicked event from the calendar
+     * @param events the events from the db fetch (all calendar events in json format)
      *
      */
-    function EditEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}){
+    function EditEventButton(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}, events: any){
 
         let editModal = document.getElementById('editEventModal')!;
         let modal = document.getElementById('viewEventModal')!;
@@ -823,6 +824,7 @@ Description: Main javascript file for Harmony Hub.
                 let editEventTitle = editModal.querySelector('.editEventTitle') as HTMLInputElement;
                 let editEventStart = editModal.querySelector('.editEventStart') as HTMLInputElement;
                 let editEventEnd = editModal.querySelector('.editEventEnd') as HTMLInputElement;
+
                 // Populate form fields with event data
                 editEventTitle.value = event.title;
                 const startDate = new Date(event.start);
@@ -848,45 +850,29 @@ Description: Main javascript file for Harmony Hub.
                     const newStart = editEventStart.value;
                     const newEnd = editEventEnd.value;
 
-                    // Fetch the JSON data associated with the events
-                    fetch('/data/calendarEvent.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            // Find the index of the event data with matching ID
-                            const index = data.findIndex((e: { id: any; }) => e.id == event.id);
-
-                            // If the event is found, proceed with edit action
-                            if (index !== -1) {
-                                // Update the event in the array
-                                data[index].title = newTitle;
-                                data[index].start = newStart;
-                                data[index].end = newEnd;
-
-                                // Update the JSON file with the modified data
-                                fetch('/updateEvents', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(data)
-                                })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            console.log('Event edited successfully');
-                                            location.href = "/event_planning";
-                                        } else {
-                                            console.error('Failed to edit event');
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Error updating events:', error);
-                                    });
+                    // fetch the deleteEvent endpoint
+                    fetch('/updateEventDB', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        // pass the clicked event's id, as well as all the new data from the user's form to the route
+                        body: JSON.stringify({ eventId: event.id,
+                                                    eventsFromDb: events,
+                                                    newStart: newStart,
+                                                    newTitle: newTitle,
+                                                    newEnd: newEnd }),
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Event updated successfully');
+                                location.href = "/event_planning";
                             } else {
-                                console.log('Event not found');
+                                console.error('Failed to update event');
                             }
                         })
                         .catch(error => {
-                            console.error('Error fetching event data:', error);
+                            console.error('Error updating event:', error);
                         });
                 }
             }
@@ -1040,8 +1026,9 @@ Description: Main javascript file for Harmony Hub.
     /**
      * This function displays the clicked event from the calendar in a modal with further options.
      * @param event The clicked event from the calendar.
+     * @param events the events from the db fetch. (all calendar events in JSON format)
      */
-    function displayEventModal(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}) {
+    function displayEventModal(event: { id: string; title: string; owner: string; start: any; end: any; attendees: string[]}, events:any) {
         // Get the modal element
         let modal = document.getElementById('viewEventModal')!;
 
@@ -1089,7 +1076,7 @@ Description: Main javascript file for Harmony Hub.
 
             AttendEventButton(event);
 
-            EditEventButton(event);
+            EditEventButton(event, events);
 
             // Show the modal
             // @ts-ignore
@@ -1158,7 +1145,8 @@ Description: Main javascript file for Harmony Hub.
                         console.log(clickedEventData.attendees);
 
                         // info.event holds the event object
-                        displayEventModal(clickedEventData);
+                        // Pass the clicked event data, as well as the events that have all been fetched from the DB
+                        displayEventModal(clickedEventData, events);
                     }
                     else{
                         console.log("No records found.");
@@ -1197,7 +1185,7 @@ Description: Main javascript file for Harmony Hub.
 
             let description = "Event Description";
 
-            // Append it to the JSON file
+            // Format the data
             const eventData = {
                 title: title,
                 username: username,
@@ -1206,7 +1194,7 @@ Description: Main javascript file for Harmony Hub.
                 eventDescription: description
             };
 
-            // Make a POST request using fetch
+            // Make a POST request using fetch to the addEvent endpoint (will contact db)
             fetch('/addEvent', {
                 method: 'POST',
                 headers: {

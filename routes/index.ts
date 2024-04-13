@@ -101,6 +101,42 @@ router.get('/populate_events', function(req, res){
 
 // POST ROUTES
 
+// Route to handle event updates
+router.post('/updateEventDB', async (req, res) => {
+  try {
+
+    // Strip the ID and the updated data from req body
+    const eventId = req.body.eventId; // eventId is passed in the request body
+    const newStart = req.body.newStart;
+    const newEnd = req.body.newEnd;
+    const newTitle = req.body.newTitle;
+    const eventsFromDb = req.body.eventsFromDb; // the json string of all events from the db
+
+    // Find the event by MY id property (not mongos), and update it with the new info
+    const result = await CalendarEvent.findOneAndUpdate(
+        { id: eventId },
+        {
+          $set: {
+            title: newTitle,
+            start: newStart,
+            end: newEnd
+          }
+        }
+    );
+
+    if (result) {
+      console.log('Event updated successfully');
+      res.status(200).send('Event updated successfully');
+    } else {
+      console.log('Event not found');
+      res.status(404).send('Event not found');
+    }
+  } catch (error) {
+    console.error('Error updating event:', error);
+    res.status(500).send('Error updating event');
+  }
+});
+
 router.post('/addEvent', (req, res) => {
 
   console.log("Post Event Active...");
