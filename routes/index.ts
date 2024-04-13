@@ -112,12 +112,7 @@ router.post('/addEvent', (req, res) => {
   let end = req.body.eventEnd;
   let description = req.body.eventDescription;
 
-  // Read the existing JSON file
-
-  // Parse the JSON data into a JavaScript object
-  //let events = JSON.parse(data);
-
-  // Append the new record to the events array
+  // Format that data from the req (form), and create a new calendarEvent model with it
   const eventData = {
     id: Date.now(),
     owner: owner,
@@ -126,22 +121,24 @@ router.post('/addEvent', (req, res) => {
     end: end,
     description: description,
     attendees: []
-  }
+  };
 
+  const newEvent = new CalendarEvent(eventData);
 
-    const newEvent = new CalendarEvent(eventData);
-    // Save the new event to the database
-    newEvent.save()
-        .then(() => {
-          console.log('New event added successfully');
-          console.log("newEvent log: " + newEvent);
-        })
-        .catch(error => {
-          console.error('Error adding event:', error);
-        });
+  // Save the new event to the database
+  newEvent.save()
+      .then(() => {
+        console.log('New event added successfully');
+        console.log("newEvent log: " + newEvent);
+      })
+      .catch(error => {
+        console.error('Error adding event:', error);
+      });
   });
 
-// Delete event from DB end point
+/**
+ * Delete an event from the DB
+ */
 router.post('/deleteEventDB', async (req, res) => {
   try {
     const eventId = req.body.eventId; // eventId is passed in the request body

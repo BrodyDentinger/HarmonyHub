@@ -817,10 +817,7 @@ Description: Main javascript file for Harmony Hub.
 
         (editButton as HTMLElement).onclick = function() {
 
-            console.log("Event Owner:  " + event.owner);
-            console.log("Username:  " + username);
             // User owns event
-
             if(event.owner == username){
 
                 let editEventTitle = editModal.querySelector('.editEventTitle') as HTMLInputElement;
@@ -1003,12 +1000,13 @@ Description: Main javascript file for Harmony Hub.
 
             // Only proceed if the logged-in username matches the event's owner
             if (event.owner == username) {
-                // Make a POST request to delete the event
+                // fetch the deleteEvent endpoint
                 fetch('/deleteEventDB', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
+                    // pass the clicked event's id in the body of this request
                     body: JSON.stringify({ eventId: event.id })
                 })
                     .then(response => {
@@ -1023,6 +1021,7 @@ Description: Main javascript file for Harmony Hub.
                         console.error('Error deleting event:', error);
                     });
             }
+            // THe user clicking the event is NOT the owner
             else{
 
                 feedbackMessageArea.classList.add("modalAlertMessage");
