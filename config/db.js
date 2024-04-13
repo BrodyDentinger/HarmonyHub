@@ -9,7 +9,7 @@ if (LOCAL) {
 }
 else {
     // for mongoDB connection string add the name of the db after .net/ .... also update pw
-    exports.URI = URI = "mongodb+srv://HarmonyHub:HarmonyHub@cluster0.dazioik.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+    exports.URI = URI = "mongodb+srv://broddent:Broddent94@project0.vqeflvz.mongodb.net/contacts?retryWrites=true&w=majority&appName=Project0";
     exports.HostName = HostName = "MongoDB Atlas";
 }
 exports.SessionSecret = "INFT2202SESSIONSecret";

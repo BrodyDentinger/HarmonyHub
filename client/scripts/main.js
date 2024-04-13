@@ -920,47 +920,58 @@ Description: Main javascript file for Harmony Hub.
         }
     }
     /**
+     * Async function that calls the route to fetch all calendar events from the db.
+     *  Will await the response
+     *  For calling in the switch when the route event_planning page is called
+     *      Eg. event_planning url requested
+     *          call this async function to fetch all calendar events from db
+     *          pass the response data to the DisplayEventPlanningPage
+     *          Use that data (which is JSON formatted calendar events), to the FullCalendar initialization.
+     *
+     */
+    async function GetEventsFromDB() {
+        // Use the route to do a calendar.find() to fetch all calendar events from the db.
+        const res = await fetch("/populate_events");
+        // Return the response from the json
+        return await res.json();
+    }
+    /**
      * This is a function called on request of the event planning page.
      *
      */
-    function DisplayEventPlanningPage() {
+    function DisplayEventPlanningPage(events) {
         console.log("DisplayEventPlanning() called...");
         let calendarEl = document.getElementById('calendar');
+        let calendar = null;
+        console.log(events);
         // @ts-ignore
-        let calendar = new FullCalendar.Calendar(calendarEl, {
+        calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            initialDate: '2024-03-07',
+            initialDate: Date.now(),
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
             // pulling the event info from the json
-            events: '/data/calendarEvent.json',
+            events: events,
             // This is the clickable action on click of events
             eventClick: function (info) {
                 // Fetch the JSON data associated with the events
-                fetch('/data/calendarEvent.json')
-                    .then(response => response.json())
-                    .then(data => {
-                    // Find the event data with matching ID
-                    let clickedEventData = data.find((event) => event.id == info.event.id);
-                    // Actions to occur if a record has been found matching the clicked event's ID
-                    if (clickedEventData) {
-                        // Render the modal with event information
-                        console.log(clickedEventData.owner);
-                        console.log(clickedEventData.id);
-                        console.log(clickedEventData.attendees);
-                        // info.event holds the event object
-                        displayEventModal(clickedEventData);
-                    }
-                    else {
-                        console.log("No records found.");
-                    }
-                })
-                    .catch(error => {
-                    console.error('Error fetching event data:', error);
-                });
+                // Find the event data with matching ID
+                let clickedEventData = events.find((event) => event.id == info.event.id);
+                // Actions to occur if a record has been found matching the clicked event's ID
+                if (clickedEventData) {
+                    // Render the modal with event information
+                    console.log(clickedEventData.owner);
+                    console.log(clickedEventData.id);
+                    console.log(clickedEventData.attendees);
+                    // info.event holds the event object
+                    displayEventModal(clickedEventData);
+                }
+                else {
+                    console.log("No records found.");
+                }
             }
         });
         calendar.render();
@@ -983,6 +994,9 @@ Description: Main javascript file for Harmony Hub.
             // Convert string to Date objects
             let start = new Date(startInput);
             let end = new Date(endInput);
+            // Convert dates to ISO 8601 format
+            /*let isoStart: string = start.toISOString();
+            let isoEnd: string = end.toISOString();*/
             let description = "Event Description";
             // Append it to the JSON file
             const eventData = {
@@ -1289,7 +1303,9 @@ Description: Main javascript file for Harmony Hub.
                 break;
             case "event_planning":
                 AuthGuard();
-                DisplayEventPlanningPage();
+                GetEventsFromDB().then(data => {
+                    DisplayEventPlanningPage(data);
+                });
                 break;
         }
     }

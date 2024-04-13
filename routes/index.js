@@ -13,6 +13,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const fs_1 = __importDefault(require("fs"));
 const gallery_1 = __importDefault(require("../models/gallery"));
+const calendarEvent_1 = __importDefault(require("../models/calendarEvent"));
+const calendarEvent_2 = __importDefault(require("../models/calendarEvent"));
 const router = express_1.default.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -71,45 +73,46 @@ router.get('/stats', function (req, res, next) {
 router.get('/event_planning', function (req, res, next) {
     res.render('index', { title: 'Event Planning', page: 'event_planning', displayName: '' });
 });
+// Trying populate events route for calendar initialization
+router.get('/populate_events', function (req, res) {
+    calendarEvent_1.default.find().then(function (data) {
+        res.json(data);
+    }).catch(function (err) {
+        console.error("Error reading calendar events from Database." + err);
+        res.end();
+    });
+});
 // POST ROUTES
 router.post('/addEvent', (req, res) => {
     console.log("Post Event Active...");
     // Extract data from the request
     let title = req.body.title;
     let owner = req.body.username;
-    let start = new Date(req.body.eventStart);
-    let end = new Date(req.body.eventEnd);
+    let start = req.body.eventStart;
+    let end = req.body.eventEnd;
     let description = req.body.eventDescription;
     // Read the existing JSON file
-    fs_1.default.readFile('./client/data/calendarEvent.json', 'utf8', (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error reading events.json');
-        }
-        // Parse the JSON data into a JavaScript object
-        let events = JSON.parse(data);
-        // Append the new record to the events array
-        let newEvent = {
-            id: Date.now(),
-            owner: owner,
-            title: title,
-            start: start,
-            end: end,
-            description: description,
-            attendees: []
-        };
-        events.push(newEvent);
-        // Convert the modified JavaScript object back to a JSON string
-        let updatedEventsJSON = JSON.stringify(events);
-        // Write the updated JSON string back to the file
-        fs_1.default.writeFile('./client/data/calendarEvent.json', updatedEventsJSON, (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Error writing to events.json');
-            }
-            console.log('New event added successfully');
-            res.status(200).send('New event added successfully');
-        });
+    // Parse the JSON data into a JavaScript object
+    //let events = JSON.parse(data);
+    // Append the new record to the events array
+    const eventData = {
+        id: Date.now(),
+        owner: owner,
+        title: title,
+        start: start,
+        end: end,
+        description: description,
+        attendees: []
+    };
+    const newEvent = new calendarEvent_2.default(eventData);
+    // Save the new event to the database
+    newEvent.save()
+        .then(() => {
+        console.log('New event added successfully');
+        console.log("newEvent log: " + newEvent);
+    })
+        .catch(error => {
+        console.error('Error adding event:', error);
     });
 });
 // Update events endpoint
