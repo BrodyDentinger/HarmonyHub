@@ -1,3 +1,11 @@
+/*
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
+File: app.js
+Description: Express configurations.
+*/
+
 import createError from 'http-errors';
 import express, {NextFunction} from 'express';
 import path from 'path';
@@ -33,9 +41,6 @@ app.use(cookieParser());
 // STATIC CONFIGURATION
 app.use(express.static(path.join(__dirname, "../client")));      // serve static files from 'client' directory
 app.use(express.static(path.join(__dirname, "../node_modules"))); // serve static files from 'node_modules' directory
-
-
-
 
 app.use('/', indexRouter);
 

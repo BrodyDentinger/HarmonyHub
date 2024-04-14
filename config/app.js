@@ -1,4 +1,11 @@
 "use strict";
+/*
+Names: Brody Dentinger and Muhammad Yasir Patel
+Student IDs: 100561604 and 100854895
+Date: January 26, 2024
+File: app.js
+Description: Express configurations.
+*/
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);

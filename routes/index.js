@@ -96,7 +96,6 @@ router.post('/updateEventDB', async (req, res) => {
         const newStart = req.body.newStart;
         const newEnd = req.body.newEnd;
         const newTitle = req.body.newTitle;
-        const eventsFromDb = req.body.eventsFromDb; // the json string of all events from the db
         // Find the event by MY id property (not mongos), and update it with the new info
         const result = await calendarEvent_2.default.findOneAndUpdate({ id: eventId }, {
             $set: {
@@ -124,7 +123,8 @@ router.post('/addEvent', (req, res) => {
     console.log("Post Event Active...");
     // Extract data from the request
     let title = req.body.title;
-    let owner = req.body.username;
+    let owner = req.body.owner;
+    console.log("Owner in endpoint: " + owner);
     let start = req.body.eventStart;
     let end = req.body.eventEnd;
     let description = req.body.eventDescription;

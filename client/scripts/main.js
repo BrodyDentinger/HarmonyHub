@@ -676,11 +676,10 @@ Description: Main javascript file for Harmony Hub.
         const editButton = modal.querySelector('.edit-event-button');
         let user = new User;
         let userKey = sessionStorage.getItem("user");
-        let username = "";
-        if (userKey != null) {
-            const user = JSON.parse(userKey);
-            // Access the firstName property of the user object
-            username = user.firstName;
+        let username = ""; // Initialize username
+        if (userKey !== null) {
+            const userData = JSON.parse(userKey);
+            username = userData.firstName;
         }
         let feedbackMessageArea = modal.querySelector('#feedbackMessage');
         editButton.onclick = function () {
@@ -829,10 +828,11 @@ Description: Main javascript file for Harmony Hub.
         let feedbackMessageArea = modal.querySelector('#feedbackMessage');
         let user = new User;
         let userKey = sessionStorage.getItem("user");
-        if (userKey != null) {
-            user.deserialize(userKey);
+        let username = ""; // Initialize username
+        if (userKey !== null) {
+            const userData = JSON.parse(userKey);
+            username = userData.firstName;
         }
-        let username = user["firstName"];
         // Add event listener to delete button
         deleteButton.onclick = function () {
             // Only proceed if the logged-in username matches the event's owner
@@ -990,10 +990,11 @@ Description: Main javascript file for Harmony Hub.
             // Get the username of user interacting with the form
             let user = new User;
             let userKey = sessionStorage.getItem("user");
-            if (userKey != null) {
-                user.deserialize(userKey);
+            let username = ""; // Initialize username
+            if (userKey !== null) {
+                const userData = JSON.parse(userKey);
+                username = userData.firstName;
             }
-            let username = user["firstName"];
             // Extract data from form
             let title = $('#eventTitle').val();
             let owner = username;
@@ -1007,10 +1008,11 @@ Description: Main javascript file for Harmony Hub.
             /*let isoStart: string = start.toISOString();
             let isoEnd: string = end.toISOString();*/
             let description = "Event Description";
+            console.log("owner client-side" + username);
             // Format the data
             const eventData = {
                 title: title,
-                username: username,
+                owner: username,
                 eventStart: start,
                 eventEnd: end,
                 eventDescription: description
